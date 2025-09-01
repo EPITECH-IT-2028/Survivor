@@ -1,6 +1,36 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: "SF-Pro";
+  src: url("/fonts/SF-Pro-Display-Regular.otf") format("opentype");
+  font-weight: regular;
+  font-style: regular;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF-Pro-thin";
+  src: url("/fonts/SF-Pro-Display-Thin.otf") format("opentype");
+  font-weight: thin;
+  font-style: thin;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF-Pro-bold";
+  src: url("/fonts/SF-Pro-Display-Bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: bold;
+  font-display: swap;
+}
+
+@theme {
+  --font-sf-pro: 'SF-Pro', sans-serif;
+  --font-sf-pro-thin: 'SF-Pro-thin', thin;
+  --font-sf-pro-bold: 'SF-Pro-bold', bold;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
