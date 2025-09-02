@@ -8,5 +8,5 @@ export interface TInvestor {
   description: string | null;
   investor_type: string | null;
   investment_focus: string | null;
-  id: number;
+  readonly id: number;
 }

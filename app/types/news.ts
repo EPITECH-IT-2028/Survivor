@@ -4,5 +4,5 @@ export interface TNews {
   title: string;
   category: string | null;
   startup_id: number | null;
-  id: number;
+  readonly id: number;
 }

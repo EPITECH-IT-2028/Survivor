@@ -1,4 +1,4 @@
-export type UserRole = 'admin' | 'founder' | 'investor' | 'member';
+export type UserRole = 'admin' | 'founder' | 'investor';
 
 export interface TUser {
   email: string;

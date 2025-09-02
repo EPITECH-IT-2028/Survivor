@@ -1,5 +1,5 @@
 export interface TStartups {
-  id: number;
+  readonly id: number;
   name: string;
   legal_status: string | null;
   address: string | null;

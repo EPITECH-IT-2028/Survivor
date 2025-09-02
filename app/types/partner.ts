@@ -7,5 +7,5 @@ export interface TPartner {
   created_at: (string | null);
   description: (string | null);
   partnership_type: (string | null);
-  id: number;
+  readonly id: number;
 }

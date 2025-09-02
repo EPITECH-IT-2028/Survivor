@@ -5,5 +5,5 @@ export interface TEvent {
   description: (string | null);
   event_type: (string | null);
   target_audience: (string | null);
-  id: number;
+  readonly id: number;
 }
