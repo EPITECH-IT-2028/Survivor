@@ -21,7 +21,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "The Incubator",
+  title: "JEB Incubator",
   description: "A place to nourish your ideas and develop your projects.",
 };
 
