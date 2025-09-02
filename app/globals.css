@@ -29,6 +29,7 @@
   --font-sf-pro: 'SF-Pro', sans-serif;
   --font-sf-pro-thin: 'SF-Pro-thin', thin;
   --font-sf-pro-bold: 'SF-Pro-bold', bold;
+  --font-instrument-serif: 'Instrument Serif', serif;
 }
 
 @custom-variant dark (&:is(.dark *));
