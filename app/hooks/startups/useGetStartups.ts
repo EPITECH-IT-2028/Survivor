@@ -1,4 +1,5 @@
 import { neon } from '@neondatabase/serverless';
+import 'server-only';
 
 export default async function useGetStartups() {
   const database_url = process.env.DATABASE_URL;
@@ -7,8 +8,6 @@ export default async function useGetStartups() {
 
   const sql = neon(database_url);
 
-  async () => {
-    const result = await sql`SELECT * FROM startups`;
-    return result;
-  };
+  const result = await sql`SELECT * FROM startups`;
+  return result;
 }

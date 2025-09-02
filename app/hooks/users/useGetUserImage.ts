@@ -1,4 +1,5 @@
 import { neon } from '@neondatabase/serverless';
+import 'server-only';
 
 export default async function useGetUserImage(user_id: string) {
   const database_url = process.env.DATABASE_URL;
@@ -7,8 +8,6 @@ export default async function useGetUserImage(user_id: string) {
 
   const sql = neon(database_url);
 
-  async () => {
-    const result = await sql`SELECT image FROM users WHERE user_id = ${user_id}`;
-    return result.at(0) ?? null;
-  };
+  const result = await sql`SELECT image FROM users WHERE user_id = ${user_id}`;
+  return result.at(0) ?? null;
 }

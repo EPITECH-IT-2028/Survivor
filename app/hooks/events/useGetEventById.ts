@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import 'server-only';
 import { neon } from '@neondatabase/serverless';
 
 export default async function useGetEventById(event_id: number) {
@@ -8,8 +8,6 @@ export default async function useGetEventById(event_id: number) {
 
   const sql = neon(database_url);
 
-  async () => {
-    const result = await sql`SELECT * FROM Event WHERE id = ${event_id} LIMIT 1`;
-    return NextResponse.json(result);
-  };
+  const result = await sql`SELECT * FROM Event WHERE id = ${event_id} LIMIT 1`;
+  return result.at(0) ?? null;
 }
