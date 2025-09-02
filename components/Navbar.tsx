@@ -24,7 +24,7 @@ export default function Navbar() {
       </div>
       <Link
         href="#"
-        className="rounded-lg border-1 border-secondary bg-secondary px-6 py-2 text-lg font-medium text-primary transition-transform duration-100 hover:scale-x-110 hover:scale-y-95 hover:bg-primary hover:text-secondary"
+        className="rounded-lg border border-secondary bg-secondary px-6 py-2 text-lg font-medium text-primary transition-transform duration-100 hover:scale-x-110 hover:scale-y-95 hover:bg-primary hover:text-secondary"
       >
         Login
       </Link>
