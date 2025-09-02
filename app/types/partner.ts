@@ -4,7 +4,7 @@ export interface TPartner {
   address: (string | null),
   email: string,
   phone: (string | null),
-  create_at: (string | null),
+  created_at: (string | null),
   description: (string | null),
   partnership_type: (string | null),
   id: number
