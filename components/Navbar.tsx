@@ -1,7 +1,9 @@
+import { TextRipple } from "@/components/ui/text-ripple";
+
 export default function Navbar() {
   return (
     <nav className="mx-6 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary px-16 font-instrument-serif text-secondary">
-      <div className="text-4xl">The Incubator.</div>
+      <TextRipple className="text-4xl">The Incubator.</TextRipple>
         <div className="flex gap-6">
           <button className="rounded-lg px-6 py-2 font-sf-pro text-lg font-medium text-secondary underline decoration-wavy decoration-1 underline-offset-4 transition-all duration-100 hover:scale-x-110 hover:scale-y-95 hover:decoration-zinc-400">
             Discover Startups
