@@ -4,24 +4,24 @@
 @font-face {
   font-family: "SF-Pro";
   src: url("/fonts/SF-Pro-Display-Regular.otf") format("opentype");
-  font-weight: regular;
-  font-style: regular;
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "SF-Pro-thin";
   src: url("/fonts/SF-Pro-Display-Thin.otf") format("opentype");
-  font-weight: thin;
-  font-style: thin;
+  font-weight: 100;
+  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "SF-Pro-bold";
   src: url("/fonts/SF-Pro-Display-Bold.otf") format("opentype");
-  font-weight: bold;
-  font-style: bold;
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }
 
