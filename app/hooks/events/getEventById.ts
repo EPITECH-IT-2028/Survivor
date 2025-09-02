@@ -1,7 +1,7 @@
 import 'server-only';
 import { neon } from '@neondatabase/serverless';
 
-export default async function useGetEventById(event_id: number) {
+export default async function getEventById(event_id: number) {
   const database_url = process.env.DATABASE_URL;
 
   if (!database_url) throw new Error('DATABASE_URL null')
