@@ -4,7 +4,7 @@ export interface TInvestor {
   address: string | null;
   email: string;
   phone: string | null;
-  created_at: string | null;
+  created_at: Date | string | null;
   description: string | null;
   investor_type: string | null;
   investment_focus: string | null;
