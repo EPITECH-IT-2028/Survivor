@@ -1,25 +1,130 @@
+'use server';
+
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 
+
 async function fetchDataFromExternalAPI(endpoint: string) {
+  const response = await fetch(`https://api.jeb-incubator.com/${endpoint}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Group-Authorization': `${process.env.JEB_API_KEY}`
+    },
+  });
 
-  const response = await Promise.all([
-    fetch(`https://api.jeb-incubator.com/${endpoint}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': ``,
-      },
-    }
-    ).then(res => res.json()),
-  ]);
+  if (!response.ok) {
+    const text = await response.text();
+    console.error(`Failed to fetch ${endpoint}:`, response.status, text);
+    return null;
+  }
 
-  return response
-};
-
-export async function POST(req: Request, res: NextResponse) {
   try {
-    const db = neon(process.env.DATABASE_URL!);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error(`Invalid JSON from ${endpoint}:`, err);
+    return null;
+  }
+}
+
+
+export async function POST(req: Request) {
+  try {
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Database URL not configured' }, {
+        status: 500,
+      });
+    }
+
+    const db = neon(`${process.env.DATABASE_URL}`);
+
+    if (db === null) {
+      return NextResponse.json({ error: 'Database connection failed' }, {
+        status: 500,
+      });
+    }
+
+    const responseInvestors = await fetchDataFromExternalAPI('investors');
+
+    if (!responseInvestors) {
+      return NextResponse.json({ error: 'Failed to fetch investors from external API' }, {
+        status: 500,
+      });
+    }
+
+    const investors = responseInvestors;
+
+    for (const investor of investors) {
+      await db`INSERT INTO investors (name, legal_status, address, email, phone, created_at, description,
+      investor_type, investment_focus)
+      VALUES (${investor.name}, ${investor.legal_status}, ${investor.address}, ${investor.email}, ${investor.phone},
+      ${investor.created_at}, ${investor.description}, ${investor.investor_type}, ${investor.investment_focus})
+      ON CONFLICT (email) DO UPDATE SET
+      name = EXCLUDED.name,
+      legal_status = EXCLUDED.legal_status,
+      address = EXCLUDED.address,
+      phone = EXCLUDED.phone,
+      created_at = EXCLUDED.created_at,
+      description = EXCLUDED.description,
+      investor_type = EXCLUDED.investor_type,
+      investment_focus = EXCLUDED.investment_focus`;
+    }
+
+    const startupResponse = await fetchDataFromExternalAPI('startups');
+
+    if (!startupResponse) {
+      return NextResponse.json({ error: 'Failed to fetch startups from external API' }, {
+        status: 500,
+      });
+    }
+
+    const startups = startupResponse;
+
+    for (const startup of startups) {
+      await db`INSERT INTO startups (name, legal_status, address, email, phone, sector, maturity)
+      VALUES (${startup.name}, ${startup.legal_status}, ${startup.address}, ${startup.email}, ${startup.phone},
+      ${startup.sector}, ${startup.maturity})
+      ON CONFLICT (email) DO UPDATE SET
+      name = EXCLUDED.name,
+      legal_status = EXCLUDED.legal_status,
+      address = EXCLUDED.address,
+      phone = EXCLUDED.phone,
+      sector = EXCLUDED.sector,
+      maturity = EXCLUDED.maturity`;
+    }
+
+    const startupIds = await db`SELECT id FROM startups ORDER BY id`;
+
+    for (const s of startupIds) {
+      let startup = await fetchDataFromExternalAPI(`startups/${s.id}`);
+      while (!startup) {
+        console.log(`Retrying fetch for startup ID ${s.id}`);
+        await new Promise(res => setTimeout(res, 2000));
+        startup = await fetchDataFromExternalAPI(`startups/${s.id}`);
+      }
+
+      const details = startup;
+
+      for (const founder of details.founders || []) {
+        await db`INSERT INTO founders(name, startup_id, external_id)
+          VALUES (${founder.name}, ${s.id}, ${founder.id})
+          ON CONFLICT (external_id) DO UPDATE SET
+          name = EXCLUDED.name,
+          startup_id = EXCLUDED.startup_id`;
+      }
+
+      const founders = details.founders ? JSON.stringify(details.founders) : null;
+
+      await db`UPDATE startups SET description = ${details.description},
+        created_at = ${details.created_at},
+        website_url = ${details.website_url},
+        social_media_url = ${details.social_media_url},
+        project_status = ${details.project_status},
+        needs = ${details.needs},
+        founders = ${founders}
+        WHERE id = ${s.id}`;
+    }
 
     const response = await fetchDataFromExternalAPI('users');
 
@@ -28,15 +133,89 @@ export async function POST(req: Request, res: NextResponse) {
         status: 500,
       });
     }
-    const users = response[0];
+    const users = response;
 
     for (const user of users) {
-      await db.query(
-        `INSERT INTO users (name, email, role, founder_id, investor_id) VALUES ($1, $2, $3, $4, $5)
-         ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name,
-         role = EXCLUDED.role, founder_id = EXCLUDED.founder_id, investor_id = EXCLUDED.investor_id`,
-        [user.name, user.email, user.role, user.founder_id, user.investor_id]
-      );
+      await db`INSERT INTO users(name, email, role, founder_id, investor_id)
+      VALUES (${user.name}, ${user.email}, ${user.role}, ${user.founder_id}, ${user.investor_id})
+      ON CONFLICT (email) DO UPDATE SET 
+      name = EXCLUDED.name,
+      role = EXCLUDED.role, 
+      founder_id = EXCLUDED.founder_id, 
+      investor_id = EXCLUDED.investor_id`;
+    }
+
+    const eventsResponse = await fetchDataFromExternalAPI('events');
+
+    if (!eventsResponse) {
+      return NextResponse.json({ error: 'Failed to fetch events from external API' }, {
+        status: 500,
+      });
+    }
+
+    const events = eventsResponse;
+
+    for (const event of events) {
+      await db`INSERT INTO events(name, dates, location, description, event_type, target_audience)
+      VALUES (${event.name}, ${event.dates}, ${event.location}, ${event.description}, ${event.event_type},
+      ${event.target_audience})
+      ON CONFLICT (name, dates) DO NOTHING`;
+    }
+
+    const partnersResponse = await fetchDataFromExternalAPI('partners');
+
+    if (!partnersResponse) {
+      return NextResponse.json({ error: 'Failed to fetch partners from external API' }, {
+        status: 500,
+      });
+    }
+
+    const partners = partnersResponse;
+
+    for (const partner of partners) {
+      await db`INSERT INTO partners(name, legal_status, address, email, phone, created_at, description, partnership_type)
+      VALUES (${partner.name}, ${partner.legal_status}, ${partner.address}, ${partner.email}, ${partner.phone},
+      ${partner.created_at}, ${partner.description}, ${partner.partnership_type})
+      ON CONFLICT (email) DO UPDATE SET
+      name = EXCLUDED.name,
+      legal_status = EXCLUDED.legal_status,
+      address = EXCLUDED.address,
+      phone = EXCLUDED.phone,
+      created_at = EXCLUDED.created_at,
+      description = EXCLUDED.description,
+      partnership_type = EXCLUDED.partnership_type`;
+    }
+
+    const newsResponse = await fetchDataFromExternalAPI('news');
+
+    if (!newsResponse) {
+      return NextResponse.json({ error: 'Failed to fetch news from external API' }, {
+        status: 500,
+      });
+    }
+
+    const newsItems = newsResponse;
+
+    for (const newsItem of newsItems) {
+      await db`INSERT INTO news(location, title, category, startup_id, news_date, description)
+      VALUES (${newsItem.location}, ${newsItem.title}, ${newsItem.category}, ${newsItem.startup_id},
+      ${newsItem.news_date}, 'no description')
+      ON CONFLICT (location, title, news_date) DO NOTHING`;
+    }
+
+    const newsIds = await db`SELECT id FROM news ORDER BY id`;
+
+    for (const n of newsIds) {
+      let newsDetail = await fetchDataFromExternalAPI(`news/${n.id}`);
+      while (!newsDetail) {
+        await new Promise(res => setTimeout(res, 2000));
+        newsDetail = await fetchDataFromExternalAPI(`news/${n.id}`);
+      }
+
+      const detail = newsDetail;
+
+      await db`UPDATE news SET description = ${detail.description}
+        WHERE id = ${n.id}`;
     }
 
     return NextResponse.json({ message: 'Data synchronized successfully' });
