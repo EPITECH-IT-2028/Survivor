@@ -8,25 +8,28 @@ export default function Navbar() {
       className="relative mx-6 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary font-canela-black text-secondary"
     >
       <TextRipple className="absolute left-6 pt-2 text-4xl">JEB Incubator.</TextRipple>
-      <div className="mx-auto">
+      <div className="mx-auto flex">
         <Link
           href="#"
-          className="mx-6 font-sf-pro text-lg font-medium text-secondary underline decoration-wavy decoration-1 underline-offset-4 transition-all duration-100 hover:scale-x-110 hover:scale-y-95 hover:text-zinc-400 hover:decoration-zinc-400"
+          className="group mx-6 font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
         >
           Discover Startups
+          <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
         </Link>
         <Link
           href="#"
-          className="mx-6 font-sf-pro text-lg font-medium text-secondary underline decoration-wavy decoration-1 underline-offset-4 transition-all duration-100 hover:scale-x-110 hover:scale-y-95 hover:text-zinc-400 hover:decoration-zinc-400"
+          className="group mx-6 font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
         >
           See Events
+          <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
         </Link>
       </div>
       <Link
         href="#"
-        className="absolute right-0 mr-6 rounded-lg border border-secondary bg-secondary px-6 py-2 text-lg font-medium text-primary transition-transform duration-100 hover:scale-x-110 hover:scale-y-95 hover:bg-primary hover:text-secondary"
+        className="group relative right-0 mr-6 px-6 py-3"
       >
-        Login
+        <span className="absolute inset-0 rounded-sm border transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:bg-secondary"></span>
+        <span className="relative text-secondary group-hover:text-primary">Login</span>
       </Link>
     </nav>
   );
