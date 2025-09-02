@@ -1,4 +1,5 @@
 import { TextRipple } from "@/components/ui/text-ripple";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -8,16 +9,25 @@ export default function Navbar() {
     >
       <TextRipple className="text-4xl">JEB Incubator.</TextRipple>
       <div className="flex gap-6">
-        <button className="rounded-lg px-6 py-2 font-sf-pro text-lg font-medium text-secondary underline decoration-wavy decoration-1 underline-offset-4 transition-all duration-100 hover:scale-x-110 hover:scale-y-95 hover:decoration-zinc-400">
+        <Link
+          href="#"
+          className="rounded-lg px-6 py-2 font-sf-pro text-lg font-medium text-secondary underline decoration-wavy decoration-1 underline-offset-4 transition-all duration-100 hover:scale-x-110 hover:scale-y-95 hover:decoration-zinc-400"
+        >
           Discover Startups
-        </button>
-        <button className="rounded-lg px-6 py-2 font-sf-pro text-lg font-medium text-secondary underline decoration-wavy decoration-1 underline-offset-4 transition-all duration-100 hover:scale-x-110 hover:scale-y-95 hover:decoration-zinc-400">
+        </Link>
+        <Link
+          href="#"
+          className="rounded-lg px-6 py-2 font-sf-pro text-lg font-medium text-secondary underline decoration-wavy decoration-1 underline-offset-4 transition-all duration-100 hover:scale-x-110 hover:scale-y-95 hover:decoration-zinc-400"
+        >
           See Events
-        </button>
+        </Link>
       </div>
-      <button className="rounded-lg border-1 border-secondary bg-secondary px-6 py-2 text-lg font-medium text-primary transition-transform duration-100 hover:scale-x-110 hover:scale-y-95 hover:bg-primary hover:text-secondary">
+      <Link
+        href="#"
+        className="rounded-lg border-1 border-secondary bg-secondary px-6 py-2 text-lg font-medium text-primary transition-transform duration-100 hover:scale-x-110 hover:scale-y-95 hover:bg-primary hover:text-secondary"
+      >
         Login
-      </button>
+      </Link>
     </nav>
   );
 }
