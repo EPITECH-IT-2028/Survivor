@@ -1,12 +1,14 @@
-import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 
-export default async function useGetUserImage(email: string) {
+export default async function useGetUserImage(user_id: string) {
   const database_url = process.env.DATABASE_URL;
-  const sql = neon(database_url!);
+
+  if (!database_url) throw new Error('DATABASE_URL null')
+
+  const sql = neon(database_url);
 
   async () => {
-    const result = await sql`SELECT * FROM users WHERE email = ${email}`;
-    return NextResponse.json(result);
+    const result = await sql`SELECT image FROM users WHERE user_id = ${user_id}`;
+    return result.at(0) ?? null;
   };
 }

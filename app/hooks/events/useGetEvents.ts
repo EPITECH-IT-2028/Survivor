@@ -1,12 +1,14 @@
-import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 
 export default async function useGetEvents() {
   const database_url = process.env.DATABASE_URL;
-  const sql = neon(database_url!);
+
+  if (!database_url) throw new Error('DATABASE_URL null')
+
+  const sql = neon(database_url);
 
   async () => {
     const result = await sql`SELECT * FROM Event`;
-    return NextResponse.json(result);
+    return result;
   };
 }

@@ -3,10 +3,13 @@ import { neon } from '@neondatabase/serverless';
 
 export default async function useGetEventById(event_id: number) {
   const database_url = process.env.DATABASE_URL;
-  const sql = neon(database_url!);
+
+  if (!database_url) throw new Error('DATABASE_URL null')
+
+  const sql = neon(database_url);
 
   async () => {
-    const result = await sql`SELECT * FROM Event WHERE id = ${event_id}`;
+    const result = await sql`SELECT * FROM Event WHERE id = ${event_id} LIMIT 1`;
     return NextResponse.json(result);
   };
 }
