@@ -1,4 +1,50 @@
 import { HeroParallax } from "@/components/ui/hero-parallax";
+import { FlipCard } from "@/components/ui/flip-card";
+import Image from "next/image";
+
+function Front() {
+  return (
+    <div className="relative flex size-full items-center justify-center">
+      <Image
+        src="/unsplash.jpg"
+        width={100}
+        height={100}
+        alt="front image"
+        className="absolute inset-0 size-full"
+      />
+      <h3 className="relative font-mono text-5xl font-semibold text-white uppercase">
+        BLOOM
+      </h3>
+    </div>
+  );
+}
+
+function Back() {
+  return (
+    <div className="relative flex size-full flex-col items-center justify-center gap-3 bg-zinc-950 p-4 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900">
+      <h3 className="text-xl font-bold tracking-widest uppercase">
+        Explore More
+      </h3>
+      <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
+        Dive into our exclusive collection of hand-crafted visuals.
+      </p>
+      <button className="mt-2 cursor-pointer rounded-full bg-zinc-50 px-4 py-1.5 text-sm font-medium text-zinc-900 transition hover:opacity-90 dark:bg-zinc-950 dark:text-zinc-50">
+        Browse Now
+      </button>
+    </div>
+  );
+}
+
+function StartupFlipCard() {
+  return (
+    <FlipCard
+      front={<Front />}
+      back={<Back />}
+      flipDirection="horizontal"
+      flipRotation="forward"
+    />
+  );
+}
 
 export default function Home() {
   const startups = [
@@ -80,8 +126,11 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen">
-      <HeroParallax products={startups} />
+    <div className="">
+      <div className="max-h-[140rem] overflow-hidden">
+        <HeroParallax products={startups} />
+      </div>
+      <StartupFlipCard />
     </div>
   );
 }
