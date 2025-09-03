@@ -24,3 +24,31 @@ export async function GET() {
     });
   }
 }
+
+export async function POST(request: Request) {
+  const db = getSql();
+
+  if (db === null) {
+    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  try {
+    const { name, startup_id, external_id } = await request.json();
+
+    const response = await db`INSERT INTO founders (name, startup_id, external_id)
+      VALUES (${name}, ${startup_id}, ${external_id}) RETURNING *`;
+    return new Response(JSON.stringify(response), {
+      status: 201,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: `Failed to create founder ${error}` }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
+
