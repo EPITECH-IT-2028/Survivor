@@ -1,71 +1,60 @@
 "use client"
 
 import StartupCard from '@/components/startupCard';
-import { FiltersComboBoxResponsive } from '@/components/filter';
 import { TStartups } from '../types/startup';
 import { useEffect, useState } from "react"
 import { Input } from '@/components/ui/input';
+import getStartups from '../hooks/startups/getStartups';
 
 export default function Catalog() {
-  
-  // const stratup_info = GetStartup();
-  // const startup_image = useGetStartupImage();
 
-  const startup : TStartups =
-  {
-    id: 1,
-    name: "ffff",
-    legal_status:null,
-    address:"azerty",
-    email: "ffff@gmail.com",
-    phone:null,
-    sector:"b",
-    maturity:"mmmm",
-  }
-  
-  const startupe : TStartups =
-  {
-    id: 2,
-    name: "gggg",
-    legal_status:null,
-    address:"aaaaaaa",
-    email: "ggggg@gmail.com",
-    phone:null,
-    sector:"a",
-    maturity:"mmml",
-  }
-
-  const startups = [startup, startupe]
-  
   const [sectorFilter, setSectorFilter] = useState('')
   const [maturityFilter, setMaturityFilter] = useState('')
   const [locationFilter, setLocationFilter] = useState('')
-
-  const [startupDisp, setStartupDisp] = useState<TStartups[]>(() => startups)
-  const [filteredStartups, setFilteredStartups] = useState<TStartups[]>(() => startups)
+  
+  const [startupsInfo, setStartupsInfo] = useState<TStartups[]>([])
+  const [startupDisp, setStartupDisp] = useState<TStartups[]>([])
 
   useEffect(() => {
-    let tmp : TStartups[]= []
-
-    if (sectorFilter === '' && maturityFilter === '' && locationFilter === '') {
+    const fetchStartups = async () => {
+      const startups = await getStartups();
+      setStartupsInfo(startups);
       setStartupDisp(startups)
-    } else if (sectorFilter != '' && sectorFilter != null) {
-      tmp = [...startups.filter((startup) => (
-        startup.sector?.includes(sectorFilter)
-      ))]
-      setStartupDisp(tmp)
-    } else if (maturityFilter != '' && maturityFilter != null) {
-      tmp = [...startups.filter((startup) => (
-        startup.maturity?.includes(maturityFilter)
-      ))]
-      setStartupDisp(tmp)
-    } else if (locationFilter != '' && locationFilter != null) {
-      tmp = [...startups.filter((startup) => (
-        startup.address?.includes(locationFilter)
-      ))]
-      setStartupDisp(tmp)
+    };
+    fetchStartups();
+  }, []);
+
+  useEffect(() => {
+    if (sectorFilter === '' && maturityFilter === '' && locationFilter === '') {
+      setStartupDisp(startupsInfo)
     }
-    setStartupDisp(tmp)
+    if (sectorFilter != '' && sectorFilter != null) {
+      setStartupDisp([...startupsInfo.filter((startup) => 
+        startup.sector?.toLowerCase().includes(sectorFilter)
+      )])
+    } 
+    if (maturityFilter != '' && maturityFilter != null) {
+      if (sectorFilter != '' && sectorFilter != null) {
+        setStartupDisp([...startupDisp.filter((startup) => 
+          startup.maturity?.toLowerCase().includes(maturityFilter)
+        )])
+      } else {
+        setStartupDisp([...startupsInfo.filter((startup) => 
+          startup.maturity?.toLowerCase().includes(maturityFilter)
+        )])
+      }
+    }
+    if (locationFilter != '' && locationFilter != null) {
+      if ((sectorFilter != '' && sectorFilter != null) || (maturityFilter != '' && maturityFilter != null)) {
+        setStartupDisp([...startupDisp.filter((startup) => 
+          startup.address?.toLowerCase().includes(locationFilter)
+        )])
+      } else {
+        setStartupDisp([...startupsInfo.filter((startup) => 
+          startup.address?.toLowerCase().includes(locationFilter)
+        )])
+      }
+    }
   }, [sectorFilter, maturityFilter, locationFilter])
 
   return (
