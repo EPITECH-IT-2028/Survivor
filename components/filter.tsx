@@ -30,25 +30,29 @@ type Filters = {
 
 const filters: Filters[] = [
   {
-    value: "sector",
-    label: "Sector",
+    value: "a",
+    label: "a",
   },
   {
-    value: "maturity",
-    label: "Maturity",
+    value: "b",
+    label: "b",
   },
-  {
-    value: "location",
-    label: "Location",
-  }
 ]
 
-export function FiltersComboBoxResponsive() {
+interface FiltersComboBoxResponsiveProps {
+  onValueChange: (value: string) => void;
+}
+
+export function FiltersComboBoxResponsive({onValueChange} : FiltersComboBoxResponsiveProps) {
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
   const [selectedFilters, setSelectedFilters] = React.useState<Filters | null>(
     null
   )
+
+  const handleValueChange = (newValue: string) => {
+    onValueChange(newValue)
+  }
 
   if (isDesktop) {
     return (
@@ -59,7 +63,7 @@ export function FiltersComboBoxResponsive() {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
-          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters} />
+          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters}/>
         </PopoverContent>
       </Popover>
     )
@@ -74,7 +78,7 @@ export function FiltersComboBoxResponsive() {
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
-          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters} />
+          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters}/>
         </div>
       </DrawerContent>
     </Drawer>
