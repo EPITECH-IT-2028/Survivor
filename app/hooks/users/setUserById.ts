@@ -4,8 +4,9 @@ import { TUser } from '@/app/types/users';
 export default async function setUserById(userNewData: TUser) {
   const sql = getSql();
 
+  console.log("While update");
   const result = await sql`
-    UPSERT users 
+    UPDATE users 
     SET 
     name = ${userNewData.name}, 
     role = ${userNewData.role},

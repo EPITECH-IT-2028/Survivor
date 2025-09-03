@@ -1,7 +1,6 @@
 "use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -10,65 +9,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// import getUsers from "../hooks/users/getUsers";
+import getUsers from "../hooks/users/getUsers";
 import { TUser } from "../types/users";
 import { TStartups } from "../types/startup";
 import UpdateProfile from "@/components/updateProfile";
+import getStartups from "../hooks/startups/getStartups";
 
 export default function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [idClicked, setIdClicked] = useState<number | null>(null);
   const [isStartup, setIsStartup] = useState(true);
-  // const usersData: TUser[] = getUsers();
-  // const startupsData: TStartups[] = getStartups();
+  const [usersData, setUsersData] = useState<TUser[]>([]);
+  const [startupsData, setStartupsData] = useState<TStartups[]>([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const users = await getUsers();
+      setUsersData(users);
+    };
+    const fetchStartups = async () => {
+      const startups = await getStartups();
+      setStartupsData(startups);
+    };
+    fetchUsers();
+    fetchStartups();
+  }, []);
 
   const handleClickRow = (id: number, isStartup: boolean) => {
     setIdClicked(id);
     setIsStartup(isStartup);
     setIsOpen(true);
   };
-
-  const startupsData: TStartups[] = [
-    {
-      id: 1,
-      name: "Startup One",
-      legal_status: "LLC",
-      address: "123 Main St",
-      email: "contact@startupone.com",
-      phone: "123-456-7890",
-      sector: "Tech",
-      maturity: "Seed",
-    },
-    {
-      id: 2,
-      name: "Startup Two",
-      legal_status: "Inc",
-      address: "456 Elm St",
-      email: "contact@startuptwo.com",
-      phone: "987-654-3210",
-      sector: "Finance",
-      maturity: "Series A",
-    },
-  ];
-
-  const usersData: TUser[] = [
-    {
-      id: 1,
-      email: "a@a.com",
-      name: "Arthur",
-      role: "admin",
-      founder_id: null,
-      investor_id: null,
-    },
-    {
-      id: 2,
-      email: "b@b.com",
-      name: "Bob",
-      role: "founder",
-      founder_id: 1,
-      investor_id: null,
-    },
-  ];
 
   return isOpen ? (
       <UpdateProfile
@@ -113,6 +84,11 @@ export default function Dashboard() {
       <div className="space-y-8 p-4">
         {/* Table projects */}
         <Card>
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold">
+              Startups 
+            </CardTitle>
+          </CardHeader>
           <Table>
             <TableHeader>
               <TableRow>
@@ -148,6 +124,11 @@ export default function Dashboard() {
         </Card>
         {/* Table user */}
         <Card>
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold">
+              Users 
+            </CardTitle>
+          </CardHeader>
           <Table>
             <TableHeader>
               <TableRow>

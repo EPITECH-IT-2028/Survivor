@@ -46,7 +46,8 @@ export default function UpdateProfile({
   }
 
   const handleApplyButton = () => {
-    setUserById(data as TUser);
+    if (userData)
+      setUserById(userData);
     onClose();
   } 
 
