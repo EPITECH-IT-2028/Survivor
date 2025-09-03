@@ -1,6 +1,32 @@
 "use client"
 
 import { TStartups } from "@/app/types/startup";
+import { Button } from "./ui/button";
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+
+const handleClick = async (startup : TStartups) => {
+  const pdfDoc = await PDFDocument.create()
+  const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman)
+  const page = pdfDoc.addPage()
+  const { width, height } = page.getSize()
+  const fontSize = 30
+  page.drawText(startup.name, {
+    x: 50,
+    y: height - 4 * fontSize,
+    size: fontSize,
+    font: timesRomanFont,
+    color: rgb(0, 0, 0),
+  })
+
+  const pdfBytes = await pdfDoc.save()
+  const blob = new Blob([pdfBytes])
+  const fileUrl = window.URL.createObjectURL(blob)
+
+  let alink = document.createElement("a")
+  alink.href = fileUrl
+  alink.download = startup.name + ".pdf"
+  alink.click()
+}
 
 export default function StartupCard({ startup, image }: { startup: TStartups; image: string }) {
   return (
@@ -16,6 +42,7 @@ export default function StartupCard({ startup, image }: { startup: TStartups; im
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
           </svg>
         </div>
+        <Button onClick={() => handleClick(startup)}>More details</Button>
       </div>
   )
 }
