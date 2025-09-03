@@ -29,7 +29,7 @@ async function fetchDataFromExternalAPI(endpoint: string) {
 }
 
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     if (!process.env.DATABASE_URL) {
       return NextResponse.json({ error: 'Database URL not configured' }, {
@@ -57,18 +57,19 @@ export async function POST(req: Request) {
 
     for (const investor of investors) {
       await db`INSERT INTO investors (name, legal_status, address, email, phone, created_at, description,
-      investor_type, investment_focus)
+      investor_type, investment_focus, legacy_id)
       VALUES (${investor.name}, ${investor.legal_status}, ${investor.address}, ${investor.email}, ${investor.phone},
-      ${investor.created_at}, ${investor.description}, ${investor.investor_type}, ${investor.investment_focus})
-      ON CONFLICT (email) DO UPDATE SET
-      name = EXCLUDED.name,
+      ${investor.created_at}, ${investor.description}, ${investor.investor_type}, ${investor.investment_focus}, ${investor.id})
+      ON CONFLICT (legacy_id) DO UPDATE
+      SET name = EXCLUDED.name,
       legal_status = EXCLUDED.legal_status,
       address = EXCLUDED.address,
       phone = EXCLUDED.phone,
       created_at = EXCLUDED.created_at,
       description = EXCLUDED.description,
       investor_type = EXCLUDED.investor_type,
-      investment_focus = EXCLUDED.investment_focus`;
+      investment_focus = EXCLUDED.investment_focus,
+      email = EXCLUDED.email`;
     }
 
     const startupResponse = await fetchDataFromExternalAPI('startups');
@@ -82,48 +83,52 @@ export async function POST(req: Request) {
     const startups = startupResponse;
 
     for (const startup of startups) {
-      await db`INSERT INTO startups (name, legal_status, address, email, phone, sector, maturity)
+      await db`INSERT INTO startups (name, legal_status, address, email, phone, sector, maturity, legacy_id)
       VALUES (${startup.name}, ${startup.legal_status}, ${startup.address}, ${startup.email}, ${startup.phone},
-      ${startup.sector}, ${startup.maturity})
-      ON CONFLICT (email) DO UPDATE SET
+      ${startup.sector}, ${startup.maturity}, ${startup.id})
+      ON CONFLICT (legacy_id) DO UPDATE SET
       name = EXCLUDED.name,
       legal_status = EXCLUDED.legal_status,
       address = EXCLUDED.address,
       phone = EXCLUDED.phone,
       sector = EXCLUDED.sector,
-      maturity = EXCLUDED.maturity`;
+      maturity = EXCLUDED.maturity,
+      email = EXCLUDED.email`;
     }
 
-    const startupIds = await db`SELECT id FROM startups ORDER BY id`;
+    const startupIds = await db`SELECT legacy_id FROM startups ORDER BY legacy_id`;
 
     for (const s of startupIds) {
-      let startup = await fetchDataFromExternalAPI(`startups/${s.id}`);
+      let startup = await fetchDataFromExternalAPI(`startups/${s.legacy_id}`);
       while (!startup) {
-        console.log(`Retrying fetch for startup ID ${s.id}`);
+        console.log(`Retrying fetch for startup ID ${s.legacy_id}`);
         await new Promise(res => setTimeout(res, 2000));
-        startup = await fetchDataFromExternalAPI(`startups/${s.id}`);
+        startup = await fetchDataFromExternalAPI(`startups/${s.legacy_id}`);
       }
 
       const details = startup;
 
       for (const founder of details.founders || []) {
-        await db`INSERT INTO founders(name, startup_id, external_id)
-          VALUES (${founder.name}, ${s.id}, ${founder.id})
-          ON CONFLICT (external_id) DO UPDATE SET
-          name = EXCLUDED.name,
-          startup_id = EXCLUDED.startup_id`;
-      }
+        await db`INSERT INTO founders(name, legacy_id)
+          VALUES (${founder.name}, ${founder.id})
+          ON CONFLICT (legacy_id) DO UPDATE SET
+          name = EXCLUDED.name`;
 
-      const founders = details.founders ? JSON.stringify(details.founders) : null;
-
-      await db`UPDATE startups SET description = ${details.description},
+        await db`UPDATE startups SET description = ${details.description},
         created_at = ${details.created_at},
         website_url = ${details.website_url},
         social_media_url = ${details.social_media_url},
         project_status = ${details.project_status},
-        needs = ${details.needs},
-        founders = ${founders}
-        WHERE id = ${s.id}`;
+        needs = ${details.needs}
+        WHERE legacy_id = ${s.legacy_id}`;
+
+        await db`INSERT INTO founder_startup (founder_id, startup_id)
+        SELECT founders.id, startups.id
+        FROM founders, startups
+        WHERE founders.legacy_id = ${founder.id}
+          AND startups.legacy_id = ${s.legacy_id}
+        ON CONFLICT (founder_id, startup_id) DO NOTHING`;
+      }
     }
 
     const response = await fetchDataFromExternalAPI('users');
@@ -133,16 +138,26 @@ export async function POST(req: Request) {
         status: 500,
       });
     }
+
     const users = response;
 
     for (const user of users) {
-      await db`INSERT INTO users(name, email, role, founder_id, investor_id)
-      VALUES (${user.name}, ${user.email}, ${user.role}, ${user.founder_id}, ${user.investor_id})
-      ON CONFLICT (email) DO UPDATE SET 
-      name = EXCLUDED.name,
-      role = EXCLUDED.role, 
-      founder_id = EXCLUDED.founder_id, 
-      investor_id = EXCLUDED.investor_id`;
+
+      const founderLegacyId = await db`SELECT id FROM founders WHERE legacy_id = ${user.founder_id}`;
+
+      const investorLegacyId = await db`SELECT id FROM investors WHERE legacy_id = ${user.investor_id}`;
+
+      await db`INSERT INTO users(name, email, role, founder_id, investor_id, legacy_id)
+        VALUES(${user.name}, ${user.email}, ${user.role},
+        ${founderLegacyId.length > 0 ? founderLegacyId[0].id : null},
+        ${investorLegacyId.length > 0 ? investorLegacyId[0].id : null},
+        ${user.id})
+        ON CONFLICT(email) DO UPDATE SET
+          name = EXCLUDED.name,
+          role = EXCLUDED.role,
+          founder_id = EXCLUDED.founder_id,
+          investor_id = EXCLUDED.investor_id,
+          legacy_id = EXCLUDED.legacy_id`;
     }
 
     const eventsResponse = await fetchDataFromExternalAPI('events');
@@ -156,10 +171,10 @@ export async function POST(req: Request) {
     const events = eventsResponse;
 
     for (const event of events) {
-      await db`INSERT INTO events(name, dates, location, description, event_type, target_audience)
-      VALUES (${event.name}, ${event.dates}, ${event.location}, ${event.description}, ${event.event_type},
-      ${event.target_audience})
-      ON CONFLICT (name, dates) DO NOTHING`;
+      await db`INSERT INTO events(name, dates, location, description, event_type, target_audience, legacy_id)
+        VALUES(${event.name}, ${event.dates}, ${event.location}, ${event.description}, ${event.event_type},
+          ${event.target_audience}, ${event.id})
+      ON CONFLICT(name, dates) DO NOTHING`;
     }
 
     const partnersResponse = await fetchDataFromExternalAPI('partners');
@@ -173,17 +188,18 @@ export async function POST(req: Request) {
     const partners = partnersResponse;
 
     for (const partner of partners) {
-      await db`INSERT INTO partners(name, legal_status, address, email, phone, created_at, description, partnership_type)
-      VALUES (${partner.name}, ${partner.legal_status}, ${partner.address}, ${partner.email}, ${partner.phone},
-      ${partner.created_at}, ${partner.description}, ${partner.partnership_type})
-      ON CONFLICT (email) DO UPDATE SET
-      name = EXCLUDED.name,
-      legal_status = EXCLUDED.legal_status,
-      address = EXCLUDED.address,
-      phone = EXCLUDED.phone,
-      created_at = EXCLUDED.created_at,
-      description = EXCLUDED.description,
-      partnership_type = EXCLUDED.partnership_type`;
+      await db`INSERT INTO partners(name, legal_status, address, email, phone, created_at, description, partnership_type, legacy_id)
+        VALUES(${partner.name}, ${partner.legal_status}, ${partner.address}, ${partner.email}, ${partner.phone},
+          ${partner.created_at}, ${partner.description}, ${partner.partnership_type}, ${partner.id})
+      ON CONFLICT (legacy_id) DO UPDATE SET
+        name = EXCLUDED.name,
+          legal_status = EXCLUDED.legal_status,
+          address = EXCLUDED.address,
+          phone = EXCLUDED.phone,
+          created_at = EXCLUDED.created_at,
+          description = EXCLUDED.description,
+          partnership_type = EXCLUDED.partnership_type,
+          email = EXCLUDED.email`;
     }
 
     const newsResponse = await fetchDataFromExternalAPI('news');
@@ -197,25 +213,33 @@ export async function POST(req: Request) {
     const newsItems = newsResponse;
 
     for (const newsItem of newsItems) {
-      await db`INSERT INTO news(location, title, category, startup_id, news_date, description)
-      VALUES (${newsItem.location}, ${newsItem.title}, ${newsItem.category}, ${newsItem.startup_id},
-      ${newsItem.news_date}, 'no description')
-      ON CONFLICT (location, title, news_date) DO NOTHING`;
+
+      const startupId = await db`SELECT id FROM startups WHERE legacy_id = ${newsItem.startup_id}`;
+
+      await db`INSERT INTO news(location, title, category, startup_id, news_date, description, legacy_id)
+        VALUES(${newsItem.location}, ${newsItem.title}, ${newsItem.category},
+          ${startupId.length > 0 ? startupId[0].id : null}, ${newsItem.news_date}, 'no description', ${newsItem.id})
+        ON CONFLICT(legacy_id) DO UPDATE SET
+          location = EXCLUDED.location,
+          title = EXCLUDED.title,
+          category = EXCLUDED.category,
+          startup_id = EXCLUDED.startup_id,
+          news_date = EXCLUDED.news_date`;
     }
 
-    const newsIds = await db`SELECT id FROM news ORDER BY id`;
+    const newsIds = await db`SELECT legacy_id FROM news ORDER BY legacy_id`;
 
     for (const n of newsIds) {
-      let newsDetail = await fetchDataFromExternalAPI(`news/${n.id}`);
+      let newsDetail = await fetchDataFromExternalAPI(`news/${n.legacy_id}`);
       while (!newsDetail) {
         await new Promise(res => setTimeout(res, 2000));
-        newsDetail = await fetchDataFromExternalAPI(`news/${n.id}`);
+        newsDetail = await fetchDataFromExternalAPI(`news/${n.legacy_id}`);
       }
 
       const detail = newsDetail;
 
       await db`UPDATE news SET description = ${detail.description}
-        WHERE id = ${n.id}`;
+        WHERE legacy_id = ${n.legacy_id}`;
     }
 
     return NextResponse.json({ message: 'Data synchronized successfully' });
