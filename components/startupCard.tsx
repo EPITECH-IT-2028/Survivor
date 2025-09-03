@@ -5,7 +5,7 @@ import { TStartups } from "@/app/types/startup";
 export default function StartupCard({ startup, image }: { startup: TStartups; image: string }) {
   return (
       <div
-        className={`$transform rounded-xl border border-white/10 p-6 shadow-lg transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl`}
+        className="transform rounded-xl border border-white/10 p-6 shadow-lg transition-all duration-300 hover:scale-105 group-hover:shadow-2xl"
       >
         <h2 className="mb-3 font-bold text-black text-xl">{startup.name}</h2>
         <h3 className="mb-3 text-black text-xl">{startup.sector}</h3>

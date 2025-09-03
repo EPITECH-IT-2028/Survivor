@@ -39,20 +39,12 @@ const filters: Filters[] = [
   },
 ]
 
-interface FiltersComboBoxResponsiveProps {
-  onValueChange: (value: string) => void;
-}
-
-export function FiltersComboBoxResponsive({onValueChange} : FiltersComboBoxResponsiveProps) {
+export function FiltersComboBoxResponsive() {
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
   const [selectedFilters, setSelectedFilters] = React.useState<Filters | null>(
     null
   )
-
-  const handleValueChange = (newValue: string) => {
-    onValueChange(newValue)
-  }
 
   if (isDesktop) {
     return (

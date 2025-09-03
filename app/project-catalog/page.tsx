@@ -24,38 +24,26 @@ export default function Catalog() {
     fetchStartups();
   }, []);
 
-  useEffect(() => {
-    if (sectorFilter === '' && maturityFilter === '' && locationFilter === '') {
-      setStartupDisp(startupsInfo)
-    }
-    if (sectorFilter != '' && sectorFilter != null) {
-      setStartupDisp([...startupsInfo.filter((startup) => 
-        startup.sector?.toLowerCase().includes(sectorFilter)
-      )])
-    } 
-    if (maturityFilter != '' && maturityFilter != null) {
-      if (sectorFilter != '' && sectorFilter != null) {
-        setStartupDisp([...startupDisp.filter((startup) => 
-          startup.maturity?.toLowerCase().includes(maturityFilter)
-        )])
-      } else {
-        setStartupDisp([...startupsInfo.filter((startup) => 
-          startup.maturity?.toLowerCase().includes(maturityFilter)
-        )])
-      }
-    }
-    if (locationFilter != '' && locationFilter != null) {
-      if ((sectorFilter != '' && sectorFilter != null) || (maturityFilter != '' && maturityFilter != null)) {
-        setStartupDisp([...startupDisp.filter((startup) => 
-          startup.address?.toLowerCase().includes(locationFilter)
-        )])
-      } else {
-        setStartupDisp([...startupsInfo.filter((startup) => 
-          startup.address?.toLowerCase().includes(locationFilter)
-        )])
-      }
-    }
-  }, [sectorFilter, maturityFilter, locationFilter])
+useEffect(() => {
+    const s = sectorFilter.trim().toLowerCase();
+    const m = maturityFilter.trim().toLowerCase();
+    const l = locationFilter.trim().toLowerCase();
+
+    const filtered = startupsInfo.filter((startup) => {
+      const sector = (startup.sector ?? '').toLowerCase();
+      const maturity = (startup.maturity ?? '').toLowerCase();
+      const location = (startup.address ?? '').toLowerCase();
+      if (s && !sector.includes(s))
+        return false;
+      if (m && !maturity.includes(m))
+        return false;
+      if (l && !location.includes(l))
+        return false;
+      return true;
+    });
+
+    setStartupDisp(filtered);
+  }, [sectorFilter, maturityFilter, locationFilter, startupsInfo]);
 
   return (
   <div>
