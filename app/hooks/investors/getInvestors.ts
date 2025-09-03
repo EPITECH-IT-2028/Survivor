@@ -1,9 +1,8 @@
 import { getSql } from '@/lib/db';
-import 'server-only';
 
 export default async function getInvestors() {
   const sql = getSql(); 
 
-  const result = await sql`SELECT * FROM Investor`;
+  const result = await sql`SELECT * FROM investors ORDER BY id`;
   return result;
 }

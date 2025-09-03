@@ -6,6 +6,7 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
@@ -22,7 +23,7 @@ type Filters = {
   label: string;
 };
 
-const filters: Filters[] = [
+const filters = [
   {
     value: "sector",
     label: "Sector",
@@ -41,25 +42,26 @@ export function FiltersComboBoxResponsive({
   filtersList = filters,
   placeHolder,
   onSelection,
+  disabled = false,
 }: {
-  filtersList: Filters[];
-  placeHolder: Filters;
-  onSelection: (value: UserRole) => void;
+  filtersList: { value: any; label: any }[];
+  placeHolder: { value: any; label: any };
+  onSelection: (value: any) => void;
+  disabled?: boolean;
 }) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [selectedFilters, setSelectedFilters] = React.useState<Filters | null>(
-    null
-  );
+  const [selectedFilters, setSelectedFilters] = React.useState<{
+    value: any;
+    label: any;
+  } | null>(null);
 
-  const handleFilterChange = (newValue: Filters | null) => {
+  const handleFilterChange = (newValue: { value: any; label: any } | null) => {
     setSelectedFilters(newValue);
   };
 
   React.useEffect(() => {
-    console.log(selectedFilters?.value);
     if (selectedFilters) {
-      console.log(selectedFilters.value);
       onSelection(selectedFilters.value as UserRole);
     }
   }, [selectedFilters]);
@@ -68,7 +70,11 @@ export function FiltersComboBoxResponsive({
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[150px] justify-start">
+          <Button
+            variant="outline"
+            className="w-[150px] justify-start"
+            disabled={disabled}
+          >
             {selectedFilters ? (
               <>{selectedFilters.label}</>
             ) : (
@@ -119,15 +125,18 @@ function FiltersList({
   return (
     <Command>
       <CommandList>
+        <CommandInput placeholder="Filter status..." />
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
           {filtersList?.map((filter) => (
             <CommandItem
-              key={filter.value}
-              value={filter.value}
+              key={filter.label}
+              value={filter.label.toString()}
               onSelect={(value) => {
                 setSelectedFilters(
-                  filtersList.find((filter) => filter.value === value) || null
+                  filtersList.find(
+                    (filter) => filter.label.toString() === value
+                  ) || null
                 );
                 setOpen(false);
               }}

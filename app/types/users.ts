@@ -1,10 +1,10 @@
-export type UserRole = 'admin' | 'founder' | 'investor';
+export type UserRole = 'admin' | 'founder' | 'investor' | '-';
 
 export enum userRoleId {
-  ADMIN = 0,
-  FOUNDER = 1,
-  INVESTOR = 2,
-  NONE = 3,
+  'admin' = 0,
+  'founder' = 1,
+  'investor' = 2,
+  '-' = 3,
 }
 
 export const userRoleFilters = [
@@ -18,7 +18,13 @@ export interface TUser {
   email: string;
   name: string;
   role: UserRole;
-  founder_id: (number | null);
-  investor_id: (number | null);
+  founder_id: number | null;
+  founder: {
+    id: number;
+    name: string;
+    startup_id: number;
+    external_id: number;
+  };
+  investor_id: number | null;
   id: number;
 }
