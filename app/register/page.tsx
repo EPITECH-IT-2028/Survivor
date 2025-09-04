@@ -14,6 +14,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -24,6 +25,7 @@ export default function RegisterForm() {
     text: string;
   } | null>(null);
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +50,7 @@ export default function RegisterForm() {
         setName("");
         setPassword("");
         setEmail("");
-        localStorage.setItem('session_token', data.token)
+        login(data.token);
         router.push('/')
       } else {
         setMessage({

@@ -44,7 +44,6 @@ export default function LoginForm() {
         setMessage({ type: "success", text: "Logged successfully!" });
         setEmail("");
         setPassword("");
-        // Use the login function from AuthContext instead of directly setting localStorage
         login(data.token);
         router.push('/');
       } else {
