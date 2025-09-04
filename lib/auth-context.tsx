@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
 interface AuthContextType {
   token: string | null;
@@ -75,4 +81,3 @@ export function useAuth(): AuthContextType {
   }
   return context;
 }
-
