@@ -30,17 +30,13 @@ type Filters = {
 
 const filters: Filters[] = [
   {
-    value: "sector",
-    label: "Sector",
+    value: "a",
+    label: "a",
   },
   {
-    value: "maturity",
-    label: "Maturity",
+    value: "b",
+    label: "b",
   },
-  {
-    value: "location",
-    label: "Location",
-  }
 ]
 
 export function FiltersComboBoxResponsive() {
@@ -59,7 +55,7 @@ export function FiltersComboBoxResponsive() {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
-          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters} />
+          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters}/>
         </PopoverContent>
       </Popover>
     )
@@ -74,7 +70,7 @@ export function FiltersComboBoxResponsive() {
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
-          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters} />
+          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters}/>
         </div>
       </DrawerContent>
     </Drawer>
