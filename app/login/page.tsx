@@ -45,7 +45,7 @@ export default function LoginForm() {
         setEmail("");
         setPassword("");
         login(data.token);
-        router.push('/');
+        router.push("/");
       } else {
         setMessage({
           type: "error",
@@ -90,7 +90,7 @@ export default function LoginForm() {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="mt-8 flex flex-col items-start">
+        <CardFooter className="mt-6 flex flex-row items-end">
           <Button type="submit">Login</Button>
           {message && (
             <Alert
@@ -102,6 +102,13 @@ export default function LoginForm() {
               <AlertDescription>{message.text}</AlertDescription>
             </Alert>
           )}
+          <Button
+            variant="link"
+            className="mt-4"
+            onClick={() => router.push("/register")}
+          >
+            Don&apos;t have an account? Register
+          </Button>
         </CardFooter>
       </form>
     </Card>

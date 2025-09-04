@@ -51,7 +51,7 @@ export default function RegisterForm() {
         setPassword("");
         setEmail("");
         login(data.token);
-        router.push('/')
+        router.push("/");
       } else {
         setMessage({
           type: "error",
@@ -105,7 +105,7 @@ export default function RegisterForm() {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="mt-8 flex flex-col items-start">
+        <CardFooter className="mt-6 flex flex-row items-end">
           <Button type="submit">Register</Button>
           {message && (
             <Alert
@@ -117,6 +117,13 @@ export default function RegisterForm() {
               <AlertDescription>{message.text}</AlertDescription>
             </Alert>
           )}
+          <Button
+            variant="link"
+            className="mt-4"
+            onClick={() => router.push("/login")}
+          >
+            Already have an account? Login
+          </Button>
         </CardFooter>
       </form>
     </Card>
