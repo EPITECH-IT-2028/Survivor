@@ -1,7 +1,7 @@
 import { getSql } from "@/lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import generateToken from "@/lib/auth-utils";
 
 export async function POST(req: Request) {
   try {
@@ -33,11 +33,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const token = jwt.sign(
-      { userId: foundUsers[0].id, name: foundUsers[0].name },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1h" },
-    );
+    const token = generateToken([{ id: foundUsers[0].id, name: foundUsers[0].name }]);
     return NextResponse.json({ message: "Login successful", token: token });
   } catch (error) {
     return NextResponse.json(
