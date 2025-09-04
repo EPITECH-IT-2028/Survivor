@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -11,20 +11,30 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { toast } from "sonner";
+import { X, Check } from "lucide-react";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<{
     type: "success" | "error";
-    text: string;
+    title: string;
+    description: string;
   } | null>(null);
   const router = useRouter();
   const { login } = useAuth();
+
+  useEffect(() => {
+    if (message) {
+      toast[message.type](message.title, {
+        description: message.description,
+      });
+    }
+  }, [message]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +51,7 @@ export default function LoginForm() {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage({ type: "success", text: "Logged successfully!" });
+        setMessage({ type: "success", title: "Logged successfully!", description: "" });
         setEmail("");
         setPassword("");
         login(data.token);
@@ -49,13 +59,15 @@ export default function LoginForm() {
       } else {
         setMessage({
           type: "error",
-          text: data.error || "Login failed. Please check your credentials.",
+          title: "Login failed",
+          description: data.error || "Please try again.",
         });
       }
     } catch (error) {
       setMessage({
         type: "error",
-        text: `${error instanceof Error ? error.message : "An unknown error has occured"}`,
+        title: "An unknown error has occured",
+        description: error instanceof Error ? error.message : "",
       });
     }
   };
@@ -92,16 +104,6 @@ export default function LoginForm() {
         </CardContent>
         <CardFooter className="mt-6 flex flex-row items-end">
           <Button type="submit">Login</Button>
-          {message && (
-            <Alert
-              className={`mt-4 ${message.type === "success" ? "bg-green-100" : "bg-red-100"}`}
-            >
-              <AlertTitle>
-                {message.type === "success" ? "Success" : "Error"}
-              </AlertTitle>
-              <AlertDescription>{message.text}</AlertDescription>
-            </Alert>
-          )}
           <Button
             variant="link"
             className="mt-4"
