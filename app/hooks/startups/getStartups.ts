@@ -1,9 +1,16 @@
-import { getSql } from '@/lib/db';
+
 import { TStartups } from '@/app/types/startup';
 
-export default async function getUsers(): Promise<TStartups[]> {
-  const sql = getSql();
-
-  const result = await sql`SELECT * FROM startups ORDER BY id`;
-  return result as TStartups[];
+export async function getStartups(): Promise<TStartups[]> {
+  try {
+    const res = await fetch("/api/startups", { method: "GET" });
+    if (!res.ok) {
+      throw new Error(`GET /api/startups -> ${res.status} ${res.statusText}`);
+    }
+    const data: TStartups[] = await res.json();
+    return data
+  } catch (error) {
+    console.error("Error fetching startups: ", error)
+    return []
+  }
 }
