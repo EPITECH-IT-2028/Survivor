@@ -77,7 +77,7 @@ export default function RegisterForm() {
     } catch (error) {
       setMessage({
         type: "error",
-        title: "An unknown error has occured",
+        title: "An unknown error has occurred",
         description: error instanceof Error ? error.message : "",
       });
     }
