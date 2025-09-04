@@ -9,8 +9,11 @@ import {
 import { Input } from "./ui/input";
 import { FiltersComboBoxResponsive } from "./filter";
 import { Button } from "./ui/button";
-import setUserById from "@/app/hooks/users/setUserById";
+import { setUserById } from "@/app/hooks/users/setUserById";
+import { setStartupById } from "@/app/hooks/startups/setStartupById";
 import { userRoleId } from "@/app/types/users";
+import { deleteUser } from "@/app/hooks/users/deleteUser"
+import { deleteStartup } from "@/app/hooks/startups/deleteStartup"
 
 interface UpdateProfileProps {
   data: TUser | TStartups;
@@ -44,11 +47,33 @@ export default function UpdateProfile({
     return <div>Loading user data...</div>;
   }
 
-  const handleApplyButton = () => {
+  const handleUpdateUser = () => {
     if (userData)
-      setUserById(userData);
+      setUserById(userData.id, userData);
     onClose();
-  } 
+  }
+
+  const handleUpdateStartup = () => {
+    if (startupData)
+      setStartupById(startupData.id, startupData);
+    onClose();
+  }
+
+  const handleDeleteStartup = () => {
+    if (startupData === null || startupData.id == null) {
+      return;
+    }
+    deleteStartup(startupData.id);
+    onClose();
+  }
+
+  const handleDeleteUser = () => {
+    if (userData === null || userData.id == null) {
+      return;
+    }
+    deleteUser(userData.id);
+    onClose();
+  }
 
   return isStartup ? (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -59,9 +84,9 @@ export default function UpdateProfile({
           <Input value={startupData!.name} onChange={(e) => { setStartupData({ ...startupData!, name: e.target.value }) }} />
           <Input value={startupData!.legal_status ?? ""} onChange={(e) => { setStartupData({ ...startupData!, legal_status: e.target.value }) }} />
           <Input value={startupData!.address ?? ""} onChange={(e) => { setStartupData({ ...startupData!, address: e.target.value }) }} />
-          <Button className="bg-red-400 hover:bg-red-500 cursor-pointer"onClick={onClose}>Delete profile</Button>
+          <Button className="bg-red-400 hover:bg-red-500 cursor-pointer" onClick={handleDeleteStartup}>Delete profile</Button>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleApplyButton}>Apply</Button>
+            <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleUpdateStartup}>Apply</Button>
             <Button className="bg-blue-400 hover:bg-blue-500 cursor-pointer" onClick={onClose}>Cancel</Button>
           </div>
         </DialogContent>
@@ -82,9 +107,9 @@ export default function UpdateProfile({
           />
           <Input value={userData!.founder_id ?? "-"} disabled />
           <Input value={userData!.investor_id ?? "-"} disabled />
-          <Button className="bg-red-400 hover:bg-red-500 cursor-pointer"onClick={onClose}>Delete profile</Button>
+          <Button className="bg-red-400 hover:bg-red-500 cursor-pointer" onClick={handleDeleteUser}>Delete user</Button>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleApplyButton}>Apply</Button>
+            <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleUpdateUser}>Apply</Button>
             <Button className="bg-blue-400 hover:bg-blue-500 cursor-pointer" onClick={onClose}>Cancel</Button>
           </div>
         </DialogContent>
