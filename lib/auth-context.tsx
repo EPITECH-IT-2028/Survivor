@@ -34,6 +34,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [token]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const storedToken = localStorage.getItem("session_token");
+      if (storedToken !== token) {
+        setToken(storedToken);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [token]);
+
   const login = (newToken: string) => {
     setToken(newToken);
   };
