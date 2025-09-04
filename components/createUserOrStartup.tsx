@@ -10,7 +10,6 @@ import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { FiltersComboBoxResponsive } from "./filter";
 import { Button } from "./ui/button";
-import { getInvestors } from "@/app/hooks/investors/getInvestors";
 import { addStartup } from "@/app/hooks/startups/addStartup";
 import { getStartups } from "@/app/hooks/startups/getStartups";
 import { addFounder } from "@/app/hooks/founders/addFounder";
@@ -19,6 +18,7 @@ import { updateUserWithFounderId } from "@/app/hooks/users/updateUserWithFounder
 import { updateUserWithInvestorId } from "@/app/hooks/users/updateUserWithInvestorId";
 import { TInvestor } from "@/app/types/investor";
 import { addInvestor } from "@/app/hooks/investors/addInvestor";
+import { addFounderStartup } from "@/app/hooks/founder-startup/addFounderStartup";
 import getFounders from "@/app/hooks/founders/getFounders";
 
 interface CreateUserOrStartupProps {
@@ -77,9 +77,10 @@ export default function CreateUserOrStartup({
     created_at: "",
   });
 
+  const [startupId, setStartupId] = useState<number | undefined>(undefined)
+
   const [startupsList, setStartupsList] = useState<{ value: number; label: string }[]>([{ value: 0, label: "-" }]);
   const [foundersList, setFoundersList] = useState<{ value: number; label: string }[]>([{ value: 0, label: "-" }]);
-  const [investorsList, setInvestorsList] = useState<{ value: number; label: string }[]>([{ value: 0, label: "-" }]);
 
   const handleSubmitStartup = () => {
     if (startupData.name === "" ||
@@ -120,6 +121,8 @@ export default function CreateUserOrStartup({
         });
         console.log("New founder created:", founder);
         await updateUserWithFounderId(newUser.id, newUser, founder?.id ?? 0);
+        if (founder && founder.id && startupId)
+          await addFounderStartup(founder?.id, startupId);
       } else {
         console.log("Failed to create user or retrieve user ID." + newUser);
         return;
@@ -155,8 +158,6 @@ export default function CreateUserOrStartup({
     }
   }
 
-
-
   useEffect(() => {
     const fetchStartups = async () => {
       const startups = await getStartups();
@@ -169,19 +170,13 @@ export default function CreateUserOrStartup({
       setFoundersList((prev) => [...prev, ...founders.map(f => ({ value: f.id, label: f.name }))]);
     }
 
-    const fetchInvestors = async () => {
-      const investors = await getInvestors();
-      setInvestorsList([{ value: 0, label: "-" }]);
-      setInvestorsList((prev) => [...prev, ...investors.map(i => ({ value: i.id, label: i.name }))]);
-    }
     fetchStartups();
-    fetchInvestors();
     fetchFounders();
   }, []);
 
   useEffect(() => {
     console.log("User data changed:", userData);
-    if (userData.founder_id && userData.role !== "founder") {
+    if (startupId && userData.role !== "founder") {
       setUserData({ ...userData, founder_id: undefined });
     }
     if (userData.investor_id && userData.role !== "investor") {
@@ -348,7 +343,7 @@ export default function CreateUserOrStartup({
                   filtersList={startupsList.filter(s => s.value !== 0)}
                   placeHolder={startupsList[0]}
                   onSelection={(value: number) => {
-                    setUserData({ ...userData!, founder_id: value });
+                    setStartupId(value);
                   }}
                 />
               )}
