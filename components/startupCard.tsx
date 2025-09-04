@@ -87,7 +87,7 @@ async function generateStartupPDF(startup: TStartups): Promise<void> {
 
   yPosition -= 20;
 
-  page.drawText(`Phone: ${startup.phone}`, {
+  page.drawText(`Phone: ${startup.phone || 'N/A'}`, {
     x: margin,
     y: yPosition,
     size: fontSize,
@@ -97,7 +97,7 @@ async function generateStartupPDF(startup: TStartups): Promise<void> {
 
   yPosition -= 20;
 
-  page.drawText(`Address: ${startup.address}`, {
+  page.drawText(`Address: ${startup.address || 'N/A'}`, {
     x: margin,
     y: yPosition,
     size: fontSize,
