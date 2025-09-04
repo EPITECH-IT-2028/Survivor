@@ -4,21 +4,108 @@ import { TStartups } from "@/app/types/startup";
 import { Button } from "./ui/button";
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 
-const handleClick = async (startup : TStartups) => {
-  const pdfDoc = await PDFDocument.create()
-  const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman)
-  const page = pdfDoc.addPage()
-  const { width, height } = page.getSize()
-  const fontSize = 30
+async function generateStartupPDF(startup: TStartups): Promise<void> {
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage([612, 792]);
+  
+  const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+  const timesRomanBoldFont = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
+  
+  const { width, height } = page.getSize();
+  const fontSize = 12;
+  const titleFontSize = 18;
+  const margin = 50;
+  let yPosition = height - margin;
+
+  page.drawText('STARTUP PROFILE', {
+    x: margin,
+    y: yPosition,
+    size: titleFontSize,
+    font: timesRomanBoldFont,
+    color: rgb(0, 0, 0),
+  });
+
+  yPosition -= 40;
+
   page.drawText(startup.name, {
-    x: 50,
-    y: height - 4 * fontSize,
+    x: margin,
+    y: yPosition,
+    size: fontSize + 2,
+    font: timesRomanBoldFont,
+    color: rgb(0, 0, 0),
+  });
+
+  yPosition -= 20;
+
+  page.drawText(`Sector: ${startup.sector || 'N/A'}`, {
+    x: margin,
+    y: yPosition,
     size: fontSize,
     font: timesRomanFont,
     color: rgb(0, 0, 0),
-  })
+  });
 
-  const pdfBytes = await pdfDoc.save()
+  yPosition -= 20;
+
+  page.drawText(`Maturity: ${startup.maturity || 'N/A'}`, {
+    x: margin,
+    y: yPosition,
+    size: fontSize,
+    font: timesRomanFont,
+    color: rgb(0, 0, 0),
+  });
+
+  yPosition -= 20;
+
+  page.drawText(`Legal Status: ${startup.legal_status || 'N/A'}`, {
+    x: margin,
+    y: yPosition,
+    size: fontSize,
+    font: timesRomanFont,
+    color: rgb(0, 0, 0),
+  });
+
+  yPosition -= 30;
+
+  page.drawText('Contact Information:', {
+    x: margin,
+    y: yPosition,
+    size: fontSize,
+    font: timesRomanBoldFont,
+    color: rgb(0, 0, 0),
+  });
+
+  yPosition -= 20;
+
+  page.drawText(`Email: ${startup.email}`, {
+    x: margin,
+    y: yPosition,
+    size: fontSize,
+    font: timesRomanFont,
+    color: rgb(0, 0, 0),
+  });
+
+  yPosition -= 20;
+
+  page.drawText(`Phone: ${startup.phone}`, {
+    x: margin,
+    y: yPosition,
+    size: fontSize,
+    font: timesRomanFont,
+    color: rgb(0, 0, 0),
+  });
+
+  yPosition -= 20;
+
+  page.drawText(`Address: ${startup.address}`, {
+    x: margin,
+    y: yPosition,
+    size: fontSize,
+    font: timesRomanFont,
+    color: rgb(0, 0, 0),
+  });
+
+  const pdfBytes = await pdfDoc.save();
   const blob = new Blob([pdfBytes])
   const fileUrl = window.URL.createObjectURL(blob)
 
@@ -42,7 +129,7 @@ export default function StartupCard({ startup, image }: { startup: TStartups; im
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
           </svg>
         </div>
-        <Button onClick={() => handleClick(startup)}>More details</Button>
+        <Button onClick={() => generateStartupPDF(startup)}>More details</Button>
       </div>
   )
 }
