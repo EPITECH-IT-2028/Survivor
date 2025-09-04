@@ -10,11 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import getUsers from "../hooks/users/getUsers";
+import { getUsers } from "../hooks/users/getUsers";
 import { TUser } from "../types/users";
 import { TStartups } from "../types/startup";
 import UpdateProfile from "@/components/updateProfile";
-import getStartups from "../hooks/startups/getStartups";
+import { getStartups } from "../hooks/startups/getStartups";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import CreateUserOrStartup from "@/components/createUserOrStartup";
 
@@ -52,7 +52,6 @@ export default function Dashboard() {
     setIsCreateOpen(true);
   };
 
-  console.log(usersData);
   return isUpdateOpen ? (
     <UpdateProfile
       data={
@@ -104,7 +103,7 @@ export default function Dashboard() {
                 <CardTitle className="text-xl font-semibold">
                   Startups
                 </CardTitle>
-                <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(true)}/>
+                <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(true)} />
               </div>
             </CardHeader>
             <Table className="size-fit">
@@ -151,7 +150,7 @@ export default function Dashboard() {
                 <CardTitle className="text-xl font-semibold">
                   Users
                 </CardTitle>
-                <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(false)}/>
+                <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(false)} />
               </div>
             </CardHeader>
             <Table>
@@ -177,7 +176,7 @@ export default function Dashboard() {
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.role}</TableCell>
                     <TableCell>
-                      {user.founder ? user.founder.id : "-"}
+                      {user.founder_id ? user.founder_id : "-"}
                     </TableCell>
                     <TableCell>
                       {user.investor_id ? user.investor_id : "-"}

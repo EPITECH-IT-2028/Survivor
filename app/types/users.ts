@@ -1,3 +1,6 @@
+import { TFounder } from "./founder";
+import { TInvestor } from "./investor";
+
 export type UserRole = 'admin' | 'founder' | 'investor' | '-';
 
 export enum userRoleId {
@@ -15,16 +18,12 @@ export const userRoleFilters = [
 ];
 
 export interface TUser {
-  email: string;
+  email?: string;
+  founder_id?: number;
+  readonly id: number;
+  investor_id?: number;
+  legacy_id?: number;
   name: string;
   role: UserRole;
-  founder_id: number | null;
-  founder: {
-    id: number;
-    name: string;
-    startup_id: number;
-    external_id: number;
-  };
-  investor_id: number | null;
-  id: number;
+  password?: string;
 }

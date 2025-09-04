@@ -11,7 +11,11 @@ import { Input } from "./ui/input";
 import { FiltersComboBoxResponsive } from "./filter";
 import { Button } from "./ui/button";
 import getFounders from "@/app/hooks/users/getFounders";
-import getInvestors from "@/app/hooks/investors/getInvestors";
+import { getInvestors } from "@/app/hooks/investors/getInvestors";
+import { addStartup } from "@/app/hooks/startups/addStartup";
+import { getStartups } from "@/app/hooks/startups/getStartups";
+import { addFounder } from "@/app/hooks/founders/addFounder";
+import { addUser } from "@/app/hooks/users/addUser";
 
 interface CreateUserOrStartupProps {
   isOpen: boolean;
@@ -29,14 +33,10 @@ export default function CreateUserOrStartup({
     email: "",
     name: "",
     role: "-",
-    founder_id: 0,
-    founder: {
-      id: 0,
-      name: "",
-      startup_id: 0,
-      external_id: 0,
-    },
-    investor_id: 0,
+    founder_id: undefined,
+    investor_id: undefined,
+    legacy_id: undefined,
+    password: undefined,
   });
 
   const [startupData, setStartupData] = useState<TStartups>({
@@ -58,10 +58,11 @@ export default function CreateUserOrStartup({
     news: 0,
   });
 
+  const [startupsList, setStartupsList] = useState<{ value: number; label: string }[]>([{ value: 0, label: "-" }]);
   const [foundersList, setFoundersList] = useState<{ value: number; label: string }[]>([{ value: 0, label: "-" }]);
   const [investorsList, setInvestorsList] = useState<{ value: number; label: string }[]>([{ value: 0, label: "-" }]);
 
-  const handleSubmit = () => {
+  const handleSubmitStartup = () => {
     if (startupData.name === "" ||
       startupData.legal_status === "" ||
       startupData.address === "" ||
@@ -77,32 +78,60 @@ export default function CreateUserOrStartup({
       return;
     }
     console.log("Submitting data:", isStartup ? startupData : userData);
+    addStartup(startupData);
+    onClose();
+  }
+  const handleSubmitUser = async () => {
+    if (userData.name === "" ||
+      userData.role === "-" ||
+      userData.email === ""
+    ) {
+      return;
+    }
+    if (userData.role === "founder") {
+      const newUser: TUser | null = await addUser({
+        name: userData.name,
+        email: userData.email ?? null,
+        role: userData.role ?? null
+      });
+      console.log("Founder data:", userData);
+      await addFounder({
+        name: newUser?.name ?? "",
+        users: newUser?.id ?? 0,
+      });
+    }
     onClose();
   }
 
   useEffect(() => {
+    const fetchStartups = async () => {
+      const startups = await getStartups();
+      setStartupsList([{ value: 0, label: "-" }]);
+      setStartupsList((prev) => [...prev, ...startups.map(s => ({ value: s.id, label: s.name }))]);
+    }
     const fetchFounders = async () => {
       const founders = await getFounders();
       setFoundersList([{ value: 0, label: "-" }]);
       setFoundersList((prev) => [...prev, ...founders.map(f => ({ value: f.id, label: f.name }))]);
     }
-
+    
     const fetchInvestors = async () => {
       const investors = await getInvestors();
       setInvestorsList([{ value: 0, label: "-" }]);
       setInvestorsList((prev) => [...prev, ...investors.map(i => ({ value: i.id, label: i.name }))]);
     }
-    fetchFounders();
+    fetchStartups();
     fetchInvestors();
+    fetchFounders();
   }, []);
 
   useEffect(() => {
     console.log("User data changed:", userData);
-    if (userData.founder && userData.role !== "founder") {
-      setUserData({ ...userData, founder: { id: 0, name: "", startup_id: 0, external_id: 0 } });
+    if (userData.founder_id && userData.role !== "founder") {
+      setUserData({ ...userData, founder_id: undefined });
     }
     if (userData.investor_id && userData.role !== "investor") {
-      setUserData({ ...userData, investor_id: null });
+      setUserData({ ...userData, investor_id: undefined });
     }
   }, [userData.role]);
 
@@ -218,7 +247,7 @@ export default function CreateUserOrStartup({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Button
               className="bg-green-400 hover:bg-green-500 cursor-pointer"
-              onClick={handleSubmit}
+              onClick={handleSubmitStartup}
             >
               Create
             </Button>
@@ -248,7 +277,7 @@ export default function CreateUserOrStartup({
             }}
           />
           <Input
-            value={userData!.email}
+            value={userData!.email ?? ""}
             onChange={(e) => {
               setUserData({ ...userData!, email: e.target.value });
             }}
@@ -260,12 +289,12 @@ export default function CreateUserOrStartup({
               setUserData({ ...userData!, role: value });
             }}
           />
-          {foundersList.length > 0 && (
+          {startupsList.length > 0 && (
             <FiltersComboBoxResponsive
-              filtersList={foundersList.filter(f => f.value !== 0)}
-              placeHolder={foundersList[0]}
+              filtersList={startupsList.filter(s => s.value !== 0)}
+              placeHolder={startupsList[0]}
               onSelection={(value: any) => {
-                setUserData({ ...userData!, founder: value });
+                setUserData({ ...userData!, founder_id: value });
               }}
               disabled={userData!.role !== "founder"}
             />
@@ -284,7 +313,7 @@ export default function CreateUserOrStartup({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Button
               className="bg-green-400 hover:bg-green-500 cursor-pointer"
-              onClick={onClose}
+              onClick={handleSubmitUser}
             >
               Create
             </Button>

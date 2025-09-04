@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query"
-import { Button } from "@/components/ui/button"
+import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -19,11 +19,11 @@ import {
 import { UserRole } from "@/app/types/users";
 
 type Filters = {
-  value: string
-  label: string
-}
+  value: string;
+  label: string;
+};
 
-const filters: Filters[] = [
+const filters = [
   {
     value: "sector",
     label: "Sector",
@@ -38,12 +38,33 @@ const filters: Filters[] = [
   },
 ];
 
-export function FiltersComboBoxResponsive() {
-  const [open, setOpen] = React.useState(false)
-  const isDesktop = useMediaQuery("(min-width: 768px)")
-  const [selectedFilters, setSelectedFilters] = React.useState<Filters | null>(
-    null
-  )
+export function FiltersComboBoxResponsive({
+  filtersList = filters,
+  placeHolder,
+  onSelection,
+  disabled = false,
+}: {
+  filtersList: { value: any; label: any }[];
+  placeHolder: { value: any; label: any };
+  onSelection: (value: any) => void;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = React.useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [selectedFilters, setSelectedFilters] = React.useState<{
+    value: any;
+    label: any;
+  } | null>(null);
+
+  const handleFilterChange = (newValue: { value: any; label: any } | null) => {
+    setSelectedFilters(newValue);
+  };
+
+  React.useEffect(() => {
+    if (selectedFilters) {
+      onSelection(selectedFilters.value as UserRole);
+    }
+  }, [selectedFilters]);
 
   if (isDesktop) {
     return (
@@ -109,7 +130,7 @@ function FiltersList({
         <CommandGroup>
           {filtersList?.map((filter) => (
             <CommandItem
-              key={filter.label}
+              key={filter.value}
               value={filter.label.toString()}
               onSelect={(value) => {
                 setSelectedFilters(
