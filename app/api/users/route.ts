@@ -1,6 +1,5 @@
 'use server';
 import { getSql } from "@/lib/db";
-import { NextRequest } from "next/server";
 
 export async function GET() {
   const db = getSql();

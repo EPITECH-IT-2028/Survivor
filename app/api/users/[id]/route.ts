@@ -4,8 +4,8 @@ import { getSql } from "@/lib/db";
 import { NextRequest } from "next/server";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  _request: NextRequest,
+  { params }: { params: { id: string } },
 ) {
   const db = getSql();
 
@@ -16,7 +16,7 @@ export async function GET(
     });
   }
 
-  const { id } = await params;
+  const { id } = params;
 
   try {
     const response = await db`SELECT * FROM users WHERE id = ${id}`;
@@ -33,8 +33,8 @@ export async function GET(
 }
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  _request: NextRequest,
+  { params }: { params: { id: string } },
 ) {
   const db = getSql();
 
@@ -45,7 +45,7 @@ export async function DELETE(
     });
   }
 
-  const { id } = await params;
+  const { id } = params;
 
   try {
     const response = await db`DELETE FROM users WHERE id = ${id} RETURNING *`;
@@ -64,7 +64,7 @@ export async function DELETE(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: { id: string } },
 ) {
   const db = getSql();
 
@@ -75,7 +75,7 @@ export async function PUT(
     });
   }
 
-  const { id } = await params;
+  const { id } = params;
 
   try {
     const { name, role, email, founder_id, investor_id} = await request.json();
@@ -85,7 +85,7 @@ export async function PUT(
       role = ${role},
       email = ${email},
       founder_id = ${founder_id},
-      investor_id = ${investor_id},
+      investor_id = ${investor_id}
       WHERE id = ${id} RETURNING *`;
 
     return new Response(JSON.stringify(response), {

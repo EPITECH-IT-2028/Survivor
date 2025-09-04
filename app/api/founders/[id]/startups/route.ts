@@ -4,8 +4,8 @@ import { getSql } from "@/lib/db";
 import { NextRequest } from "next/server";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  _request: NextRequest,
+  { params }: { params: { id: string } },
 ) {
   const db = getSql();
 
@@ -16,17 +16,17 @@ export async function GET(
     });
   }
 
-  const { id } = await params;
+  const { id } = params;
 
   try {
-    const response = await db`SELECT startup_id FROM founder_startup WHERE founder_id = ${id}`;
+    const startups = await db`
+      SELECT s.*
+      FROM founder_startup AS fs
+      JOIN startups AS s ON s.id = fs.startup_id
+      WHERE fs.founder_id = ${id}
+    `;
 
-    const responseWithDetails = await Promise.all(response.map(async (item) => {
-      const startupDetails = await db`SELECT * FROM startups WHERE id = ${item.startup_id}`;
-      return startupDetails;
-    }));
-
-    return new Response(JSON.stringify(responseWithDetails), {
+    return new Response(JSON.stringify(startups), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -40,7 +40,7 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: { id: string } },
 ) {
   const db = getSql();
 
@@ -51,14 +51,14 @@ export async function POST(
     });
   }
 
-  const { id } = await params;
+  const { id } = params;
 
   try {
     const { startup_id } = await request.json();
 
-    const response = await db`INSERT INTO founder_startup (founder_id, startup_id)
+    const [inserted] = await db`INSERT INTO founder_startup (founder_id, startup_id)
       VALUES (${id}, ${startup_id}) RETURNING *`;
-    return new Response(JSON.stringify(response), {
+    return new Response(JSON.stringify(inserted), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },
     });

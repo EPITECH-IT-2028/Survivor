@@ -4,8 +4,8 @@ import { getSql } from "@/lib/db";
 import { NextRequest } from "next/server";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  _request: NextRequest,
+  { params }: { params: { id: string } },
 ) {
   const db = getSql();
 
@@ -16,7 +16,7 @@ export async function GET(
     });
   }
 
-  const { id } = await params;
+  const { id } = params;
 
   try {
     const investors = await db`SELECT * FROM investors WHERE id = ${id}`;
@@ -33,8 +33,8 @@ export async function GET(
 }
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  _request: NextRequest,
+  { params }: { params: { id: string } },
 ) {
   const db = getSql();
 
@@ -45,7 +45,7 @@ export async function DELETE(
     });
   }
 
-  const { id } = await params;
+  const { id } = params;
 
   try {
     const response = await db`DELETE FROM investors WHERE id = ${id} RETURNING *`;
@@ -64,7 +64,7 @@ export async function DELETE(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: { id: string } },
 ) {
   const db = getSql();
 
@@ -75,7 +75,7 @@ export async function PUT(
     });
   }
 
-  const { id } = await params;
+  const { id } = params;
 
   try {
     const { name, legal_status, address, email, phone, description, investor_type, investment_focus } = await request.json();

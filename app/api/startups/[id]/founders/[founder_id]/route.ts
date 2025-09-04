@@ -4,8 +4,8 @@ import { getSql } from "@/lib/db";
 import { NextRequest } from "next/server";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string, founder_id: string }> },
+  _request: NextRequest,
+  { params }: { params: { id: string, founder_id: string } },
 ) {
   const db = getSql();
 
@@ -16,17 +16,17 @@ export async function GET(
     });
   }
 
-  const { id, founder_id } = await params;
+  const { id, founder_id } = params;
 
   try {
-    const response = await db`SELECT founder_id FROM founder_startup WHERE founder_id = ${founder_id} AND startup_id = ${id}`;
+    const founders = await db`
+      SELECT f.*
+      FROM founders f
+      JOIN founder_startup fs ON fs.founder_id = f.id
+      WHERE fs.startup_id = ${id} AND fs.founder_id = ${founder_id}
+    `;
 
-    const responseWithDetails = await Promise.all(response.map(async (item) => {
-      const founderDetails = await db`SELECT * FROM founders WHERE id = ${item.founder_id}`;
-      return founderDetails;
-    }));
-
-    return new Response(JSON.stringify(responseWithDetails), {
+    return new Response(JSON.stringify(founders), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });

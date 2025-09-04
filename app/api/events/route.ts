@@ -45,10 +45,11 @@ export async function POST(request: Request) {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: `Failed to create event ${error}` }), {
+    console.error('POST /api/events', error);
+    return new Response(JSON.stringify({ error: 'Failed to create event' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
-  }
+   }
 }
 
