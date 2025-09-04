@@ -52,12 +52,14 @@ export default function UpdateProfile({
   const handleUpdateUser = () => {
     if (userData)
       setUserById(userData.id, userData);
+    onDataChanged && onDataChanged();
     onClose();
   }
 
   const handleUpdateStartup = () => {
     if (startupData)
       setStartupById(startupData.id, startupData);
+    onDataChanged && onDataChanged();
     onClose();
   }
 
@@ -66,6 +68,7 @@ export default function UpdateProfile({
       return;
     }
     deleteStartup(startupData.id);
+    onDataChanged && onDataChanged();
     onClose();
   }
 
@@ -74,6 +77,7 @@ export default function UpdateProfile({
       return;
     }
     deleteUser(userData.id);
+    onDataChanged && onDataChanged();
     onClose();
   }
 

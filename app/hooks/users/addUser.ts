@@ -24,9 +24,8 @@ export async function addUser(userData: UserPayload): Promise<TUser | null> {
 		if (!res.ok) {
 			throw new Error(`POST /api/users -> ${res.status} ${res.statusText}`);
 		}
-		const data: TUser = await res.json();
-		console.log("Adding user with data:", data);
-		return data
+		const data = await res.json();
+		return Array.isArray(data) ? data[0] : data;
 	} catch (error) {
 		console.error("Error adding user: ", error)
 		return null

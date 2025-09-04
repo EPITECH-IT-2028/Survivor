@@ -36,10 +36,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { name, startup_id, external_id } = await request.json();
+    const { name } = await request.json();
 
-    const response = await db`INSERT INTO founders (name, startup_id, external_id)
-      VALUES (${name}, ${startup_id}, ${external_id}) RETURNING *`;
+    const response = await db`INSERT INTO founders (name)
+      VALUES (${name}) RETURNING *`;
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },
