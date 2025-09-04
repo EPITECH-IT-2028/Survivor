@@ -1,4 +1,3 @@
-
 import { TStartups } from '@/app/types/startup';
 
 export async function getStartups(): Promise<TStartups[]> {

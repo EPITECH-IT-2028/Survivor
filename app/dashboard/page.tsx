@@ -195,7 +195,7 @@ export default function Dashboard() {
             </Table>
             <div className="flex px-4">
               <ChevronLeft onClick={() => setPageUser(pageUser - 1 > 0 ? pageUser - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-              <ChevronRight onClick={() => setPageUser((pageUser + 1) * 5 > usersData.length ? pageUser : pageUser + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+              <ChevronRight onClick={() => setPageUser((pageUser + 1) * 5 >= usersData.length ? pageUser : pageUser + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
             </div>
           </Card>
         </div>

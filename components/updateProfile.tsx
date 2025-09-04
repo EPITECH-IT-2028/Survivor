@@ -49,40 +49,56 @@ export default function UpdateProfile({
     return <div>Loading user data...</div>;
   }
 
-  const handleUpdateUser = () => {
-    if (userData)
-      setUserById(userData.id, userData);
-    onDataChanged && onDataChanged();
-    onClose();
+  const handleUpdateUser = async () => {
+    if (!userData) return;
+    try {
+      await setUserById(userData.id, userData);
+      onDataChanged?.();
+      onClose();
+    } catch (e) {
+      console.error("Failed to update user", e);
+    }
   }
 
-  const handleUpdateStartup = () => {
-    if (startupData)
-      setStartupById(startupData.id, startupData);
-    onDataChanged && onDataChanged();
-    onClose();
+  const handleUpdateStartup = async () => {
+    if (!startupData) return;
+    try {
+      await setStartupById(startupData.id, startupData);
+      onDataChanged?.();
+      onClose();
+    } catch (e) {
+      console.error("Failed to update startup", e);
+    }
   }
 
-  const handleDeleteStartup = () => {
+  const handleDeleteStartup = async () => {
     if (startupData === null || startupData.id == null) {
       return;
     }
-    deleteStartup(startupData.id);
-    onDataChanged && onDataChanged();
-    onClose();
+    try {
+      deleteStartup(startupData.id);
+      onDataChanged && onDataChanged();
+      onClose();
+    } catch (e) {
+      console.error("Failed to delete startup", e);
+    }
   }
 
-  const handleDeleteUser = () => {
+  const handleDeleteUser = async () => {
     if (userData === null || userData.id == null) {
       return;
     }
-    deleteUser(userData.id);
-    onDataChanged && onDataChanged();
-    onClose();
+    try {
+      deleteUser(userData.id);
+      onDataChanged && onDataChanged();
+      onClose();
+    } catch (e) {
+      console.error("Failed to delete user", e);
+    }
   }
 
   return isStartup ? (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent>
         <DialogTitle>Update Startup</DialogTitle>
         <DialogContent>

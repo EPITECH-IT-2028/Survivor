@@ -2,7 +2,8 @@
 
 import * as React from "react"
 
-import { useMediaQuery } from "@/hooks/use-media-query"
+import { Filters, filters } from "@/components/filter"
+import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -22,6 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+
 
 export function ComboBoxResponsive() {
   const [open, setOpen] = React.useState(false)

@@ -10,7 +10,6 @@ import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { FiltersComboBoxResponsive } from "./filter";
 import { Button } from "./ui/button";
-import getFounders from "@/app/hooks/users/getFounders";
 import { getInvestors } from "@/app/hooks/investors/getInvestors";
 import { addStartup } from "@/app/hooks/startups/addStartup";
 import { getStartups } from "@/app/hooks/startups/getStartups";
@@ -20,6 +19,7 @@ import { updateUserWithFounderId } from "@/app/hooks/users/updateUserWithFounder
 import { updateUserWithInvestorId } from "@/app/hooks/users/updateUserWithInvestorId";
 import { TInvestor } from "@/app/types/investor";
 import { addInvestor } from "@/app/hooks/investors/addInvestor";
+import getFounders from "@/app/hooks/founders/getFounders";
 
 interface CreateUserOrStartupProps {
   isOpen: boolean;
@@ -244,21 +244,21 @@ export default function CreateUserOrStartup({
           <FiltersComboBoxResponsive
             filtersList={projectStatusFilters.filter(p => p.value !== '-')}
             placeHolder={projectStatusFilters[0]}
-            onSelection={(value: any) => {
+            onSelection={(value: string) => {
               setStartupData({ ...startupData!, project_status: value });
             }}
           />
           <FiltersComboBoxResponsive
             filtersList={needsFilters.filter(n => n.value !== '-')}
             placeHolder={needsFilters[0]}
-            onSelection={(value: any) => {
+            onSelection={(value: string) => {
               setStartupData({ ...startupData!, needs: value });
             }}
           />
           <FiltersComboBoxResponsive
             filtersList={maturityFilters.filter(m => m.value !== '-')}
             placeHolder={maturityFilters[0]}
-            onSelection={(value: any) => {
+            onSelection={(value: string) => {
               setStartupData({ ...startupData!, maturity: value });
             }}
           />
@@ -293,7 +293,7 @@ export default function CreateUserOrStartup({
             <FiltersComboBoxResponsive
               filtersList={foundersList.filter(f => f.value !== 0)}
               placeHolder={foundersList[0]}
-              onSelection={(value: any) => {
+              onSelection={(value: number) => {
                 setStartupData({ ...startupData!, founder: value });
               }}
             />
@@ -347,7 +347,7 @@ export default function CreateUserOrStartup({
                 <FiltersComboBoxResponsive
                   filtersList={startupsList.filter(s => s.value !== 0)}
                   placeHolder={startupsList[0]}
-                  onSelection={(value: any) => {
+                  onSelection={(value: number) => {
                     setUserData({ ...userData!, founder_id: value });
                   }}
                 />
@@ -372,32 +372,32 @@ export default function CreateUserOrStartup({
                 onChange={(e) => { setInvestorData({ ...investorData!, legal_status: e.target.value }) }}
               />
               <Input
-                  placeholder="1 Bite Avenue, New York"
-                  value={investorData!.address ?? "-"}
-                  onChange={(e) => { setInvestorData({ ...investorData!, address: e.target.value }) }}
-                />
-                <Input
-                  placeholder="+1 234 567 890"
-                  value={investorData!.phone ?? "-"}
-                  onChange={(e) => { setInvestorData({ ...investorData!, phone: e.target.value }) }}
-                />
-                <Input
-                  placeholder="Description of the investor"
-                  value={investorData!.description ?? "-"}
-                  onChange={(e) => { setInvestorData({ ...investorData!, description: e.target.value }) }}
-                />
-                <Input
-                  placeholder="Venture Capital, Angel Investor, etc."
-                  value={investorData!.investor_type ?? "-"}
-                  onChange={(e) => { setInvestorData({ ...investorData!, investor_type: e.target.value }) }}
-                />
-                <Input
-                  placeholder="Technology, Healthcare, etc."
-                  value={investorData!.investment_focus ?? "-"}
-                  onChange={(e) => { setInvestorData({ ...investorData!, investment_focus: e.target.value }) }}
-                />
-              </>
-            )}
+                placeholder="1 Bite Avenue, New York"
+                value={investorData!.address ?? "-"}
+                onChange={(e) => { setInvestorData({ ...investorData!, address: e.target.value }) }}
+              />
+              <Input
+                placeholder="+1 234 567 890"
+                value={investorData!.phone ?? "-"}
+                onChange={(e) => { setInvestorData({ ...investorData!, phone: e.target.value }) }}
+              />
+              <Input
+                placeholder="Description of the investor"
+                value={investorData!.description ?? "-"}
+                onChange={(e) => { setInvestorData({ ...investorData!, description: e.target.value }) }}
+              />
+              <Input
+                placeholder="Venture Capital, Angel Investor, etc."
+                value={investorData!.investor_type ?? "-"}
+                onChange={(e) => { setInvestorData({ ...investorData!, investor_type: e.target.value }) }}
+              />
+              <Input
+                placeholder="Technology, Healthcare, etc."
+                value={investorData!.investment_focus ?? "-"}
+                onChange={(e) => { setInvestorData({ ...investorData!, investment_focus: e.target.value }) }}
+              />
+            </>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Button
               className="bg-green-400 hover:bg-green-500 cursor-pointer"

@@ -1,4 +1,5 @@
 import * as React from "react";
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query";
 import { Button } from "@/components/ui/button";
@@ -18,12 +19,12 @@ import {
 } from "@/components/ui/popover";
 import { UserRole } from "@/app/types/users";
 
-type Filters = {
+export type Filters = {
   value: string;
   label: string;
 };
 
-const filters = [
+export const filters = [
   {
     value: "sector",
     label: "Sector",
