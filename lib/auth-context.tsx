@@ -41,17 +41,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [token]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const storedToken = localStorage.getItem("session_token");
-      if (storedToken !== token) {
-        setToken(storedToken);
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "session_token" || e.key === null) {
+        setToken(localStorage.getItem("session_token"));
       }
-    }, 1000);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        setToken(localStorage.getItem("session_token"));
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      clearInterval(interval);
+      window.removeEventListener("storage", handleStorageChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [token]);
+  }, []);
 
   const login = (newToken: string) => {
     setToken(newToken);
