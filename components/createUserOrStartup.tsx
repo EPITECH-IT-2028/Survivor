@@ -21,12 +21,14 @@ interface CreateUserOrStartupProps {
   isOpen: boolean;
   onClose: () => void;
   isStartup?: boolean;
+  onDataChanged?: () => void;
 }
 
 export default function CreateUserOrStartup({
   isOpen,
   onClose,
   isStartup,
+  onDataChanged
 }: CreateUserOrStartupProps) {
   const [userData, setUserData] = useState<TUser>({
     id: 0,
@@ -79,6 +81,7 @@ export default function CreateUserOrStartup({
     }
     console.log("Submitting data:", isStartup ? startupData : userData);
     addStartup(startupData);
+    if (onDataChanged) onDataChanged();
     onClose();
   }
   const handleSubmitUser = async () => {
@@ -100,6 +103,8 @@ export default function CreateUserOrStartup({
         users: newUser?.id ?? 0,
       });
     }
+
+    if (onDataChanged) onDataChanged();
     onClose();
   }
 

@@ -20,6 +20,7 @@ interface UpdateProfileProps {
   isOpen: boolean;
   onClose: () => void;
   isStartup?: boolean;
+  onDataChanged?: () => void;
 }
 
 export default function UpdateProfile({
@@ -27,6 +28,7 @@ export default function UpdateProfile({
   isOpen,
   onClose,
   isStartup,
+  onDataChanged
 }: UpdateProfileProps) {
   const [startupData, setStartupData] = useState<TStartups | null>(null);
   const [userData, setUserData] = useState<TUser | null>(null);

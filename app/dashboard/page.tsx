@@ -39,7 +39,14 @@ export default function Dashboard() {
     };
     fetchUsers();
     fetchStartups();
-  }, []);
+  }, [isUpdateOpen, isCreateOpen]);
+
+  const refreshData = async () => {
+    const users = await getUsers();
+    setUsersData(users);
+    const startups = await getStartups();
+    setStartupsData(startups);
+  };
 
   const handleClickRow = (id: number, isStartup: boolean) => {
     setIdClicked(id);
@@ -62,9 +69,10 @@ export default function Dashboard() {
       isOpen={isUpdateOpen}
       onClose={() => setIsUpdateOpen(false)}
       isStartup={isStartup}
+      onDataChanged={refreshData}
     />
   ) : isCreateOpen ?
-    <CreateUserOrStartup isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} isStartup={isStartup} />
+    <CreateUserOrStartup isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} isStartup={isStartup} onDataChanged={refreshData} />
 
     : (
       <div>
