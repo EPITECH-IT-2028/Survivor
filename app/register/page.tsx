@@ -15,11 +15,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import RoleCombobox from "./RoleCombobox";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
@@ -38,6 +40,7 @@ export default function RegisterForm() {
           name: name,
           email: email,
           password: password,
+          role: role,
         }),
       });
 
@@ -50,6 +53,7 @@ export default function RegisterForm() {
         setName("");
         setPassword("");
         setEmail("");
+        setRole("");
         login(data.token);
         router.push("/");
       } else {
@@ -103,6 +107,7 @@ export default function RegisterForm() {
                 required
               />
             </div>
+            <RoleCombobox value={role} onValueChange={setRole} />
           </div>
         </CardContent>
         <CardFooter className="mt-6 flex flex-row items-end">

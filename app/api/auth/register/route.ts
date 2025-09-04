@@ -5,8 +5,8 @@ import generateToken from "@/lib/auth-utils";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password } = await req.json();
-    if (!name || !email || !password)
+    const { name, email, password, role } = await req.json();
+    if (!name || !email || !password || !role)
       return NextResponse.json(
         { error: "All fields are required" },
         { status: 400 },
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser =
-      await sql`INSERT INTO public.users (name, role, email, password) VALUES (${name}, 'user', ${email}, ${hashedPassword}) RETURNING id, name`;
+      await sql`INSERT INTO public.users (name, role, email, password) VALUES (${name}, ${role}, ${email}, ${hashedPassword}) RETURNING id, name`;
     const token = generateToken([{ id: newUser[0].id, name: newUser[0].name }]);
     return NextResponse.json({
       message: "Registered successfully",
