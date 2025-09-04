@@ -51,7 +51,11 @@ export default function LoginForm() {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage({ type: "success", title: "Logged successfully!", description: "" });
+        setMessage({
+          type: "success",
+          title: "Logged successfully!",
+          description: "",
+        });
         setEmail("");
         setPassword("");
         login(data.token);
