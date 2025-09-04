@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
-import { X, Check } from "lucide-react";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
