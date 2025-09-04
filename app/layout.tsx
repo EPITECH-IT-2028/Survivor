@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Instrument_Serif } from "next/font/google";
-import Navbar from "@/components/Navbar";
 import "./globals.css";
+import ConditionalNavbar from "@/components/conditionalNavbar";
+import ConditionalContainer from "@/components/conditionalContainer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,8 +36,8 @@ export default function RootLayout({
       <body
         className={`font-sf-pro ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
-        <Navbar />
-        <div className="mx-auto max-w-3xl">{children}</div>
+        <ConditionalNavbar />
+        <ConditionalContainer>{children}</ConditionalContainer>
       </body>
     </html>
   );
