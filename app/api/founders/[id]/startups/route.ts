@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const db = getSql();
 
@@ -16,7 +16,7 @@ export async function GET(
     });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const startups = await db`
@@ -40,7 +40,7 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const db = getSql();
 
@@ -51,7 +51,7 @@ export async function POST(
     });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const { startup_id } = await request.json();

@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const db = getSql();
 
@@ -16,7 +16,7 @@ export async function GET(
     });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const response = await db`SELECT * FROM startups WHERE id = ${id}`;
@@ -34,7 +34,7 @@ export async function GET(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const db = getSql();
 
@@ -45,7 +45,7 @@ export async function DELETE(
     });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const response = await db`DELETE FROM startups WHERE id = ${id} RETURNING *`;
@@ -64,7 +64,7 @@ export async function DELETE(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const db = getSql();
 
@@ -75,7 +75,7 @@ export async function PUT(
     });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const { name, description, legal_status, address, email, phone, created_at, website_url, social_media_url,

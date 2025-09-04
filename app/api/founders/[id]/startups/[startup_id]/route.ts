@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string, startup_id: string } },
+  { params }: { params: Promise<{ id: string, startup_id: string }> },
 ) {
   const db = getSql();
 
@@ -16,7 +16,7 @@ export async function GET(
     });
   }
 
-  const { id, startup_id } = params;
+  const { id, startup_id } = await params;
 
   try {
     const startups = await db`
