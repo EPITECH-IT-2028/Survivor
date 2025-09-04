@@ -12,7 +12,7 @@ export async function GET() {
   }
 
   try {
-    const response = await db`SELECT * FROM users`;
+    const response = await db`SELECT * FROM users ORDER BY id ASC`;
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

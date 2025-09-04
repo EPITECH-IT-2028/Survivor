@@ -1,5 +1,5 @@
 export interface TFounder {
-  name: string;
   readonly id: number;
-  readonly startup_id: number;
+  name: string;
+  readonly legacy_id: number | null;
 }
