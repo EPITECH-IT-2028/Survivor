@@ -7,4 +7,6 @@ export interface TStartups {
   phone: string | null;
   sector: string | null;
   maturity: string | null;
+  website_url: string | null;
+  description: string | null;
 }
