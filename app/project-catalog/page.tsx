@@ -4,7 +4,7 @@ import StartupCard from '@/components/startupCard';
 import { TStartups } from '../types/startup';
 import { useEffect, useState } from "react"
 import { Input } from '@/components/ui/input';
-import getStartups from '../hooks/startups/getStartups';
+import { getStartups } from '../hooks/startups/getStartups';
 
 export default function Catalog() {
 

@@ -1,9 +1,12 @@
-import { getSql } from '@/lib/db';
-import { TStartups } from '@/app/types/startup';
+export async function getStartups() {
+  try {
+    const res = await fetch("api/startups", {
+      method: "GET"
+    })
 
-export default async function getUsers(): Promise<TStartups[]> {
-  const sql = getSql();
-
-  const result = await sql`SELECT * FROM startups ORDER BY id`;
-  return result as TStartups[];
+    const data = res.json()
+    return data
+  } catch (error) {
+    console.error("Error fetching startups: ", error)
+  }
 }
