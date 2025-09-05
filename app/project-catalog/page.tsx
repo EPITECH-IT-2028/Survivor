@@ -1,15 +1,9 @@
 "use client"
 
-import StartupCard from '@/components/startupCard';
 import { TStartups } from '../types/startup';
 import { useEffect, useState } from "react"
 import { Input } from '@/components/ui/input';
 import { getStartups } from '../hooks/startups/getStartups';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Drawer, DrawerContent, DrawerTrigger, DrawerClose, DrawerFooter} from '@/components/ui/drawer';
-import { Dialog, DialogTitle } from '@/components/ui/dialog';
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
-import { Button } from '@/components/ui/button';
 import Modal from '@/components/Modal';
 
 export default function Catalog() {

@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react"
-import { Input } from '@/components/ui/input';
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Drawer, DrawerContent, DrawerTrigger, DrawerClose, DrawerFooter} from '@/components/ui/drawer';
-import { Dialog, DialogTitle } from '@/components/ui/dialog';
+import { Drawer, DrawerContent, DrawerFooter} from '@/components/ui/drawer';
+import { DialogTitle } from '@/components/ui/dialog';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { Button } from '@/components/ui/button';
 import { TStartups } from '@/app/types/startup';
-import { DialogContent } from "@radix-ui/react-dialog";
-import { Cross } from "lucide-react";
 
 async function generateStartupPDF(startup: TStartups): Promise<void> {
   const pdfDoc = await PDFDocument.create()
