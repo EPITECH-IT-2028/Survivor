@@ -17,6 +17,7 @@ import UpdateProfile from "@/components/updateProfile";
 import { getStartups } from "../hooks/startups/getStartups";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import CreateUserOrStartup from "@/components/createUserOrStartup";
+import CountUp from "@/components/countUp";
 
 export default function Dashboard() {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
@@ -84,7 +85,15 @@ export default function Dashboard() {
                 Number of startups
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-3xl font-bold">{`${startupsData.length}`}</CardContent>
+            <CardContent className="text-3xl font-bold">
+              <CountUp
+                from={0}
+                to={startupsData.length}
+                direction="up"
+                duration={1}
+                className="count-up-text"
+              />
+            </CardContent>
           </Card>
           <Card className="size-auto m-8">
             <CardHeader>
