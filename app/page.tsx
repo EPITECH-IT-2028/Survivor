@@ -142,10 +142,20 @@ export default function Home() {
 
   return (
     <div className="">
-      <div className="max-h-[140rem] overflow-hidden">
+      <div className="relative left-1/2 z-10 mb-18 max-h-[140rem] w-dvw -translate-x-1/2 overflow-hidden">
+        <div className="pointer-events-none absolute bottom-28 z-10 size-6 h-[10rem] w-full bg-gradient-to-t from-white to-transparent" />
         <HeroParallax products={startups} />
       </div>
-      <StartupFlipCard />
+      <div className="rounded-lg bg-muted p-6 shadow-md">
+        <p className="mt-16 mb-24 flex justify-center font-canela-black text-6xl underline decoration-wavy decoration-3 underline-offset-[1rem]">
+          Featured Projects
+        </p>
+        <div className="flex justify-around">
+          <StartupFlipCard />
+          <StartupFlipCard />
+          <StartupFlipCard />
+        </div>
+      </div>
     </div>
   );
 }

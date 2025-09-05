@@ -39,7 +39,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <Navbar />
-          <div className="mx-auto">{children}</div>
+          <div className="mx-auto max-w-6xl">{children}</div>
           <Toaster position="bottom-right" richColors />
         </AuthProvider>
       </body>
