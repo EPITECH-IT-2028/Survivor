@@ -1,9 +1,8 @@
-"use client"
+import * as React from "react";
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import * as React from "react"
-
-import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query"
-import { Button } from "@/components/ui/button"
+import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -11,54 +10,88 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
+} from "@/components/ui/command";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
+import { UserRole } from "@/app/types/users";
 
-type Filters = {
-  value: string
-  label: string
-}
+export type Filters = {
+  value: string;
+  label: string;
+};
 
-const filters: Filters[] = [
+export const filters = [
   {
-    value: "a",
-    label: "a",
+    value: "sector",
+    label: "Sector",
   },
   {
-    value: "b",
-    label: "b",
+    value: "maturity",
+    label: "Maturity",
   },
-]
+  {
+    value: "location",
+    label: "Location",
+  },
+];
 
-export function FiltersComboBoxResponsive() {
-  const [open, setOpen] = React.useState(false)
-  const isDesktop = useMediaQuery("(min-width: 768px)")
-  const [selectedFilters, setSelectedFilters] = React.useState<Filters | null>(
-    null
-  )
+export function FiltersComboBoxResponsive({
+  filtersList = filters,
+  placeHolder,
+  onSelection,
+  disabled = false,
+}: {
+  filtersList: { value: any; label: any }[];
+  placeHolder: { value: any; label: any };
+  onSelection: (value: any) => void;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = React.useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [selectedFilters, setSelectedFilters] = React.useState<{
+    value: any;
+    label: any;
+  } | null>(null);
+
+  const handleFilterChange = (newValue: { value: any; label: any } | null) => {
+    setSelectedFilters(newValue);
+  };
+
+  React.useEffect(() => {
+    if (selectedFilters) {
+      onSelection(selectedFilters.value as UserRole);
+    }
+  }, [selectedFilters]);
 
   if (isDesktop) {
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[150px] justify-start">
-            {selectedFilters ? <>{selectedFilters.label}</> : <>Select filters</>}
+          <Button
+            variant="outline"
+            className="w-[150px] justify-start"
+            disabled={disabled}
+          >
+            {selectedFilters ? (
+              <>{selectedFilters.label}</>
+            ) : (
+              <>{placeHolder.label}</>
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
-          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters}/>
+          <FiltersList
+            setOpen={setOpen}
+            setSelectedFilters={handleFilterChange}
+            filtersList={filtersList}
+          />
         </PopoverContent>
       </Popover>
-    )
+    );
   }
 
   return (
@@ -70,35 +103,43 @@ export function FiltersComboBoxResponsive() {
       </DrawerTrigger>
       <DrawerContent>
         <div className="mt-4 border-t">
-          <FiltersList setOpen={setOpen} setSelectedFilters={setSelectedFilters}/>
+          <FiltersList
+            setOpen={setOpen}
+            setSelectedFilters={handleFilterChange}
+            filtersList={filtersList}
+          />
         </div>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }
 
 function FiltersList({
   setOpen,
   setSelectedFilters,
+  filtersList = filters,
 }: {
-  setOpen: (open: boolean) => void
-  setSelectedFilters: (status: Filters | null) => void
+  setOpen: (open: boolean) => void;
+  setSelectedFilters: (status: Filters | null) => void;
+  filtersList?: Filters[];
 }) {
   return (
     <Command>
-      <CommandInput placeholder="Filter status..." />
       <CommandList>
+        <CommandInput placeholder="Filter status..." />
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
-          {filters.map((filter) => (
+          {filtersList?.map((filter) => (
             <CommandItem
               key={filter.value}
-              value={filter.value}
+              value={filter.label.toString()}
               onSelect={(value) => {
                 setSelectedFilters(
-                  filters.find((priority) => priority.value === value) || null
-                )
-                setOpen(false)
+                  filtersList.find(
+                    (filter) => filter.label.toString() === value
+                  ) || null
+                );
+                setOpen(false);
               }}
             >
               {filter.label}
@@ -107,6 +148,5 @@ function FiltersList({
         </CommandGroup>
       </CommandList>
     </Command>
-  )
+  );
 }
-

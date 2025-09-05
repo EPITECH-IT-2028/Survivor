@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Instrument_Serif } from "next/font/google";
+import Navbar from "@/components/Navbar";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/lib/auth-context";
 import "./globals.css";
 import ConditionalNavbar from "@/components/conditionalNavbar";
 import ConditionalContainer from "@/components/conditionalContainer";
@@ -36,9 +39,14 @@ export default function RootLayout({
       <body
         className={`font-sf-pro ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
-        <ConditionalNavbar />
-        <ConditionalContainer>{children}</ConditionalContainer>
-      </body>
-    </html>
+        <AuthProvider>
+          <ConditionalNavbar />
+          <ConditionalContainer>
+            {children}
+          </ConditionalContainer>
+          <Toaster position="bottom-right" richColors />
+        </AuthProvider>
+      </body >
+    </html >
   );
 }
