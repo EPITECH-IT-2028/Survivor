@@ -1,10 +1,11 @@
 "use client"
 
-import { TStartups } from '../types/startup';
-import { useEffect, useState } from "react"
+import { TStartups, sectorFilters, maturityFilters } from '@/app/types/startup';
+import { use, useEffect, useState } from "react"
 import { Input } from '@/components/ui/input';
 import { getStartups } from '../hooks/startups/getStartups';
 import Modal from '@/components/Modal';
+import { FiltersComboBoxResponsive } from '@/components/filter';
 
 export default function Catalog() {
 
@@ -51,10 +52,28 @@ useEffect(() => {
   <div>
     <div className="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       <h2>Sector
-        <Input type="text" placeholder="Sector" value={sectorFilter} onChange={(e) => setSectorFilter(e.target.value)}/>
+        <FiltersComboBoxResponsive
+          filtersList={sectorFilters.filter(s => s.value !== '-')}
+          placeHolder={sectorFilters[0]}
+          onSelection={(value) => {
+            setSectorFilter(value);
+          }}
+        />
+        <button onClick={() => setSectorFilter("")} className="rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
       </h2>
       <h2>Maturity
-        <Input type="text" placeholder="Maturity" value={maturityFilter} onChange={(e) => setMaturityFilter(e.target.value)}/>
+        <FiltersComboBoxResponsive
+          filtersList={maturityFilters.filter(s => s.value !== '-')}
+          placeHolder={maturityFilters[0]}
+          onSelection={(value) => {
+            setMaturityFilter(value);
+          }}
+        />
+        <button onClick={() => setMaturityFilter("")} className="rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
       </h2>
       <h2>Location
         <Input type="text" placeholder="Location" value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)}/>
