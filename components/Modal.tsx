@@ -5,6 +5,7 @@ import { DialogTitle } from '@/components/ui/dialog';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { Button } from '@/components/ui/button';
 import { TStartups } from '@/app/types/startup';
+import Link from "next/link";
 
 async function generateStartupPDF(startup: TStartups): Promise<void> {
   const pdfDoc = await PDFDocument.create()
@@ -165,7 +166,7 @@ export default function Modal({ startup, image}: { startup: TStartups; image: st
             </div>
           </div>
           <div className="flex justify-end mt-2">
-            <svg className="h-4 w-4 text-blue-500 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-4 w-4 text-indigo-500 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </svg>
           </div>
@@ -224,14 +225,14 @@ export default function Modal({ startup, image}: { startup: TStartups; image: st
                   <div className="flex justify-between">
                     <span className="text-sm font-medium text-gray-500">Website:</span>
                     {startup.website_url ? (
-                      <a 
+                      <Link
                         href={startup.website_url} 
-                        target="_blank" 
                         rel="noopener noreferrer"
+                        target="_blank"
                         className="text-sm text-blue-600 hover:text-blue-800 underline"
                       >
                         Visit Website
-                      </a>
+                      </Link>
                     ) : (
                       <span className="text-sm text-gray-900">N/A</span>
                     )}
