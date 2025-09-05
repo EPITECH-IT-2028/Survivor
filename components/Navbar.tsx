@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 
 export default function Navbar() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   return (
     <nav
       aria-label="Navigation principale"
@@ -16,7 +16,7 @@ export default function Navbar() {
       </Link>
       <div className="mx-auto flex">
         <Link
-          href="#"
+          href="project-catalog"
           className="group mx-6 font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
         >
           Discover Startups
@@ -38,7 +38,7 @@ export default function Navbar() {
           </span>
         </Link>
       )}
-      {isAuthenticated && (
+      {isAuthenticated && isAdmin && (
         <Link
           href="/dashboard"
           className="group relative right-0 mr-6 px-6 py-3"
@@ -46,6 +46,17 @@ export default function Navbar() {
           <span className="absolute inset-0 rounded-sm border transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:bg-secondary"></span>
           <span className="relative text-secondary group-hover:text-primary">
             Dashboard
+          </span>
+        </Link>
+      )}
+      {isAuthenticated && !isAdmin && (
+        <Link
+          href="#"
+          className="group relative right-0 mr-6 px-6 py-3"
+        >
+          <span className="absolute inset-0 rounded-sm border transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:bg-secondary"></span>
+          <span className="relative text-secondary group-hover:text-primary">
+            Profile
           </span>
         </Link>
       )}
