@@ -1,10 +1,10 @@
 "use client"
 
-import StartupCard from '@/components/startupCard';
 import { TStartups } from '../types/startup';
 import { useEffect, useState } from "react"
 import { Input } from '@/components/ui/input';
 import { getStartups } from '../hooks/startups/getStartups';
+import Modal from '@/components/Modal';
 
 export default function Catalog() {
 
@@ -45,6 +45,8 @@ useEffect(() => {
     setStartupDisp(filtered);
   }, [sectorFilter, maturityFilter, locationFilter, startupsInfo]);
 
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
   <div>
     <div className="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -59,7 +61,7 @@ useEffect(() => {
       </h2>
       {
         startupDisp.map((value) => (
-          <StartupCard key={value.id} startup={value} image='image' />
+          <Modal key={value.id} startup={value} image="image" />
         ))
       }
     </div>
