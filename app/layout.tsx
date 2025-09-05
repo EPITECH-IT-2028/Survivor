@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sf-pro ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
+        className={`font-sf-pro ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} pb-24 antialiased`}
       >
         <AuthProvider>
           <Navbar />
