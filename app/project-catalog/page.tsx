@@ -46,8 +46,6 @@ useEffect(() => {
     setStartupDisp(filtered);
   }, [sectorFilter, maturityFilter, locationFilter, startupsInfo]);
 
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
   <div>
     <div className="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
