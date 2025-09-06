@@ -5,45 +5,55 @@ import { FlipCard } from "@/components/ui/flip-card";
 import Image from "next/image";
 import { getStartups } from "@/app/hooks/startups/getStartups";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
-function Front() {
+function Front(props: { title?: string; thumbnail?: string }) {
   return (
     <div className="relative flex size-full items-center justify-center">
       <Image
-        src="/unsplash.jpg"
+        src={props.thumbnail || "/unsplash.jpg"}
         width={100}
         height={100}
         alt="front image"
-        className="absolute inset-0 size-full"
+        className="absolute inset-0 size-full object-cover"
       />
-      <h3 className="relative font-mono text-5xl font-semibold text-white uppercase">
-        BLOOM
+      <h3 className="relative text-center font-mono text-2xl font-semibold text-white uppercase">
+        {props.title || "Startup Name"}
       </h3>
     </div>
   );
 }
 
-function Back() {
+function Back(props: { description?: string; link?: string }) {
   return (
     <div className="relative flex size-full flex-col items-center justify-center gap-3 bg-zinc-950 p-4 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900">
       <h3 className="text-xl font-bold tracking-widest uppercase">
         Explore More
       </h3>
       <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
-        Dive into our exclusive collection of hand-crafted visuals.
+        {props.description || "No description available."}
       </p>
-      <button className="mt-2 cursor-pointer rounded-full bg-zinc-50 px-4 py-1.5 text-sm font-medium text-zinc-900 transition hover:opacity-90 dark:bg-zinc-950 dark:text-zinc-50">
-        Browse Now
-      </button>
+      <Link href={props.link || "#"} target="_blank">
+        <button className="mt-2 cursor-pointer rounded-full bg-zinc-50 px-4 py-1.5 text-sm font-medium text-zinc-900 transition hover:opacity-90 dark:bg-zinc-950 dark:text-zinc-50">
+          Learn More
+        </button>
+      </Link>
     </div>
   );
 }
 
-function StartupFlipCard() {
+interface StartupFlipCardProps {
+  title?: string;
+  description?: string;
+  link?: string;
+  thumbnail?: string;
+}
+
+function StartupFlipCard(props: StartupFlipCardProps) {
   return (
     <FlipCard
-      front={<Front />}
-      back={<Back />}
+      front={<Front title={props.title} thumbnail={props.thumbnail} />}
+      back={<Back description={props.description} link={props.link} />}
       flipDirection="horizontal"
       flipRotation="forward"
     />
@@ -68,6 +78,13 @@ export default function Home() {
     fetchStartups();
   }, []);
 
+  const startupOneDesc =
+    "An innovative platform revolutionizing the way we connect and collaborate.";
+  const startupTwoDesc =
+    "A cutting-edge solution transforming the future of healthcare with AI technology";
+  const startupThreeDesc =
+    "A sustainable energy startup dedicated to creating eco-friendly solutions for a greener planet.";
+
   return (
     <div className="">
       <div className="relative left-1/2 z-10 mb-18 max-h-[140rem] w-dvw -translate-x-1/2 overflow-hidden">
@@ -79,9 +96,9 @@ export default function Home() {
           Featured Projects
         </p>
         <div className="flex justify-around">
-          <StartupFlipCard />
-          <StartupFlipCard />
-          <StartupFlipCard />
+          <StartupFlipCard title="EcoLoop" description={startupOneDesc} />
+          <StartupFlipCard title="HealthBridge" description={startupTwoDesc} />
+          <StartupFlipCard title="GreenFleet" description={startupThreeDesc} />
         </div>
       </div>
     </div>
