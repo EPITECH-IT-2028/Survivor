@@ -50,10 +50,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     const fetchUser = async () => {
       try {
+        setLoading(true);
         const payload = JSON.parse(atob(token.split(".")[1]));
         const userId = payload.userId;
         const fetchedUser = await getUsersById(userId);
         setUser(fetchedUser);
+        setLoading(false);
       } catch (error) {
         console.error("Error decoding token or fetching user:", error);
         setUser(null);
@@ -94,9 +96,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setToken(null);
   };
 
-
   const isAuthenticated = !!token;
-  const isAdmin = user?.[0]?.role === "admin";
+  const isAdmin = user?.role === "admin";
 
   const value = {
     token,
