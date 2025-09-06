@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JEB Incubator - Startup Ecosystem Platform
+
+JEB Incubator is a platform designed to connect startups, founders, and investors. It provides a centralized hub for discovering innovative projects, finding investment opportunities, and networking with key players in the startup ecosystem.
+
+## Key Features
+
+- **User Authentication**: Secure sign-up and login functionality for all user types.
+- **Project Catalog**: A comprehensive directory of startups, allowing users to browse, filter, and find detailed information about each project.
+- **Profile Management**: Dedicated profiles for Founders and Investors to showcase their portfolios, interests, and background.
+- **Interactive Dashboard**: A personalized dashboard for users to manage their connections, followed startups, and profile information.
+- **News and Events**: Stay updated with the latest news and events within the startup community.
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Database**: [Neon](https://neon.tech/) (Postgres)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [shadcn/ui](https://ui.shadcn.com/)
+- **Authentication**: JWT (JSON Web Tokens)
+- **Deployment**: [Vercel](https://vercel.com/)
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to set up the project locally for development and testing.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [Node.js](https://nodejs.org/en) (v18.x or later recommended)
+- [npm](https://www.npmjs.com/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/EPITECH-IT-2028/Survivor.git
+    cd Survivor
+    ```
 
-## Learn More
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+3.  **Set up environment variables:**
+    Create a `.env.local` file in the root of the project and add the necessary environment variables.
+    You will need to provide values for the following:
+    - `DATABASE_URL`: Your Neon database connection string.
+    - `JWT_SECRET`: A secret key for signing JWTs.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
-## Deploy on Vercel
+## Available Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `npm run dev`: Starts the development server.
+- `npm run build`: Builds the application for production.
+- `npm run start`: Starts a production server.
+- `npm run lint`: Lints the codebase using ESLint.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+- `app/`: Contains the core application logic, including pages, API routes, and layouts.
+- `components/`: Reusable React components used throughout the application.
+- `lib/`: Contains utility functions, database connection logic (`db.ts`), and authentication helpers (`auth-utils.ts`).
+- `public/`: Static assets like images and fonts.
+- `app/api/`: All backend API endpoints are defined here.
+
+## Deployment
+
+This project is optimized for deployment on [Vercel](https://vercel.com/). Simply connect your Git repository to Vercel to enable automatic deployments on push.
