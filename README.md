@@ -43,9 +43,17 @@ Follow these instructions to set up the project locally for development and test
 
 3.  **Set up environment variables:**
     Create a `.env.local` file in the root of the project and add the necessary environment variables.
+
+    Generate a secure JWT secret (minimum 32 characters):
+    ```bash
+    echo "JWT_SECRET=$(openssl rand -base64 32)" >> .env.local
+    ```
+
     You will need to provide values for the following:
     - `DATABASE_URL`: Your Neon database connection string.
-    - `JWT_SECRET`: A secret key for signing JWTs.
+    - `JWT_SECRET`: A secret key for signing JWTs (minimum 32 characters, automatically generated above).
+
+    **⚠️ Important**: Never commit `.env*` files to version control as they contain sensitive information.
 
 4.  **Run the development server:**
     ```bash
