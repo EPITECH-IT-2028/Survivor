@@ -74,7 +74,6 @@ export function UpdateStartup() {
   }, [message]);
 
   const handleChangeInputValue = (updatedString: string, startupId: number, typeToUpdate: string) => {
-    console.log("Updating", typeToUpdate, "to", updatedString, "for startup ID", startupId);
     const startups = startupsData?.map((s) => {
       if (s.id === startupId) {
         return { ...s, [typeToUpdate]: updatedString };

@@ -37,7 +37,6 @@ export async function addStartup(startupData: TStartups): Promise<TStartups | nu
       news: startupData.news
     };
 
-    console.log("Adding startup with data:", payload);
     const res = await fetch("/api/startups", {
       method: "POST",
       headers: {
