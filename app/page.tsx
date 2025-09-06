@@ -96,9 +96,9 @@ export default function Home() {
           Featured Projects
         </p>
         <div className="flex justify-around">
-          <StartupFlipCard title="EcoLoop" description={startupOneDesc} />
-          <StartupFlipCard title="HealthBridge" description={startupTwoDesc} />
-          <StartupFlipCard title="GreenFleet" description={startupThreeDesc} />
+          <StartupFlipCard title="EcoLoop" description={startupOneDesc} thumbnail="https://images.unsplash.com/photo-1658242106760-7a5c8f177180?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/>
+          <StartupFlipCard title="HealthBridge" description={startupTwoDesc} thumbnail="https://images.unsplash.com/photo-1727060592889-0bde29c57213?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/>
+          <StartupFlipCard title="GreenFleet" description={startupThreeDesc} thumbnail="https://images.unsplash.com/photo-1585871746932-e133d3fedf4d?q=80&w=1370&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/>
         </div>
       </div>
     </div>
