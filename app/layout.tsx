@@ -4,6 +4,7 @@ import { Instrument_Serif } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -35,13 +36,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sf-pro ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} pb-24 antialiased`}
+        className={`font-sf-pro ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
         <AuthProvider>
           <Navbar />
           <div className="mx-auto max-w-6xl">{children}</div>
           <Toaster position="bottom-right" richColors />
         </AuthProvider>
+        <Footer />
       </body>
     </html>
   );
