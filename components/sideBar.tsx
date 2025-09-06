@@ -1,3 +1,4 @@
+"use client";
 
 import {
   Sidebar,
@@ -11,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useAuth } from "@/lib/auth-context"
 
 type Item = {
   title: string
@@ -18,8 +20,9 @@ type Item = {
   icon: React.ComponentType
 }
 
-
 export function AppSidebar({ items }: { items: Item[] }) {
+  const { startups } = useAuth();
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -27,7 +30,8 @@ export function AppSidebar({ items }: { items: Item[] }) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <a href="#">
-                <span>My App</span>
+                <span>{startups?.length === 0 ? "Please create a startup" : 
+                  startups?.length === 1 ? startups[0].name : startups?.map(startup => startup.name).join(", ")}</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

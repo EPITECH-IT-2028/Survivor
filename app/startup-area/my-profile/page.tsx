@@ -1,14 +1,15 @@
 "use client";
+import { sidebarItems } from "@/app/types/sidebarItems";
 import { AppSidebar } from "@/components/sideBar";
+import { UpdateStartup } from "@/components/startupProfilePage";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { sidebarItems } from "../types/sidebarItems";
 
-export default function StartupArea() {
-
+export default function startupProfilePage() {
   return (
     <SidebarProvider>
       <AppSidebar items={sidebarItems} />
       <SidebarTrigger />
-    </SidebarProvider >
-  )
+      <UpdateStartup />
+    </SidebarProvider>
+  );
 }
