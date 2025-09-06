@@ -18,12 +18,12 @@ export const insertUserQuery = async (
   name: string,
   role: string,
   email: string,
-  founder_it: string | null,
+  founder_id: string | null,
   investor_id: string | null,
   password?: string,
 ) => {
   return await db`INSERT INTO users (name, role, email, founder_id, investor_id, password)
-      VALUES (${name}, ${role}, ${email}, ${founder_it}, ${investor_id}, ${password}) RETURNING *`;
+      VALUES (${name}, ${role}, ${email}, ${founder_id}, ${investor_id}, ${password}) RETURNING *`;
 }
 
 

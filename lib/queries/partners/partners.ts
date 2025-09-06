@@ -4,7 +4,7 @@ export const getPartnersQuery = async (db: NeonQueryFunction<false, false>) => {
   return await db`SELECT * FROM partners ORDER BY id ASC`;
 }
 
-export const insetPartnerQuery = async (
+export const insertPartnerQuery = async (
   db: NeonQueryFunction<false, false>,
   name: string,
   legal_status: string,

@@ -1,6 +1,6 @@
 'use server';
 import { getSql } from "@/lib/db";
-import { getPartnersQuery, insetPartnerQuery } from "@/lib/queries/partners/partners";
+import { getPartnersQuery, insertPartnerQuery } from "@/lib/queries/partners/partners";
 
 export async function GET() {
   const db = getSql();
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
   try {
     const { name, legal_status, address, email, phone, description, partnership_type } = await request.json();
 
-    const response = await insetPartnerQuery(db, name, legal_status, address, email, phone, description, partnership_type);
+    const response = await insertPartnerQuery(db, name, legal_status, address, email, phone, description, partnership_type);
 
     return new Response(JSON.stringify(response), {
       status: 201,
