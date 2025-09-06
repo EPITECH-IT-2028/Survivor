@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 
 export default function Navbar() {
-  const { isAuthenticated, isAdmin } = useAuth();
+  const { isAuthenticated, isAdmin, loading } = useAuth();
   return (
     <nav
       aria-label="Navigation principale"
@@ -30,36 +30,23 @@ export default function Navbar() {
           <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
         </Link>
       </div>
-      {!isAuthenticated && (
-        <Link href="/login" className="group relative right-0 mr-6 px-6 py-3">
-          <span className="absolute inset-0 rounded-sm border transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:bg-secondary"></span>
-          <span className="relative text-secondary group-hover:text-primary">
-            Login
-          </span>
-        </Link>
-      )}
-      {isAuthenticated && isAdmin && (
-        <Link
-          href="/dashboard"
-          className="group relative right-0 mr-6 px-6 py-3"
-        >
-          <span className="absolute inset-0 rounded-sm border transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:bg-secondary"></span>
-          <span className="relative text-secondary group-hover:text-primary">
-            Dashboard
-          </span>
-        </Link>
-      )}
-      {isAuthenticated && !isAdmin && (
-        <Link
-          href="#"
-          className="group relative right-0 mr-6 px-6 py-3"
-        >
-          <span className="absolute inset-0 rounded-sm border transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:bg-secondary"></span>
-          <span className="relative text-secondary group-hover:text-primary">
-            Profile
-          </span>
-        </Link>
-      )}
+      {!loading &&
+        (isAuthenticated ? (
+          <Link href={isAdmin ? "/dashboard" : "/startup-area"}
+            className="group relative right-0 mr-6 px-6 py-3">
+            <span className="absolute inset-0 rounded-sm border transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:bg-secondary"></span>
+            <span className="relative text-secondary group-hover:text-primary">
+              Dashboard
+            </span>
+          </Link>
+        ) : (
+          <Link href="/login" className="group relative right-0 mr-6 px-6 py-3">
+            <span className="absolute inset-0 rounded-sm border transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:bg-secondary"></span>
+            <span className="relative text-secondary group-hover:text-primary">
+              Login
+            </span>
+          </Link>
+        ))}
     </nav>
   );
 }

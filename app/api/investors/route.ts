@@ -1,5 +1,6 @@
 'use server';
 import { getSql } from "@/lib/db";
+import { getInvestorsQuery, insertInvestorQuery } from "@/lib/queries/investors/investors";
 
 export async function GET() {
   const db = getSql();
@@ -12,7 +13,7 @@ export async function GET() {
   }
 
   try {
-    const investors = await db`SELECT * FROM investors`;
+    const investors = await getInvestorsQuery(db);
     return new Response(JSON.stringify(investors), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -36,10 +37,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { name, legal_status, address, email, phone, description, investor_type, investment_focus, users } = await request.json();
+    const { name, legal_status, address, email, phone, description, investor_type, investment_focus } = await request.json();
 
-    const response = await db`INSERT INTO investors (name, legal_status, address, email, phone, description, investor_type, investment_focus)
-      VALUES (${name}, ${legal_status}, ${address}, ${email}, ${phone}, ${description}, ${investor_type}, ${investment_focus}) RETURNING *`;
+    const response = await insertInvestorQuery(db, name, legal_status, address, email, phone, description, investor_type, investment_focus);
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },

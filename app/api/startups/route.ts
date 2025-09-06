@@ -1,5 +1,6 @@
 'use server';
 import { getSql } from "@/lib/db";
+import { getStartupsQuery, insertStartupQuery } from "@/lib/queries/startups/startups";
 
 export async function GET() {
   const db = getSql();
@@ -12,12 +13,13 @@ export async function GET() {
   }
 
   try {
-    const response = await db`SELECT * FROM startups ORDER BY id ASC`;
+    const response = await getStartupsQuery(db);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
+    console.error('Error fetching startups:', error);
     return new Response(JSON.stringify({ error: 'Failed to fetch startups' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
@@ -40,10 +42,8 @@ export async function POST(request: Request) {
       project_status, needs, maturity, sector } = await request.json();
 
 
-    const response = await db`INSERT INTO startups (name, description, legal_status, address, email, phone, created_at,
-      website_url, social_media_url, project_status, needs, maturity, sector)
-      VALUES (${name}, ${description}, ${legal_status}, ${address}, ${email}, ${phone}, ${created_at}, ${website_url},
-      ${social_media_url}, ${project_status}, ${needs}, ${maturity}, ${sector}) RETURNING *`;
+    const response = await insertStartupQuery(db, name, description, legal_status, address, email, phone, created_at,
+      website_url, social_media_url, project_status, needs, maturity, sector);
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },

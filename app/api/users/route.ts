@@ -1,5 +1,6 @@
 'use server';
 import { getSql } from "@/lib/db";
+import { getUsersQuery, insertUserQuery } from "@/lib/queries/users/users";
 
 export async function GET() {
   const db = getSql();
@@ -12,7 +13,7 @@ export async function GET() {
   }
 
   try {
-    const response = await db`SELECT * FROM users ORDER BY id ASC`;
+    const response = await getUsersQuery(db);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -38,8 +39,7 @@ export async function POST(request: Request) {
   try {
     const { name, role, email, founder_it, investor_id } = await request.json();
 
-    const response = await db`INSERT INTO users (name, role, email, founder_id, investor_id)
-      VALUES (${name}, ${role}, ${email}, ${founder_it}, ${investor_id}) RETURNING *`;
+    const response = await insertUserQuery(db, name, role, email, founder_it, investor_id);
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },

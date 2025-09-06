@@ -1,5 +1,6 @@
 'use server';
 import { getSql } from "@/lib/db";
+import { getFoundersQuery, insertFounderQuery } from "@/lib/queries/founders/founders";
 
 export async function GET() {
   const db = getSql();
@@ -12,7 +13,7 @@ export async function GET() {
   }
 
   try {
-    const response = await db`SELECT * FROM founders`;
+    const response = await getFoundersQuery(db);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -38,8 +39,7 @@ export async function POST(request: Request) {
   try {
     const { name } = await request.json();
 
-    const response = await db`INSERT INTO founders (name)
-      VALUES (${name}) RETURNING *`;
+    const response = await insertFounderQuery(db, name);
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },

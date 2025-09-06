@@ -1,13 +1,12 @@
 'use server';
 
 import { getSql } from "@/lib/db";
-import { insertFounderStartupQuery } from "@/lib/queries/founder_startup/fs";
-import { getFoundersByStartupIdQuery } from "@/lib/queries/founders/founders";
+import { getStartupEngagementsQuery, updateStartupEngagementQuery } from "@/lib/queries/startups/startups";
 import { NextRequest } from "next/server";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const db = getSql();
 
@@ -21,23 +20,30 @@ export async function GET(
   const { id } = await params;
 
   try {
-    const founders = await getFoundersByStartupIdQuery(db, id);
+    const response = await getStartupEngagementsQuery(db, id);
 
-    return new Response(JSON.stringify(founders), {
+    if (response.length === 0) {
+      return new Response(JSON.stringify({ error: 'Startup not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    return new Response(JSON.stringify(response[0]), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch founder_startups' }), {
+    return new Response(JSON.stringify({ error: 'Failed to fetch engagement rate' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 }
 
-export async function POST(
+export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const db = getSql();
 
@@ -51,23 +57,26 @@ export async function POST(
   const { id } = await params;
 
   try {
-    const { founder_id } = await request.json();
+    const { engagement_rate } = await request.json();
 
-    const response = await insertFounderStartupQuery(db, founder_id, id);
-    if (response.length === 0) {
-      return new Response(JSON.stringify({ message: 'Association already exists' }), {
-        status: 200,
+    if (typeof engagement_rate !== 'number') {
+      return new Response(JSON.stringify({ error: 'engagement_rate must be a number' }), {
+        status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
     }
+
+    const response = await updateStartupEngagementQuery(db, id, engagement_rate);
+
     return new Response(JSON.stringify(response), {
-      status: 201,
+      status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: `Failed to create founder_startup ${error}` }), {
+    return new Response(JSON.stringify({ error: 'Failed to update engagement rate' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 }
+

@@ -1,6 +1,8 @@
 'use server';
 
 import { getSql } from "@/lib/db";
+import { insertFounderStartupQuery } from "@/lib/queries/founder_startup/fs";
+import { getStartupsByFounderIdQuery } from "@/lib/queries/startups/startups";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -19,12 +21,7 @@ export async function GET(
   const { id } = await params;
 
   try {
-    const startups = await db`
-      SELECT s.*
-      FROM founder_startup AS fs
-      JOIN startups AS s ON s.id = fs.startup_id
-      WHERE fs.founder_id = ${id}
-    `;
+    const startups = await getStartupsByFounderIdQuery(db, id);
 
     return new Response(JSON.stringify(startups), {
       status: 200,
@@ -56,8 +53,7 @@ export async function POST(
   try {
     const { startup_id } = await request.json();
 
-    const [inserted] = await db`INSERT INTO founder_startup (founder_id, startup_id)
-      VALUES (${id}, ${startup_id}) RETURNING *`;
+    const [inserted] = await insertFounderStartupQuery(db, id, startup_id);
     return new Response(JSON.stringify(inserted), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },

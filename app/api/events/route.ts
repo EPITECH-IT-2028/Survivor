@@ -1,5 +1,6 @@
 'use server';
 import { getSql } from "@/lib/db";
+import { getEventsQuery, insertEventQuery } from "@/lib/queries/events/events";
 
 export async function GET() {
   const db = getSql();
@@ -12,7 +13,7 @@ export async function GET() {
   }
 
   try {
-    const response = await db`SELECT * FROM events`;
+    const response = await getEventsQuery(db);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -38,8 +39,7 @@ export async function POST(request: Request) {
   try {
     const { dates, location, description, event_type, target_audience, name } = await request.json();
 
-    const response = await db`INSERT INTO events (dates, location, description, event_type, target_audience, name)
-      VALUES (${dates}, ${location}, ${description}, ${event_type}, ${target_audience}, ${name}) RETURNING *`;
+    const response = await insertEventQuery(db, dates, location, description, event_type, target_audience, name);
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },
@@ -50,6 +50,6 @@ export async function POST(request: Request) {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
-   }
+  }
 }
 
