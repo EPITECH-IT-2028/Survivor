@@ -4,6 +4,14 @@ export const getStartupsQuery = async (db: NeonQueryFunction<false, false>) => {
   return await db`SELECT * FROM startups ORDER BY id ASC`;
 }
 
+export const getStartupEngagementsQuery = async (db: NeonQueryFunction<false, false>, startup_id: string) => {
+  return await db`SELECT engagement_rate FROM startups WHERE id = ${startup_id}`;
+}
+
+export const updateStartupEngagementQuery = async (db: NeonQueryFunction<false, false>, startup_id: string, engagement_rate: number) => {
+  return await db`UPDATE startups SET engagement_rate = ${engagement_rate} WHERE id = ${startup_id} RETURNING *`;
+}
+
 export const insertStartupQuery = async (db: NeonQueryFunction<false, false>,
   name: string,
   description: string,
@@ -18,18 +26,18 @@ export const insertStartupQuery = async (db: NeonQueryFunction<false, false>,
   needs: string,
   maturity: string,
   sector: string) => {
-  return await db`INSERT INTO startups (name, description, legal_status, address, email, phone, created_at,
-      website_url, social_media_url, project_status, needs, maturity, sector)
-      VALUES (${name}, ${description}, ${legal_status}, ${address}, ${email}, ${phone}, ${created_at}, ${website_url},
-      ${social_media_url}, ${project_status}, ${needs}, ${maturity}, ${sector}) RETURNING *`;
+  return await db`INSERT INTO startups(name, description, legal_status, address, email, phone, created_at,
+    website_url, social_media_url, project_status, needs, maturity, sector)
+  VALUES(${name}, ${description}, ${legal_status}, ${address}, ${email}, ${phone}, ${created_at}, ${website_url},
+    ${social_media_url}, ${project_status}, ${needs}, ${maturity}, ${sector}) RETURNING * `;
 }
 
 export const getStartupByIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
-  return await db`SELECT * FROM startups WHERE id = ${id}`;
+  return await db`SELECT * FROM startups WHERE id = ${id} `;
 }
 
 export const deleteStartupByIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
-  return await db`DELETE FROM startups WHERE id = ${id} RETURNING *`;
+  return await db`DELETE FROM startups WHERE id = ${id} RETURNING * `;
 }
 
 export const updateStartupByIdQuery = async (db: NeonQueryFunction<false, false>,
@@ -47,21 +55,21 @@ export const updateStartupByIdQuery = async (db: NeonQueryFunction<false, false>
   needs: string,
   maturity: string,
   sector: string) => {
-  return await db`UPDATE startups SET 
-      name = ${name},
-      description = ${description},
-      legal_status = ${legal_status},
-      address = ${address},
-      email = ${email},
-      phone = ${phone},
-      created_at = ${created_at},
-      website_url = ${website_url},
-      social_media_url = ${social_media_url},
-      project_status = ${project_status},
-      needs = ${needs},
-      maturity = ${maturity},
-      sector = ${sector}
-      WHERE id = ${id} RETURNING *`;
+  return await db`UPDATE startups SET
+  name = ${name},
+  description = ${description},
+  legal_status = ${legal_status},
+  address = ${address},
+  email = ${email},
+  phone = ${phone},
+  created_at = ${created_at},
+  website_url = ${website_url},
+  social_media_url = ${social_media_url},
+  project_status = ${project_status},
+  needs = ${needs},
+  maturity = ${maturity},
+  sector = ${sector}
+      WHERE id = ${id} RETURNING * `;
 }
 
 export const getStartupsByFounderIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
