@@ -9,7 +9,7 @@ export default function Navbar() {
   return (
     <nav
       aria-label="Navigation principale"
-      className="relative mx-6 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary font-canela-black text-secondary"
+      className="relative mx-6 my-5 flex h-24 items-center justify-between rounded-xl bg-primary font-canela-black text-secondary"
     >
       <Link href="/" className="absolute left-6 cursor-pointer">
         <TextRipple className="pt-2 text-4xl">JEB Incubator.</TextRipple>
