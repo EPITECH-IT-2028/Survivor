@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 
 const Footer = () => {
   return (
-    <footer className="mt-20 bg-gray-900 py-12 text-white">
+    <footer className="relative bottom-0 mt-20 w-full bg-gray-900 py-12 text-white">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-24 md:grid-cols-4">
           <div className="col-span-1">
