@@ -110,9 +110,18 @@ export default function Catalog() {
         </div>
 
         <div className="mr-4 grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {startupDisp.map((value) => (
-            <Modal key={value.id} startup={value} image="image" />
-          ))}
+          {startupDisp.length > 0 ? (
+            startupDisp.map((value) => (
+              <Modal key={value.id} startup={value} image="image" />
+            ))
+          ) : (
+            <div className="col-span-full flex w-full flex-col items-center justify-center rounded-lg border border-dashed border-gray-300">
+              <p className="mt-4 text-lg font-semibold">Not Found</p>
+              <p className="text-sm text-gray-500">
+                No startups match the current filters.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
