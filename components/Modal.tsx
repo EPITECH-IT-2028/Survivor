@@ -150,7 +150,7 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
   }
 
   return (
-    <div>
+    <>
       <Card
         key={startup.id}
         onClick={onClick}
@@ -271,6 +271,6 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
           </div>
         </DrawerContent>
       </Drawer>
-    </div>
+    </>
   )
 }
