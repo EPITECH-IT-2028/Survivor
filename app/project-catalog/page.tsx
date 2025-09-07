@@ -105,6 +105,13 @@ export default function Catalog() {
                 value={locationFilter}
                 onChange={(e) => setLocationFilter(e.target.value)}
               />
+              <Button
+                onClick={() => setLocationFilter("")}
+                className="relative cursor-pointer self-end rounded-md p-0 text-xs text-foreground/25 transition-colors hover:text-foreground/50"
+                variant="link"
+              >
+                Clear
+              </Button>
             </div>
           </div>
         </div>
