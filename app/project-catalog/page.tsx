@@ -45,7 +45,7 @@ export default function Catalog() {
   }, [sectorFilter, maturityFilter, locationFilter, startupsInfo]);
 
   return (
-    <div className="relative left-1/2 mt-12 flex min-h-screen -translate-x-1/2 justify-center gap-4 md:w-4xl lg:w-6xl">
+    <div className="relative left-1/2 mt-12 flex -translate-x-1/2 justify-center gap-4 md:w-4xl lg:w-6xl">
       <div className="flex min-w-full space-y-8 rounded-xl bg-muted/75 p-6">
         <div className="mr-6 flex flex-col gap-8">
           <h1 className="text-2xl font-bold">Filters</h1>
