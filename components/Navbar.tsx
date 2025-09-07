@@ -23,7 +23,7 @@ export default function Navbar() {
           <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
         </Link>
         <Link
-          href="#"
+          href="event-calendar"
           className="group mx-6 font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
         >
           See Events
