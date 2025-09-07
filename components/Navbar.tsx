@@ -3,10 +3,31 @@
 import { TextRipple } from "@/components/ui/text-ripple";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
+import { List } from "lucide-react";
+import { useState } from "react";
 
 export default function Navbar() {
   const { isAuthenticated, isAdmin } = useAuth();
+  const isMobile = window.innerWidth < 768;
+
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
   return (
+    isMobile ? (
+      <div className="bg-primary p-4">
+        <div className="flex items-center justify-between">
+          <Link href="/" className="cursor-pointer">
+            <TextRipple className="text-2xl text-white">JEB Incubator.</TextRipple>
+          </Link>
+          <List className="text-white" onClick={() => setMenuOpen(!menuOpen)} />
+            {/* {menuOpen && (
+              <Drawer>
+                
+              </Drawer>} */}
+        </div>
+      </div>
+    ) : (
+      <div>
     <nav
       aria-label="Navigation principale"
       className="relative mx-6 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary font-canela-black text-secondary"
@@ -61,5 +82,7 @@ export default function Navbar() {
         </Link>
       )}
     </nav>
+    </div>
+    )
   );
 }
