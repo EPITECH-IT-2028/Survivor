@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
 import { updateUserPassword } from "../hooks/users/updateUserPassword";
 
@@ -98,13 +97,6 @@ export default function LoginForm() {
         </CardContent>
         <CardFooter className="mt-6 flex flex-row items-end">
           <Button type="submit">Reset</Button>
-          <Button
-            variant="link"
-            className="mt-4"
-            onClick={() => router.push("/register")}
-          >
-            Don&apos;t have an account? Register
-          </Button>
         </CardFooter>
       </form>
     </Card>
