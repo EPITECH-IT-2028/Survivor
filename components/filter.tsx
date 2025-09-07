@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { UserRole } from "@/app/types/users";
+import { ChevronsUpDown, X } from "lucide-react";
 
 export type Filters = {
   value: string;
@@ -65,7 +66,7 @@ export function FiltersComboBoxResponsive({
     if (selectedFilters) {
       onSelection(selectedFilters.value as UserRole);
     }
-  }, [selectedFilters]);
+  }, [selectedFilters, onSelection]);
 
   if (isDesktop) {
     return (
@@ -73,7 +74,7 @@ export function FiltersComboBoxResponsive({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-[150px] justify-start"
+            className="flex w-full justify-between"
             disabled={disabled}
           >
             {selectedFilters ? (
@@ -81,9 +82,10 @@ export function FiltersComboBoxResponsive({
             ) : (
               <>{placeHolder.label}</>
             )}
+            <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0" align="start">
+        <PopoverContent className="w-[200px]" align="start">
           <FiltersList
             setOpen={setOpen}
             setSelectedFilters={handleFilterChange}
@@ -136,8 +138,8 @@ function FiltersList({
               onSelect={(value) => {
                 setSelectedFilters(
                   filtersList.find(
-                    (filter) => filter.label.toString() === value
-                  ) || null
+                    (filter) => filter.label.toString() === value,
+                  ) || null,
                 );
                 setOpen(false);
               }}
