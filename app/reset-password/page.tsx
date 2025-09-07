@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
+import { updateUserPassword } from "../hooks/users/updateUserPassword";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -25,7 +25,6 @@ export default function LoginForm() {
     description: string;
   } | null>(null);
   const router = useRouter();
-  const { login } = useAuth();
 
   useEffect(() => {
     if (message) {
@@ -40,31 +39,21 @@ export default function LoginForm() {
     setMessage(null);
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
+      const response = await updateUserPassword(email, password);
+      if (response) {
         setMessage({
           type: "success",
-          title: "Logged successfully!",
+          title: "Password updated successfully!",
           description: "",
         });
         setEmail("");
         setPassword("");
-        login(data.token);
-        router.push("/");
+        router.push("/login");
       } else {
         setMessage({
           type: "error",
-          title: "Login failed",
-          description: data.error || "Please try again.",
+          title: "Failed to update password",
+          description: response.error || "Please try again.",
         });
       }
     } catch (error) {
@@ -79,7 +68,7 @@ export default function LoginForm() {
   return (
     <Card className="absolute top-1/2 left-1/2 w-[350px] -translate-1/2">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Reset your password</CardTitle>
         <CardDescription>Enter your credentials</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
@@ -95,7 +84,7 @@ export default function LoginForm() {
               />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="loginPassword">Password</Label>
+              <Label htmlFor="loginPassword">New Password</Label>
               <Input
                 id="loginPassword"
                 type="password"
@@ -103,26 +92,11 @@ export default function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-
-              <Button
-                variant="link"
-                className="h-auto w-fit p-0 text-sm"
-                onClick={() => router.push("/reset-password")}
-              >
-                Reset password
-              </Button>
             </div>
           </div>
         </CardContent>
         <CardFooter className="mt-6 flex flex-row items-end">
-          <Button type="submit">Login</Button>
-          <Button
-            variant="link"
-            className="mt-4"
-            onClick={() => router.push("/register")}
-          >
-            Don&apos;t have an account? Register
-          </Button>
+          <Button type="submit">Reset</Button>
         </CardFooter>
       </form>
     </Card>

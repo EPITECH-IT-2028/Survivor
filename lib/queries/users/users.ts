@@ -47,3 +47,12 @@ export const updateUserQuery = async (db: NeonQueryFunction<false, false>,
       investor_id = ${investor_id}
       WHERE id = ${id} RETURNING *`;
 }
+
+export const updateUserPasswordQuery = async (db: NeonQueryFunction<false, false>,
+  id: string,
+  password: string,
+) => {
+  return await db`UPDATE users SET 
+      password = ${password}
+      WHERE id = ${id} RETURNING *`;
+}

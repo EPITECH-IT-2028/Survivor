@@ -37,9 +37,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { name, role, email, founder_it, investor_id } = await request.json();
+    const { name, role, email, founder_id, investor_id } = await request.json();
 
-    const response = await insertUserQuery(db, name, role, email, founder_it, investor_id);
+    const response = await insertUserQuery(db, name, role, email, founder_id, investor_id);
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },
