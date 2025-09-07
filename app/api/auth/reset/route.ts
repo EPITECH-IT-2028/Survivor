@@ -16,6 +16,13 @@ export async function PUT(req: Request) {
 
     const db = getSql();
 
+    if (!db) {
+      return NextResponse.json(
+        { error: "Database connection failed" },
+        { status: 500 },
+      );
+    }
+
     const userResponse = await getUserByEmailQuery(db, email);
 
     if (!userResponse) {
