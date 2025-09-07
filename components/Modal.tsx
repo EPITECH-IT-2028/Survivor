@@ -8,6 +8,7 @@ import { TStartups } from '@/app/types/startup';
 import Link from "next/link";
 import { getStartupEngagement } from "@/app/hooks/startups/getStartupEngagement";
 import { setStartupEngagement } from "@/app/hooks/startups/setStartupEngagement";
+import { X, ChevronRight } from 'lucide-react';
 
 async function generateStartupPDF(startup: TStartups): Promise<void> {
   const pdfDoc = await PDFDocument.create()
@@ -182,9 +183,7 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
             </div>
           </div>
           <div className="flex justify-end mt-2">
-            <svg className="h-4 w-4 text-indigo-500 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-            </svg>
+            <ChevronRight className="h-4 w-4" />
           </div>
         </CardContent>
       </Card>
@@ -194,7 +193,7 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
           <div className="flex flex-col h-full">
             <div className="p-6 border-b relative">
               <button onClick={() => setIsOpen(false)} className="absolute top-4 left-4 p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                <X className="h-4 w-4" />
               </button>
               <DialogTitle className="text-2xl font-bold text-gray-900 mb-2 ml-12">
                 {startup.name}
