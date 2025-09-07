@@ -57,6 +57,11 @@ export function FiltersComboBoxResponsive({
     value: any;
     label: any;
   } | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleFilterChange = (newValue: { value: any; label: any } | null) => {
     setSelectedFilters(newValue);
@@ -67,6 +72,19 @@ export function FiltersComboBoxResponsive({
       onSelection(selectedFilters.value as UserRole);
     }
   }, [selectedFilters, onSelection]);
+
+  if (!isMounted) {
+    return (
+      <Button
+        variant="outline"
+        className="flex w-full justify-between"
+        disabled
+      >
+        {placeHolder.label}
+        <ChevronsUpDown className="opacity-50" />
+      </Button>
+    );
+  }
 
   if (isDesktop) {
     return (
