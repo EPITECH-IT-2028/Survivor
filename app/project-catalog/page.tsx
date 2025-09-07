@@ -67,7 +67,7 @@ export default function Catalog() {
               />
               <Button
                 onClick={() => setSectorFilter("")}
-                className="relative cursor-pointer self-end rounded-md p-0 transition-colors hover:bg-muted"
+                className="relative cursor-pointer self-end rounded-md p-0 text-xs text-foreground/25 transition-colors hover:text-foreground/50"
                 variant="link"
               >
                 Clear
@@ -90,7 +90,7 @@ export default function Catalog() {
               />
               <Button
                 onClick={() => setMaturityFilter("")}
-                className="relative cursor-pointer self-end rounded-md p-0 transition-colors hover:bg-muted"
+                className="relative cursor-pointer self-end rounded-md p-0 text-xs text-foreground/25 transition-colors hover:text-foreground/50"
                 variant="link"
               >
                 Clear
