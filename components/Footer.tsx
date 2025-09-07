@@ -90,9 +90,16 @@ const Footer = () => {
             <h3 className="mb-4 text-lg font-semibold">Stay Updated</h3>
             <form>
               <div className="flex items-center gap-2">
+                <label htmlFor="newsletter-email" className="sr-only">
+                  Email address
+                </label>
                 <Input
+                  id="newsletter-email"
+                  name="email"
                   type="email"
                   placeholder="Your email"
+                  autoComplete="email"
+                  required
                   className="w-full rounded-md bg-secondary px-4 py-2 text-gray-900"
                 />
                 <Button
