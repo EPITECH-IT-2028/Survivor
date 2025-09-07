@@ -49,8 +49,8 @@ useEffect(() => {
 
   return (
   <div className="flex min-h-screen">
-    <div className="w-80 bg-gray-50 border-r p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Filters</h1>
+    <div className="w-80 space-y-6 border-r bg-gray-50 p-6">
+      <h1 className="mb-6 text-2xl font-bold text-gray-900">Filters</h1>
       <h2>Sector
       <FiltersComboBoxResponsive
             key={`sector-${sectorFilter}`}
@@ -60,8 +60,8 @@ useEffect(() => {
               setSectorFilter(value);
             }}
           />
-        <button onClick={() => setSectorFilter("")} className="rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-          <X className="h-4 w-4" />
+        <button onClick={() => setSectorFilter("")} className="cursor-pointer rounded-full transition-colors hover:bg-gray-100">
+          <X className="size-4" />
         </button>
       </h2>
       <h2>Maturity
@@ -73,8 +73,8 @@ useEffect(() => {
               setMaturityFilter(value);
             }}
           />
-        <button onClick={() => setMaturityFilter("")} className="rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-          <X className="h-4 w-4" />
+        <button onClick={() => setMaturityFilter("")} className="cursor-pointer rounded-full transition-colors hover:bg-gray-100">
+          <X className="size-4" />
         </button>
       </h2>
       <h2>Location
