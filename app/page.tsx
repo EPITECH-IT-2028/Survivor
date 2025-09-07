@@ -100,7 +100,7 @@ export default function Home() {
     "A sustainable energy startup dedicated to creating eco-friendly solutions for a greener planet.";
 
   return (
-    <div className="">
+    <div>
       <div className="relative left-1/2 z-10 mb-18 max-h-[140rem] w-dvw -translate-x-1/2 overflow-hidden">
         <div className="pointer-events-none absolute bottom-28 z-10 size-6 h-[10rem] w-full bg-gradient-to-t from-white to-transparent" />
         <HeroParallax products={startups} />
