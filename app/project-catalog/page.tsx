@@ -1,7 +1,7 @@
 "use client"
 
 import { TStartups, sectorFilters, maturityFilters } from '@/app/types/startup';
-import { use, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Input } from '@/components/ui/input';
 import { getStartups } from '../hooks/startups/getStartups';
 import Modal from '@/components/Modal';
@@ -48,7 +48,7 @@ useEffect(() => {
   }, [sectorFilter, maturityFilter, locationFilter, startupsInfo]);
 
   return (
-  <div className="flex min-h-screen">
+  <div className="relative left-1/2 mt-12 flex min-h-screen -translate-x-1/2 justify-center gap-4 md:w-4xl lg:w-6xl">
     <div className="w-80 space-y-6 border-r bg-gray-50 p-6">
       <h1 className="mb-6 text-2xl font-bold text-gray-900">Filters</h1>
       <h2>Sector
@@ -81,7 +81,7 @@ useEffect(() => {
         <Input type="text" placeholder="Location" value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)}/>
       </h2>
     </div>
-    <div className="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="mr-4 grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {
         startupDisp.map((value) => (
           <Modal key={value.id} startup={value} image="image" />
