@@ -154,36 +154,37 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
       <Card
         key={startup.id}
         onClick={onClick}
-        className='h-64 w-full transform cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl'
+        className='w-full transform cursor-pointer rounded-xl border border-gray-200'
       >
-        <CardHeader className="pb-2">
-          <CardTitle className="line-clamp-2 h-14 text-lg font-bold text-gray-900">
+        <CardHeader className="mx-4 flex items-center rounded-md bg-muted/75 px-4 py-2">
+          <CardTitle className="line-clamp-2 text-lg font-bold">
             {startup.name}
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex h-32 flex-col justify-between">
+        <CardContent className="flex flex-col">
           <div className="space-y-2">
-            <div className="flex items-center">
-              <span className="w-20 text-xs font-medium text-gray-500">Sector:</span>
-              <span className="truncate text-sm text-gray-700">
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              <span className="text-xs font-medium text-gray-500">Sector:</span>
+              <span className="grid truncate text-sm text-gray-700 md:col-span-2">
                 {startup.sector || 'N/A'}
               </span>
             </div>
-            <div className="flex items-center">
-              <span className="w-20 text-xs font-medium text-gray-500">Maturity:</span>
-              <span className="truncate text-sm text-gray-700">
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              <span className="text-xs font-medium text-gray-500">Maturity:</span>
+              <span className="grid truncate text-sm text-gray-700 md:col-span-2">
                 {startup.maturity || 'N/A'}
               </span>
             </div>
-            <div className="flex items-center">
-              <span className="mr-2 w-20 text-xs font-medium text-gray-500">Address:</span>
-              <span className="truncate text-sm text-gray-700">
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              <span className="text-xs font-medium text-gray-500">Address:</span>
+              <span className="grid truncate text-sm text-gray-700 md:col-span-2">
                 {startup.address || 'N/A'}
               </span>
             </div>
           </div>
-          <div className="mt-2 flex justify-end">
-            <ChevronRight className="size-4" />
+          <div className="mt-4 flex items-center justify-center rounded-md bg-primary py-2 text-xs text-white transition-all duration-100 hover:scale-105 hover:bg-primary/90">
+            See More Details
+            <ChevronRight className="ml-4 size-4" />
           </div>
         </CardContent>
       </Card>
@@ -192,7 +193,7 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
         <DrawerContent>
           <div className="flex h-full flex-col">
             <div className="relative border-b p-6">
-              <button onClick={() => setIsOpen(false)} className="absolute top-4 left-4 cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100">
+              <button onClick={() => setIsOpen(false)} className="absolute top-4 left-4 cursor-pointer rounded-full transition-colors hover:bg-gray-100">
                 <X className="size-4" />
               </button>
               <DialogTitle className="mb-2 ml-12 text-2xl font-bold text-gray-900">
@@ -264,7 +265,7 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
               )}
             </div>
             <DrawerFooter className="border-t bg-gray-50">
-              <Button onClick={() => generateStartupPDF(startup)} className="w-full cursor-pointer bg-blue-600 text-white hover:bg-blue-700">
+              <Button onClick={() => generateStartupPDF(startup)} className="w-full bg-primary text-white hover:bg-primary/90">
                 Download PDF
               </Button>
             </DrawerFooter>
