@@ -50,6 +50,8 @@ const Footer = () => {
               <Link
                 href="https://twitter.com"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Twitter"
                 className="hover:text-blue-400"
               >
                 <FaTwitter size={24} />
@@ -57,6 +59,8 @@ const Footer = () => {
               <Link
                 href="https://facebook.com"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
                 className="hover:text-blue-600"
               >
                 <FaFacebook size={24} />
@@ -64,6 +68,8 @@ const Footer = () => {
               <Link
                 href="https://instagram.com"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
                 className="hover:text-pink-500"
               >
                 <FaInstagram size={24} />
@@ -71,6 +77,8 @@ const Footer = () => {
               <Link
                 href="https://linkedin.com"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
                 className="hover:text-blue-700"
               >
                 <FaLinkedin size={24} />
@@ -100,7 +108,8 @@ const Footer = () => {
 
         <div className="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500">
           <p>
-            &copy; {new Date().getFullYear()} JEB Incubator. All rights reserved.
+            &copy; {new Date().getFullYear()} JEB Incubator. All rights
+            reserved.
           </p>
         </div>
       </div>
