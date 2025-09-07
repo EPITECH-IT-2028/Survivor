@@ -165,20 +165,24 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
           <div className="space-y-2">
             <div className="grid grid-cols-1 md:grid-cols-3">
               <span className="text-xs font-medium text-gray-500">Sector:</span>
-              <span className="grid truncate text-sm text-gray-700 md:col-span-2">
+              <span className="grid text-sm text-gray-700 md:col-span-2">
+                <span className="truncate">
                 {startup.sector || 'N/A'}
+                </span>
               </span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3">
               <span className="text-xs font-medium text-gray-500">Maturity:</span>
-              <span className="grid truncate text-sm text-gray-700 md:col-span-2">
+              <span className="grid text-sm text-gray-700 md:col-span-2">
+                <span className="truncate">
                 {startup.maturity || 'N/A'}
+                </span>
               </span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3">
               <span className="text-xs font-medium text-gray-500">Address:</span>
-              <span className="grid truncate text-sm text-gray-700 md:col-span-2">
-                {startup.address || 'N/A'}
+              <span className="grid text-sm text-gray-700 md:col-span-2">
+                <span className="truncate">{startup.address || 'N/A'}</span>
               </span>
             </div>
           </div>
@@ -234,8 +238,8 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm font-medium text-gray-500">Address:</span>
-                    <span className="max-w-64 text-right text-sm text-gray-900">
-                      {startup.address || 'N/A'}
+                    <span className="max-w-64 truncate text-right text-sm text-gray-900">
+                      <span className="truncate">{startup.address || 'N/A'}</span>
                     </span>
                   </div>
                   <div className="flex justify-between">
