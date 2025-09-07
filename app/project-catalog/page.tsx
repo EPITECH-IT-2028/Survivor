@@ -11,7 +11,7 @@ export default function Catalog() {
   const [sectorFilter, setSectorFilter] = useState('')
   const [maturityFilter, setMaturityFilter] = useState('')
   const [locationFilter, setLocationFilter] = useState('')
-  
+
   const [startupsInfo, setStartupsInfo] = useState<TStartups[]>([])
   const [startupDisp, setStartupDisp] = useState<TStartups[]>([])
 
@@ -24,7 +24,7 @@ export default function Catalog() {
     fetchStartups();
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
     const s = sectorFilter.trim().toLowerCase();
     const m = maturityFilter.trim().toLowerCase();
     const l = locationFilter.trim().toLowerCase();
@@ -45,26 +45,24 @@ useEffect(() => {
     setStartupDisp(filtered);
   }, [sectorFilter, maturityFilter, locationFilter, startupsInfo]);
 
-  const [isOpen, setIsOpen] = useState(false)
-
   return (
-  <div>
-    <div className="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <h2>Sector
-        <Input type="text" placeholder="Sector" value={sectorFilter} onChange={(e) => setSectorFilter(e.target.value)}/>
-      </h2>
-      <h2>Maturity
-        <Input type="text" placeholder="Maturity" value={maturityFilter} onChange={(e) => setMaturityFilter(e.target.value)}/>
-      </h2>
-      <h2>Location
-        <Input type="text" placeholder="Location" value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)}/>
-      </h2>
-      {
-        startupDisp.map((value) => (
-          <Modal key={value.id} startup={value} image="image" />
-        ))
-      }
+    <div>
+      <div className="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <h2>Sector
+          <Input type="text" placeholder="Sector" value={sectorFilter} onChange={(e) => setSectorFilter(e.target.value)} />
+        </h2>
+        <h2>Maturity
+          <Input type="text" placeholder="Maturity" value={maturityFilter} onChange={(e) => setMaturityFilter(e.target.value)} />
+        </h2>
+        <h2>Location
+          <Input type="text" placeholder="Location" value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)} />
+        </h2>
+        {
+          startupDisp.map((value) => (
+            <Modal key={value.id} startup={value} image="image" />
+          ))
+        }
+      </div>
     </div>
-  </div>
   );
 }

@@ -1,6 +1,7 @@
 'use server';
 
 import { getSql } from "@/lib/db";
+import { deleteEventQuery, getEventByIdQuery, updateEventQuery } from "@/lib/queries/events/events";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -19,7 +20,7 @@ export async function GET(
   const { id } = await params;
 
   try {
-    const response = await db`SELECT * FROM events WHERE id = ${id}`;
+    const response = await getEventByIdQuery(db, id);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -48,7 +49,7 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    const response = await db`DELETE FROM events WHERE id = ${id} RETURNING *`;
+    const response = await deleteEventQuery(db, id);
 
     return new Response(JSON.stringify(response), {
       status: 200,
@@ -80,14 +81,7 @@ export async function PUT(
   try {
     const { name, dates, location, description, event_type, target_audience } = await request.json();
 
-    const response = await db`UPDATE events SET 
-      name = ${name},
-      dates = ${dates},
-      location = ${location},
-      description = ${description},
-      event_type = ${event_type},
-      target_audience = ${target_audience}
-      WHERE id = ${id} RETURNING *`;
+    const response = await updateEventQuery(db, id, name, dates, location, description, event_type, target_audience);
 
     return new Response(JSON.stringify(response), {
       status: 200,

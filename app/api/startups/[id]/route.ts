@@ -1,6 +1,7 @@
 'use server';
 
 import { getSql } from "@/lib/db";
+import { deleteStartupByIdQuery, getStartupByIdQuery, updateStartupByIdQuery } from "@/lib/queries/startups/startups";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -19,7 +20,7 @@ export async function GET(
   const { id } = await params;
 
   try {
-    const response = await db`SELECT * FROM startups WHERE id = ${id}`;
+    const response = await getStartupByIdQuery(db, id);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -48,7 +49,7 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    const response = await db`DELETE FROM startups WHERE id = ${id} RETURNING *`;
+    const response = await deleteStartupByIdQuery(db, id);
 
     return new Response(JSON.stringify(response), {
       status: 200,
@@ -81,21 +82,8 @@ export async function PUT(
     const { name, description, legal_status, address, email, phone, created_at, website_url, social_media_url,
       project_status, needs, maturity, sector } = await request.json();
 
-    const response = await db`UPDATE startups SET 
-      name = ${name},
-      description = ${description},
-      legal_status = ${legal_status},
-      address = ${address},
-      email = ${email},
-      phone = ${phone},
-      created_at = ${created_at},
-      website_url = ${website_url},
-      social_media_url = ${social_media_url},
-      project_status = ${project_status},
-      needs = ${needs},
-      maturity = ${maturity},
-      sector = ${sector}
-      WHERE id = ${id} RETURNING *`;
+    const response = await updateStartupByIdQuery(db, id, name, description, legal_status, address, email, phone,
+      created_at, website_url, social_media_url, project_status, needs, maturity, sector);
 
     return new Response(JSON.stringify(response), {
       status: 200,

@@ -2,6 +2,7 @@ import { getSql } from "@/lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import generateToken from "@/lib/auth-utils";
+import { getUserByEmailQuery, insertUserQuery } from "@/lib/queries/users/users";
 
 export async function POST(req: Request) {
   try {
@@ -14,8 +15,7 @@ export async function POST(req: Request) {
 
     const sql = getSql();
 
-    const foundUsers =
-      await sql`SELECT * FROM public.users WHERE email = ${email}`;
+    const foundUsers = await getUserByEmailQuery(sql, email);
     if (foundUsers.length > 0)
       return NextResponse.json(
         { error: "This email is already used" },
@@ -23,8 +23,15 @@ export async function POST(req: Request) {
       );
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser =
-      await sql`INSERT INTO public.users (name, role, email, password) VALUES (${name}, ${role}, ${email}, ${hashedPassword}) RETURNING id, name`;
+    const newUser = await insertUserQuery(
+      sql,
+      name,
+      role,
+      email,
+      null,
+      null,
+      hashedPassword,
+    );
     const token = generateToken([{ id: newUser[0].id, name: newUser[0].name }]);
     return NextResponse.json({
       message: "Registered successfully",
