@@ -154,56 +154,56 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
       <Card
         key={startup.id}
         onClick={onClick}
-        className='h-64 w-full transform rounded-xl border border-gray-200 p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer bg-white'
+        className='h-64 w-full transform cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl'
       >
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-bold text-gray-900 line-clamp-2 h-14">
+          <CardTitle className="line-clamp-2 h-14 text-lg font-bold text-gray-900">
             {startup.name}
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col justify-between h-32">
+        <CardContent className="flex h-32 flex-col justify-between">
           <div className="space-y-2">
             <div className="flex items-center">
-              <span className="text-xs font-medium text-gray-500 w-20">Sector:</span>
-              <span className="text-sm text-gray-700 truncate">
+              <span className="w-20 text-xs font-medium text-gray-500">Sector:</span>
+              <span className="truncate text-sm text-gray-700">
                 {startup.sector || 'N/A'}
               </span>
             </div>
             <div className="flex items-center">
-              <span className="text-xs font-medium text-gray-500 w-20">Maturity:</span>
-              <span className="text-sm text-gray-700 truncate">
+              <span className="w-20 text-xs font-medium text-gray-500">Maturity:</span>
+              <span className="truncate text-sm text-gray-700">
                 {startup.maturity || 'N/A'}
               </span>
             </div>
             <div className="flex items-center">
-              <span className="text-xs font-medium text-gray-500 w-20 mr-2">Address:</span>
-              <span className="text-sm text-gray-700 truncate">
+              <span className="mr-2 w-20 text-xs font-medium text-gray-500">Address:</span>
+              <span className="truncate text-sm text-gray-700">
                 {startup.address || 'N/A'}
               </span>
             </div>
           </div>
-          <div className="flex justify-end mt-2">
-            <ChevronRight className="h-4 w-4" />
+          <div className="mt-2 flex justify-end">
+            <ChevronRight className="size-4" />
           </div>
         </CardContent>
       </Card>
 
       <Drawer direction='right' open={isOpen}>
         <DrawerContent>
-          <div className="flex flex-col h-full">
-            <div className="p-6 border-b relative">
-              <button onClick={() => setIsOpen(false)} className="absolute top-4 left-4 p-2 rounded-full hover:bg-gray-100 transition-colors cursor-pointer">
-                <X className="h-4 w-4" />
+          <div className="flex h-full flex-col">
+            <div className="relative border-b p-6">
+              <button onClick={() => setIsOpen(false)} className="absolute top-4 left-4 cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100">
+                <X className="size-4" />
               </button>
-              <DialogTitle className="text-2xl font-bold text-gray-900 mb-2 ml-12">
+              <DialogTitle className="mb-2 ml-12 text-2xl font-bold text-gray-900">
                 {startup.name}
               </DialogTitle>
-              <p className="text-sm text-gray-500 ml-12">Startup Profile</p>
+              <p className="ml-12 text-sm text-gray-500">Startup Profile</p>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            <div className="flex-1 space-y-6 overflow-y-auto p-6">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Basic Information</h3>
+                <h3 className="mb-3 text-lg font-semibold text-gray-900">Basic Information</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-sm font-medium text-gray-500">Legal Status:</span>
@@ -221,7 +221,7 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Contact Information</h3>
+                <h3 className="mb-3 text-lg font-semibold text-gray-900">Contact Information</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-sm font-medium text-gray-500">Email:</span>
@@ -233,7 +233,7 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm font-medium text-gray-500">Address:</span>
-                    <span className="text-sm text-gray-900 text-right max-w-64">
+                    <span className="max-w-64 text-right text-sm text-gray-900">
                       {startup.address || 'N/A'}
                     </span>
                   </div>
@@ -244,7 +244,7 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
                         href={startup.website_url}
                         rel="noopener noreferrer"
                         target="_blank"
-                        className="text-sm text-blue-600 hover:text-blue-800 underline"
+                        className="text-sm text-blue-600 underline hover:text-blue-800"
                       >
                         Visit Website
                       </Link>
@@ -256,15 +256,15 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
               </div>
               {startup.description && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Description</h3>
-                  <p className="text-sm text-gray-700 leading-relaxed">
+                  <h3 className="mb-3 text-lg font-semibold text-gray-900">Description</h3>
+                  <p className="text-sm leading-relaxed text-gray-700">
                     {startup.description}
                   </p>
                 </div>
               )}
             </div>
             <DrawerFooter className="border-t bg-gray-50">
-              <Button onClick={() => generateStartupPDF(startup)} className="w-full bg-blue-600 hover:bg-blue-700 text-white cursor-pointer">
+              <Button onClick={() => generateStartupPDF(startup)} className="w-full cursor-pointer bg-blue-600 text-white hover:bg-blue-700">
                 Download PDF
               </Button>
             </DrawerFooter>
