@@ -113,6 +113,17 @@ export default function Catalog() {
                 Clear
               </Button>
             </div>
+            <Button
+              disabled={!sectorFilter && !maturityFilter && !locationFilter}
+              variant="outline"
+              onClick={() => {
+                setSectorFilter("");
+                setMaturityFilter("");
+                setLocationFilter("");
+              }}
+            >
+              Clear All
+            </Button>
           </div>
         </div>
 
