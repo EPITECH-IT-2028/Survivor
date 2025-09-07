@@ -138,7 +138,6 @@ export default function Modal({ startup, image }: { startup: TStartups; image: s
     setIsOpen(!isOpen)
     getStartupEngagement(startup.id).then(rate => {
       if (rate === null) {
-        setStartupEngagement(startup.id, 1);
         return;
       }
       setStartupEngagement(startup.id, rate + 1);
