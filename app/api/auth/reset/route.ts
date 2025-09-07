@@ -9,7 +9,7 @@ export async function PUT(req: Request) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { error: "Missing id or password" },
+        { error: "Missing email or password" },
         { status: 400 },
       );
     }
@@ -25,14 +25,16 @@ export async function PUT(req: Request) {
 
     const userResponse = await getUserByEmailQuery(db, email);
 
-    if (!userResponse) {
+    const userResponseArray = Array.isArray(userResponse) ? userResponse : [];
+
+    if (userResponseArray.length === 0) {
       return NextResponse.json(
         { error: "User not found" },
         { status: 404 },
       );
     }
 
-    const userId = userResponse[0].id;
+    const userId = userResponseArray[0].id;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
