@@ -65,17 +65,31 @@ export default function Home() {
     { title: string; link: string; thumbnail: string }[]
   >([]);
   useEffect(() => {
+    let mounted = true;
+
     const fetchStartups = async () => {
-      const startupData = await getStartups();
-      const parsedStartups = startupData.map((startup) => ({
-        title: startup.name,
-        link: "#",
-        thumbnail:
-          "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
-      }));
-      setStartups(parsedStartups);
+      try {
+        const startupData = await getStartups();
+        const parsedStartups = startupData.map((startup) => ({
+          title: startup.name,
+          link: "#",
+          thumbnail:
+            "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
+        }));
+        if (mounted) {
+          setStartups(parsedStartups);
+        }
+      } catch (error) {
+        console.error("Failed to fetch startups:", error);
+        if (mounted) {
+          setStartups([]);
+        }
+      }
     };
     fetchStartups();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const startupOneDesc =
