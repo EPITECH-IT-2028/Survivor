@@ -13,7 +13,7 @@ export const sidebarItems = [
   },
   {
     title: "Messages",
-    url: "#",
+    url: "/startup-area/messages",
     icon: Inbox,
   },
   {
