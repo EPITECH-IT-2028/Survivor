@@ -33,7 +33,7 @@ function Back(props: { description?: string; link?: string }) {
       <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
         {props.description || "No description available."}
       </p>
-      <Link href={props.link || "#"} target="_blank">
+      <Link href={props.link || "#"} target="_blank" rel="noopener noreferrer">
         <button className="mt-2 cursor-pointer rounded-full bg-zinc-50 px-4 py-1.5 text-sm font-medium text-zinc-900 transition hover:opacity-90 dark:bg-zinc-950 dark:text-zinc-50">
           Learn More
         </button>
