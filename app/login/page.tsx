@@ -106,7 +106,7 @@ export default function LoginForm() {
 
               <Button
                 variant="link"
-                className="h-auto p-0 w-fit text-sm"
+                className="h-auto w-fit p-0 text-sm"
                 onClick={() => router.push("/reset-password")}
               >
                 Reset password
