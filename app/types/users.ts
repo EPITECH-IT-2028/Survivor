@@ -1,6 +1,3 @@
-import { TFounder } from "./founder";
-import { TInvestor } from "./investor";
-
 export type UserRole = 'admin' | 'founder' | 'investor' | '-';
 
 export enum userRoleId {

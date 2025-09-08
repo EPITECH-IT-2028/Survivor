@@ -1,7 +1,7 @@
 import { NeonQueryFunction } from "@neondatabase/serverless"
 
 export const getEventsQuery = async (db: NeonQueryFunction<false, false>) => {
-  return await db`SELECT * FROM events`;
+  return await db`SELECT * FROM events ORDER BY id DESC`;
 }
 
 export const getEventByIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {

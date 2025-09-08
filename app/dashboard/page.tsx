@@ -13,20 +13,28 @@ import {
 import { getUsers } from "../hooks/users/getUsers";
 import { TUser } from "../types/users";
 import { TStartups } from "../types/startup";
+import { TEvent } from "../types/event";
 import UpdateProfile from "@/components/updateProfile";
 import { getStartups } from "../hooks/startups/getStartups";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import CreateUserOrStartup from "@/components/createUserOrStartup";
+import { getEvents } from "../hooks/events/getEvents";
+import UpdateEvent from "@/components/updateEvents";
+import CreateEvent from "@/components/createEvent";
 
 export default function Dashboard() {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [idClicked, setIdClicked] = useState<number | null>(null);
   const [isStartup, setIsStartup] = useState(true);
+  const [isEventCreateOpen, setIsEventCreateOpen] = useState(false);
+  const [isEventUpdateOpen, setIsEventUpdateOpen] = useState(false);
   const [usersData, setUsersData] = useState<TUser[]>([]);
   const [startupsData, setStartupsData] = useState<TStartups[]>([]);
+  const [eventsData, setEventsData] = useState<TEvent[]>([]);
   const [pageStartup, setPageStartup] = useState<number>(0);
   const [pageUser, setPageUser] = useState<number>(0);
+  const [pageEvent, setPageEvent] = useState<number>(0);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -37,15 +45,22 @@ export default function Dashboard() {
       const startups = await getStartups();
       setStartupsData(startups);
     };
+    const fetchEvents = async () => {
+      const events = await getEvents();
+      setEventsData(events);
+    };
     fetchUsers();
     fetchStartups();
-  }, [isUpdateOpen, isCreateOpen]);
+    fetchEvents();
+  }, [isUpdateOpen, isCreateOpen, isEventUpdateOpen, isEventCreateOpen]);
 
   const refreshData = async () => {
     const users = await getUsers();
     setUsersData(users);
     const startups = await getStartups();
     setStartupsData(startups);
+    const events = await getEvents();
+    setEventsData(events);
   };
 
   const handleClickRow = (id: number, isStartup: boolean) => {
@@ -54,9 +69,19 @@ export default function Dashboard() {
     setIsUpdateOpen(true);
   };
 
+    const handleEventClickRow = (id: number) => {
+    setIdClicked(id);
+    setIsEventUpdateOpen(true);
+  };
+
   const handleCreateButton = (isStartup: boolean) => {
     setIsStartup(isStartup);
     setIsCreateOpen(true);
+  };
+
+
+  const handleEventCreateButton = () => {
+    setIsEventCreateOpen(true);
   };
 
   return isUpdateOpen ? (
@@ -71,12 +96,20 @@ export default function Dashboard() {
       isStartup={isStartup}
       onDataChanged={refreshData}
     />
-  ) : isCreateOpen ?
+  ) : isEventUpdateOpen ? (
+    <UpdateEvent
+      data={eventsData.find(e => e.id === idClicked) || eventsData[0]}
+      isOpen={isEventUpdateOpen} 
+      onClose={() => setIsEventUpdateOpen(false)} 
+      onDataChanged={refreshData} 
+    />
+  ) : isCreateOpen ? (
     <CreateUserOrStartup isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} isStartup={isStartup} onDataChanged={refreshData} />
-
-    : (
-      <div>
-        {/* Stats */}
+  ) : isEventCreateOpen ? (
+    <CreateEvent isOpen={isEventCreateOpen} onClose={() => setIsEventCreateOpen(false)} onDataChanged={refreshData} />
+  ) : (
+    <div>
+      {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="size-auto m-8">
             <CardHeader>
@@ -196,6 +229,48 @@ export default function Dashboard() {
             <div className="flex px-4">
               <ChevronLeft onClick={() => setPageUser(pageUser - 1 > 0 ? pageUser - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
               <ChevronRight onClick={() => setPageUser((pageUser + 1) * 5 >= usersData.length ? pageUser : pageUser + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+            </div>
+          </Card>
+          <Card className="w-auto">
+            <CardHeader>
+              <div className="flex justify-between">
+                <CardTitle className="text-xl font-semibold">
+                  Events
+                </CardTitle>
+                <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleEventCreateButton()} />
+              </div>
+            </CardHeader>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Id</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Event Type</TableHead>
+                  <TableHead>Dates</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead>Target Audience</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {eventsData.slice(pageEvent * 5, pageEvent * 5 + 5).map((event) => (
+                  <TableRow
+                    key={event.id}
+                    onClick={() => handleEventClickRow(event.id)}
+                    className="cursor-pointer"
+                  >
+                    <TableCell>{event.id}</TableCell>
+                    <TableCell>{event.name}</TableCell>
+                    <TableCell>{event.event_type}</TableCell>
+                    <TableCell>{event.dates?.toLocaleString()}</TableCell>
+                    <TableCell>{event.location ?? "-"}</TableCell>
+                    <TableCell>{event.target_audience ?? "-"}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className="flex px-4">
+              <ChevronLeft onClick={() => setPageEvent(pageEvent - 1 > 0 ? pageEvent - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+              <ChevronRight onClick={() => setPageEvent((pageEvent + 1) * 5 >= eventsData.length ? pageEvent : pageEvent + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
             </div>
           </Card>
         </div>
