@@ -1,4 +1,4 @@
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
 import { getUserByEmailQuery, updateUserPasswordQuery } from "@/lib/queries/users/users";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt"
@@ -14,7 +14,7 @@ export async function PUT(req: Request) {
       );
     }
 
-    const db = getSql();
+    const db = sql;
 
     if (!db) {
       return NextResponse.json(
