@@ -13,6 +13,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useAuth } from "@/lib/auth-context"
+import Link from "next/link";
 
 type Item = {
   title: string
@@ -29,10 +30,10 @@ export function AppSidebar({ items }: { items: Item[] }) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="#">
-                <span>{startups?.length === 0 ? "Please create a startup" : 
+              <Link href="#">
+                <span>{startups?.length === 0 ? "Please create a startup" :
                   startups?.length === 1 ? startups[0].name : startups?.map(startup => startup.name).join(", ")}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -60,9 +61,9 @@ export function AppSidebar({ items }: { items: Item[] }) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="#">
+              <Link href="#">
                 <span>Logout</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
