@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Drawer, DrawerContent, DrawerFooter } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerFooter,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { DialogTitle } from "@/components/ui/dialog";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { Button } from "@/components/ui/button";
@@ -195,140 +200,134 @@ export default function Modal({
               </span>
             </div>
           </div>
-          <div
-            className="mt-4 flex items-center justify-center rounded-md bg-primary py-2 text-xs text-white transition-all duration-100 hover:scale-105 hover:bg-primary/90"
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick();
-            }}
-          >
-            See More Details
-            <ChevronRight className="ml-4 size-4" />
-          </div>
+          <Drawer direction="right" open={isOpen}>
+            <DrawerTrigger asChild>
+              <p className="mt-4 flex items-center justify-center rounded-md bg-primary py-2 text-xs text-white transition-all duration-100 hover:scale-105 hover:bg-primary/90">
+                See More Details <ChevronRight className="ml-4 size-4" />
+              </p>
+            </DrawerTrigger>
+            <DrawerContent>
+              <div className="flex h-full flex-col">
+                <div className="relative border-b p-6">
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="absolute top-4 left-4 cursor-pointer rounded-full transition-colors hover:bg-gray-100"
+                  >
+                    <X className="size-4" />
+                  </button>
+                  <DialogTitle className="mb-2 ml-12 text-2xl font-bold text-gray-900">
+                    {startup.name}
+                  </DialogTitle>
+                  <p className="ml-12 text-sm text-gray-500">Startup Profile</p>
+                </div>
+
+                <div className="flex-1 space-y-6 overflow-y-auto p-6">
+                  <div>
+                    <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                      Basic Information
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-sm font-medium text-gray-500">
+                          Legal Status:
+                        </span>
+                        <span className="text-sm text-gray-900">
+                          {startup.legal_status || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm font-medium text-gray-500">
+                          Sector:
+                        </span>
+                        <span className="text-sm text-gray-900">
+                          {startup.sector || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm font-medium text-gray-500">
+                          Maturity:
+                        </span>
+                        <span className="text-sm text-gray-900">
+                          {startup.maturity || "N/A"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                      Contact Information
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-sm font-medium text-gray-500">
+                          Email:
+                        </span>
+                        <span className="text-sm text-gray-900">
+                          {startup.email}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm font-medium text-gray-500">
+                          Phone:
+                        </span>
+                        <span className="text-sm text-gray-900">
+                          {startup.phone || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm font-medium text-gray-500">
+                          Address:
+                        </span>
+                        <span className="max-w-64 truncate text-right text-sm text-gray-900">
+                          <span className="truncate">
+                            {startup.address || "N/A"}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm font-medium text-gray-500">
+                          Website:
+                        </span>
+                        {startup.website_url ? (
+                          <Link
+                            href={startup.website_url}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                            className="text-sm text-blue-600 underline hover:text-blue-800"
+                          >
+                            Visit Website
+                          </Link>
+                        ) : (
+                          <span className="text-sm text-gray-900">N/A</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {startup.description && (
+                    <div>
+                      <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                        Description
+                      </h3>
+                      <p className="text-sm leading-relaxed text-gray-700">
+                        {startup.description}
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <DrawerFooter className="border-t bg-gray-50">
+                  <Button
+                    onClick={() => generateStartupPDF(startup)}
+                    className="w-full bg-primary text-white hover:bg-primary/90"
+                  >
+                    Download PDF
+                  </Button>
+                </DrawerFooter>
+              </div>
+            </DrawerContent>
+          </Drawer>
         </CardContent>
       </Card>
-
-      <Drawer direction="right" open={isOpen}>
-        <DrawerContent>
-          <div className="flex h-full flex-col">
-            <div className="relative border-b p-6">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="absolute top-4 left-4 cursor-pointer rounded-full transition-colors hover:bg-gray-100"
-              >
-                <X className="size-4" />
-              </button>
-              <DialogTitle className="mb-2 ml-12 text-2xl font-bold text-gray-900">
-                {startup.name}
-              </DialogTitle>
-              <p className="ml-12 text-sm text-gray-500">Startup Profile</p>
-            </div>
-
-            <div className="flex-1 space-y-6 overflow-y-auto p-6">
-              <div>
-                <h3 className="mb-3 text-lg font-semibold text-gray-900">
-                  Basic Information
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm font-medium text-gray-500">
-                      Legal Status:
-                    </span>
-                    <span className="text-sm text-gray-900">
-                      {startup.legal_status || "N/A"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm font-medium text-gray-500">
-                      Sector:
-                    </span>
-                    <span className="text-sm text-gray-900">
-                      {startup.sector || "N/A"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm font-medium text-gray-500">
-                      Maturity:
-                    </span>
-                    <span className="text-sm text-gray-900">
-                      {startup.maturity || "N/A"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="mb-3 text-lg font-semibold text-gray-900">
-                  Contact Information
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm font-medium text-gray-500">
-                      Email:
-                    </span>
-                    <span className="text-sm text-gray-900">
-                      {startup.email}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm font-medium text-gray-500">
-                      Phone:
-                    </span>
-                    <span className="text-sm text-gray-900">
-                      {startup.phone || "N/A"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm font-medium text-gray-500">
-                      Address:
-                    </span>
-                    <span className="max-w-64 truncate text-right text-sm text-gray-900">
-                      <span className="truncate">
-                        {startup.address || "N/A"}
-                      </span>
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm font-medium text-gray-500">
-                      Website:
-                    </span>
-                    {startup.website_url ? (
-                      <Link
-                        href={startup.website_url}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        className="text-sm text-blue-600 underline hover:text-blue-800"
-                      >
-                        Visit Website
-                      </Link>
-                    ) : (
-                      <span className="text-sm text-gray-900">N/A</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-              {startup.description && (
-                <div>
-                  <h3 className="mb-3 text-lg font-semibold text-gray-900">
-                    Description
-                  </h3>
-                  <p className="text-sm leading-relaxed text-gray-700">
-                    {startup.description}
-                  </p>
-                </div>
-              )}
-            </div>
-            <DrawerFooter className="border-t bg-gray-50">
-              <Button
-                onClick={() => generateStartupPDF(startup)}
-                className="w-full bg-primary text-white hover:bg-primary/90"
-              >
-                Download PDF
-              </Button>
-            </DrawerFooter>
-          </div>
-        </DrawerContent>
-      </Drawer>
     </>
   );
 }
