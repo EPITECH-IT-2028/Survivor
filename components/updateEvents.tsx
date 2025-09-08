@@ -72,7 +72,10 @@ export default function UpdateEvent({
             onSelection={(value: EventType) => { setEventData({ ...eventData!, event_type: value }) }}
           />
           <Input value={eventData!.location ?? ""} onChange={(e) => { setEventData({ ...eventData!, location: e.target.value }) }}/>
-          <DatePickerEvent date={eventData?.dates} onSelectAction={(value: string) => setEventData(prev => prev ? {...prev, dates: value} : null)}/>
+          <DatePickerEvent
+            date={eventData?.dates}
+            onSelectAction={(value: Date) => setEventData({...eventData, dates: value})}
+          />
           <FiltersComboBoxResponsive
             filtersList={targetAudienceFilters.filter(f => f.value !== '-')}
             placeHolder={targetAudienceFilters[targetAudienceId[eventData.target_audience ?? '-']] || { label: 'Select audience' }}

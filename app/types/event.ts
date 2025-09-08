@@ -3,7 +3,7 @@ export type EventType = 'Workshop' | 'Pitch Session' | 'Conference' | '-';
 
 export interface TEvent {
   name: string;
-  dates: string | null;
+  dates?: Date;
   location: string | null;
   description: string | null;
   event_type: EventType;
