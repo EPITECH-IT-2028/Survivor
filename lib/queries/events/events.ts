@@ -1,7 +1,7 @@
 import postgres from 'postgres';
 
 export const getEventsQuery = async (db: postgres.Sql) => {
-  return await db`SELECT * FROM events`;
+  return await db`SELECT * FROM events ORDER BY id DESC`;
 }
 
 export const getEventByIdQuery = async (db: postgres.Sql, id: string) => {
