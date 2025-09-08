@@ -165,7 +165,7 @@ export default function Modal({
         onClick={onClick}
         className="w-full transform cursor-pointer rounded-xl border border-gray-200"
       >
-        <CardHeader className="mx-4 flex items-center rounded-md bg-muted/75 px-4 py-2">
+        <CardHeader className="mx-4 flex items-center rounded-md px-4 py-2">
           <CardTitle className="line-clamp-2 text-lg font-bold">
             {startup.name}
           </CardTitle>
