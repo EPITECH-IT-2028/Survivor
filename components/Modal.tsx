@@ -195,7 +195,13 @@ export default function Modal({
               </span>
             </div>
           </div>
-          <div className="mt-4 flex items-center justify-center rounded-md bg-primary py-2 text-xs text-white transition-all duration-100 hover:scale-105 hover:bg-primary/90">
+          <div
+            className="mt-4 flex items-center justify-center rounded-md bg-primary py-2 text-xs text-white transition-all duration-100 hover:scale-105 hover:bg-primary/90"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick();
+            }}
+          >
             See More Details
             <ChevronRight className="ml-4 size-4" />
           </div>
