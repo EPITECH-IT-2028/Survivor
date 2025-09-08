@@ -1,7 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect } from "react";
-import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -12,11 +11,6 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { UserRole } from "@/app/types/users";
 import { ChevronsUpDown } from "lucide-react";
 
@@ -52,7 +46,6 @@ export function FiltersComboBoxResponsive({
   disabled?: boolean;
 }) {
   const [open, setOpen] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedFilters, setSelectedFilters] = useState<{
     value: any;
     label: any;
@@ -86,38 +79,10 @@ export function FiltersComboBoxResponsive({
     );
   }
 
-  if (isDesktop) {
-    return (
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className="flex w-full justify-between"
-            disabled={disabled}
-          >
-            {selectedFilters ? (
-              <>{selectedFilters.label}</>
-            ) : (
-              <>{placeHolder.label}</>
-            )}
-            <ChevronsUpDown className="opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[200px]" align="start">
-          <FiltersList
-            setOpen={setOpen}
-            setSelectedFilters={handleFilterChange}
-            filtersList={filtersList}
-          />
-        </PopoverContent>
-      </Popover>
-    );
-  }
-
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[150px] justify-start">
+        <Button variant="outline" className="justify-start">
           {selectedFilters ? <>{selectedFilters.label}</> : <>Select filters</>}
         </Button>
       </DrawerTrigger>
