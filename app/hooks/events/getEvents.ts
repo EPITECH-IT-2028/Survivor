@@ -9,7 +9,7 @@ export async function getEvents(): Promise<TEvent[]> {
     const data: TEvent[] = await res.json();
     return data
   } catch (error) {
-    console.error("Error fetching event: ", error)
+    console.error("Error fetching events: ", error)
     return []
   }
 }

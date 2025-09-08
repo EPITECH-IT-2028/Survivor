@@ -27,6 +27,7 @@ export const metadata: Metadata = {
   description: "A place to nourish your ideas and develop your projects.",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{

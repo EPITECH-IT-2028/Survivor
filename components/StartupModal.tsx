@@ -9,7 +9,7 @@ import { getStartupEngagement } from "@/app/hooks/startups/getStartupEngagement"
 import { setStartupEngagement } from "@/app/hooks/startups/setStartupEngagement";
 import { generateStartupPDF } from "@/app/project-catalog/generatePDF";
 
-export default function StartupModal({ startup, image }: { startup: TStartups; image: string }) {
+export default function StartupModal({ startup }: { startup: TStartups }) {
 
   const [isOpen, setIsOpen] = useState(false)
 

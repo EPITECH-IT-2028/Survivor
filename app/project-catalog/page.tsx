@@ -59,7 +59,7 @@ export default function Catalog() {
         </h2>
         {
           startupDisp.map((value) => (
-            <StartupModal key={value.id} startup={value} image="image" />
+            <StartupModal key={value.id} startup={value} />
           ))
         }
       </div>
