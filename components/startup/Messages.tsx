@@ -133,7 +133,7 @@ export function MessagesStartup() {
     if (selectedContact) {
       setInterval(() => {
         fetchMessages();
-      }, 10000);
+      }, 5000);
       fetchMessages();
     }
   }, [selectedContact, user]);

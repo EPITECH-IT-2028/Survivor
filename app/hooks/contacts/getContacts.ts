@@ -1,9 +1,8 @@
 import { TContact } from "@/app/types/contacts";
-import { TUserMessage } from "@/app/types/users";
 
 export async function getContacts(id: number): Promise<TContact[]> {
   try {
-    const response = await fetch(`/api/contacts?userId=${id}`);
+    const response = await fetch(`/api/contacts/${id}`);
     if (!response.ok) {
       throw new Error(`Error fetching contacts: ${response.statusText}`);
     }

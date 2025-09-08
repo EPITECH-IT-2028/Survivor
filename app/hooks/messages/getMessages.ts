@@ -6,7 +6,7 @@ export async function getMessagesBetweenUsers(
 ): Promise<TMessage[]> {
   try {
     const response = await fetch(
-      `/api/messages?senderId=${userId}&receiverId=${contactId}`);
+      `/api/messages/${userId}/${contactId}`);
     if (!response.ok) {
       throw new Error(`Error fetching messages: ${response.statusText}`);
     }
