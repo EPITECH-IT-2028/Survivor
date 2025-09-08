@@ -5,9 +5,6 @@ import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
 import "./globals.css";
-import { MantineProvider } from "@mantine/core";
-import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,13 +38,11 @@ export default function RootLayout({
       <body
         className={`font-sf-pro ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
-        <MantineProvider>
-          <AuthProvider>
-            <Navbar />
-            <div className="mx-auto max-w-3xl">{children}</div>
-            <Toaster position="bottom-right" richColors />
-          </AuthProvider>
-        </MantineProvider>
+        <AuthProvider>
+          <Navbar />
+          <div className="mx-auto max-w-3xl">{children}</div>
+          <Toaster position="bottom-right" richColors />
+        </AuthProvider>
       </body>
     </html>
   );

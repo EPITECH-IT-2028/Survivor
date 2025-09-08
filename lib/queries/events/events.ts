@@ -1,15 +1,15 @@
-import { NeonQueryFunction } from "@neondatabase/serverless"
+import postgres from 'postgres';
 
-export const getEventsQuery = async (db: NeonQueryFunction<false, false>) => {
-  return await db`SELECT * FROM events ORDER BY id DESC`;
+export const getEventsQuery = async (db: postgres.Sql) => {
+  return await db`SELECT * FROM events`;
 }
 
-export const getEventByIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
+export const getEventByIdQuery = async (db: postgres.Sql, id: string) => {
   return await db`SELECT * FROM events WHERE id = ${id}`;
 }
 
 export const insertEventQuery = async (
-  db: NeonQueryFunction<false, false>,
+  db: postgres.Sql,
   dates: string,
   location: string,
   description: string,
@@ -21,12 +21,12 @@ export const insertEventQuery = async (
       VALUES (${dates}, ${location}, ${description}, ${event_type}, ${target_audience}, ${name}) RETURNING *`;
 }
 
-export const deleteEventQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
+export const deleteEventQuery = async (db: postgres.Sql, id: string) => {
   return await db`DELETE FROM events WHERE id = ${id} RETURNING *`;
 }
 
 export const updateEventQuery = async (
-  db: NeonQueryFunction<false, false>,
+  db: postgres.Sql,
   id: string,
   name: string,
   dates: string,

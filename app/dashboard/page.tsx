@@ -261,7 +261,7 @@ export default function Dashboard() {
                     <TableCell>{event.id}</TableCell>
                     <TableCell>{event.name}</TableCell>
                     <TableCell>{event.event_type}</TableCell>
-                    <TableCell>{event.dates?.toLocaleString()}</TableCell>
++                    <TableCell>{event.dates ? new Date(event.dates).toLocaleString() : "-"}</TableCell>
                     <TableCell>{event.location ?? "-"}</TableCell>
                     <TableCell>{event.target_audience ?? "-"}</TableCell>
                   </TableRow>

@@ -1,9 +1,9 @@
 'use server';
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
 import { getFoundersQuery, insertFounderQuery } from "@/lib/queries/founders/founders";
 
 export async function GET() {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -27,7 +27,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
