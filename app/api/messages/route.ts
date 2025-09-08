@@ -1,4 +1,4 @@
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
 import { getMessagesQuery, insertMessageQuery } from "@/lib/queries/messages/messages";
 import { NextResponse } from "next/server";
 
@@ -6,7 +6,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const senderId = searchParams.get("senderId");
   const receiverId = searchParams.get("receiverId");
-  const db = getSql();
+  const db = sql;
 
   if (!db) {
     return NextResponse.json({ error: "Database connection not available" }, { status: 500 });
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const db = getSql();
+    const db = sql
 
     if (!db) {
       return NextResponse.json({ error: "Database connection not available" }, { status: 500 });

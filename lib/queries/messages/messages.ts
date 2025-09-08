@@ -1,6 +1,7 @@
-import { NeonQueryFunction } from "@neondatabase/serverless"
+import postgres from "postgres";
 
-export const insertMessageQuery = async (db: NeonQueryFunction<false, false>,
+
+export const insertMessageQuery = async (db: postgres.Sql,
   senderId: string, receiverId: string, content: string) => {
 
   return await db`
@@ -10,7 +11,7 @@ export const insertMessageQuery = async (db: NeonQueryFunction<false, false>,
   `;
 }
 
-export const getMessagesQuery = async (db: NeonQueryFunction<false, false>,
+export const getMessagesQuery = async (db: postgres.Sql,
   senderId: string, receiverId: string) => {
   return await db`
     SELECT 

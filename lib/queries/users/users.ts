@@ -57,7 +57,7 @@ export const updateUserPasswordQuery = async (db: postgres.Sql,
       WHERE id = ${id} RETURNING *`;
 }
 
-export const searchUsersQuery = async (db: NeonQueryFunction<false, false>, searchTerm: string, userId: string) => {
+export const searchUsersQuery = async (db: postgres.Sql, searchTerm: string, userId: string) => {
   return await db`
     SELECT id, name, email, image
     FROM users 

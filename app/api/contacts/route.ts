@@ -1,4 +1,4 @@
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
 import { getContactsQuery, addContactQuery, removeContactQuery } from "@/lib/queries/contacts/contacts";
 import { NextResponse } from "next/server";
 
@@ -6,7 +6,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
 
-  const db = getSql();
+  const db = sql
   if (!db) {
     return NextResponse.json({ error: "Database connection not available" }, { status: 500 });
   }
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const db = getSql();
+    const db = sql
     if (!db) {
       return NextResponse.json({ error: "Database connection not available" }, { status: 500 });
     }
@@ -56,7 +56,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const db = getSql();
+    const db = sql
     if (!db) {
       return NextResponse.json({ error: "Database connection not available" }, { status: 500 });
     }

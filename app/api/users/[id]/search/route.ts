@@ -1,6 +1,6 @@
-import { getSql } from "@/lib/db";
 import { searchUsersQuery } from "@/lib/queries/users/users";
 import { NextResponse } from "next/server";
+import sql from "@/lib/db";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
 
@@ -9,7 +9,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
   const { id: userId } = await params;
 
-  const db = getSql();
+  const db = sql
 
   if (!db) {
     return NextResponse.json({ error: "Database connection not available" }, { status: 500 });

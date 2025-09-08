@@ -1,11 +1,11 @@
-import { NeonQueryFunction } from "@neondatabase/serverless"
+import postgres from "postgres";
 
 /**
  * Get contacts for a user along with the last message exchanged with each contact.
  * Orders contacts by the time of the last message exchanged, most recent first.
  * If no messages have been exchanged, orders by the time the contact was added.
  */
-export const getContactsQuery = async (db: NeonQueryFunction<false, false>, userId: string) => {
+export const getContactsQuery = async (db: postgres.Sql, userId: string) => {
   return await db`
     SELECT 
       c.id,
@@ -21,7 +21,7 @@ export const getContactsQuery = async (db: NeonQueryFunction<false, false>, user
   `;
 }
 
-export const addContactQuery = async (db: NeonQueryFunction<false, false>, userId: string, contactId: string) => {
+export const addContactQuery = async (db: postgres.Sql, userId: string, contactId: string) => {
   return await db`
     INSERT INTO contacts (user_id, contact_id) 
     VALUES (${userId}, ${contactId})
@@ -30,7 +30,7 @@ export const addContactQuery = async (db: NeonQueryFunction<false, false>, userI
   `;
 }
 
-export const removeContactQuery = async (db: NeonQueryFunction<false, false>, userId: string, contactId: string) => {
+export const removeContactQuery = async (db: postgres.Sql, userId: string, contactId: string) => {
   return await db`
     DELETE FROM contacts 
     WHERE user_id = ${userId} AND contact_id = ${contactId}

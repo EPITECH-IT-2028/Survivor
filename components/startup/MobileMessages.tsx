@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Send, Users, Search, Plus, UserPlus } from 'lucide-react';
+import { Send, Users, Search, Plus, UserPlus, X } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { TContact } from '@/app/types/contacts';
 import { TMessage } from '@/app/types/messages';
@@ -43,9 +43,6 @@ export function MobilMessagesStartup() {
     try {
       const res = await getContacts(user.id);
       setContacts(res);
-      if (res.length > 0 && !selectedContact) {
-        setSelectedContact(res[0]);
-      }
     } catch (error) {
       console.error('Error fetching contacts:', error);
     }
@@ -151,59 +148,153 @@ export function MobilMessagesStartup() {
   }
 
   return (
-    <div className="flex flex-col w-full px-4 my-10 mx-auto">
-      <div className="flex items-center justify-between px-4 mb-4">
-        <h2 className="text-2xl font-bold">Messages</h2>
-        <Dialog open={showAddContact} onOpenChange={setShowAddContact}>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="icon">
-              <UserPlus />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-lg">
-            <DialogHeader>
-              <DialogTitle>Add Contact</DialogTitle>
-            </DialogHeader>
-            <div className="flex flex-col gap-4">
-              <Input
-                placeholder="Search users..."
-                value={userSearch}
-                onChange={(e) => setUserSearch(e.target.value)}
-                className="mb-2"
-              />
-              {searchingUsers ? (
-                <div>Searching...</div>
-              ) : (
-                searchResults.map((result) => (
-                  <div key={result.id} className="flex items-center justify-between p-2 border-b">
-                    <div className="flex items-center gap-3">
-                      <Avatar>
-                        <AvatarImage src={result.image || undefined} alt={result.name} />
-                        <AvatarFallback>{getUserInitials(result.name)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">{result.name}</p>
-                        <p className="text-sm text-muted-foreground">{result.email}</p>
+    <>
+      {!selectedContact ? (
+        <div className="flex flex-col w-full px-4 my-10 mx-auto" >
+          <div className="flex items-center justify-between px-4 mb-4">
+            <h2 className="text-2xl font-bold">Messages</h2>
+            <Dialog open={showAddContact} onOpenChange={setShowAddContact}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <UserPlus />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                  <DialogTitle>Add Contact</DialogTitle>
+                </DialogHeader>
+                <div className="flex flex-col gap-4">
+                  <Input
+                    placeholder="Search users..."
+                    value={userSearch}
+                    onChange={(e) => setUserSearch(e.target.value)}
+                    className="mb-2"
+                  />
+                  {searchingUsers ? (
+                    <div>Searching...</div>
+                  ) : (
+                    searchResults.map((result) => (
+                      <div key={result.id} className="flex items-center justify-between p-2 border-b">
+                        <div className="flex items-center gap-3">
+                          <Avatar>
+                            <AvatarImage src={result.image || undefined} alt={result.name} />
+                            <AvatarFallback>{getUserInitials(result.name)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium">{result.name}</p>
+                            <p className="text-sm text-muted-foreground">{result.email}</p>
+                          </div>
+                        </div>
+                        <Button size="sm" onClick={() => addContact(result.id)}>Add</Button>
                       </div>
-                    </div>
-                    <Button size="sm" onClick={() => addContact(result.id)}>Add</Button>
-                  </div>
-                ))
-              )}
-              {userSearch && searchResults.length === 0 && !searchingUsers && (
-                <div>No users found.</div>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <Card className="flex flex-col w-full h-20">
-        <CardHeader className="p-0">
-          <div className="flex items-center p-4 border-b">
+                    ))
+                  )}
+                  {userSearch && searchResults.length === 0 && !searchingUsers && (
+                    <div>No users found.</div>
+                  )}
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
-        </CardHeader>
-      </Card>
-    </div>
+
+          {filteredContacts.length === 0 ? (
+            <div className="text-center text-muted-foreground">No contacts found. Add some!</div>
+          ) : (
+            <div className="flex flex-col space-y-4">
+              {filteredContacts.map((contact) => (
+                <Card
+                  key={contact.contact_id}
+                  className="cursor-pointer"
+                  onClick={() => setSelectedContact(contact)}
+                >
+                  <CardContent className="flex items-center gap-4">
+                    <Avatar>
+                      <AvatarImage src={contact.image || undefined} alt={contact.name} />
+                      <AvatarFallback>{getUserInitials(contact.name)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium">{contact.name}</p>
+                      <p className="text-sm text-muted-foreground">{contact.email}</p>
+                    </div>
+                    <div className="ml-auto text-sm text-muted-foreground">
+                      <Send className="inline-block mr-1" size={16} />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-col w-full px-4 my-10 mx-auto" >
+          <div className="flex items-center mb-4">
+            <Button variant="ghost" size="icon" onClick={() => setSelectedContact(null)}>
+              <X />
+            </Button>
+            <h2 className="ml-4 text-2xl font-bold">{selectedContact.name}</h2>
+          </div>
+          <div className="flex flex-col flex-1 h-70 border rounded-lg overflow-hidden">
+            <div className="flex-1 p-4 overflow-y-auto">
+              <div className="space-y-4">
+                {(
+                  messages.map((message) => {
+                    const isOwn = message.sender_id === user?.id;
+                    return (
+                      <div
+                        key={message.id}
+                        className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div className={`flex items-end gap-2 max-w-xs lg:max-w-md ${isOwn ? 'flex-row-reverse' : 'flex-row'
+                          }`}>
+                          {!isOwn && (
+                            <Avatar className="h-6 w-6">
+                              {selectedContact.image && <AvatarImage src={selectedContact.image} alt={selectedContact.name} />}
+                              <AvatarFallback className="bg-muted text-xs">
+                                {getUserInitials(selectedContact.name)}
+                              </AvatarFallback>
+                            </Avatar>
+                          )}
+                          <div className={`px-4 py-2 rounded-2xl ${isOwn
+                            ? 'bg-primary text-primary-foreground rounded-br-md'
+                            : 'bg-muted rounded-bl-md'
+                            }`}>
+                            <p className="text-sm">{message.content}</p>
+                            <p className="text-xs opacity-70 mt-1">
+                              {formatMessageTime(message.created_at)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+            <div className="p-4 border-t flex items-center gap-2">
+              <Input
+                placeholder="Enter your message..."
+                value={messageText}
+                onChange={(e) => setMessageText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    sendMessage();
+                  }
+                }}
+                className="flex-1"
+              />
+              <Button
+                size="icon"
+                onClick={sendMessage}
+                disabled={sendingMessage || !messageText.trim()}
+              >
+                <Send />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
+
