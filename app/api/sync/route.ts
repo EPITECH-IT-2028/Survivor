@@ -1,7 +1,7 @@
 'use server';
 
 import { NextResponse } from 'next/server';
-import { neon } from '@neondatabase/serverless';
+import sql from '@/lib/db';
 
 
 async function fetchDataFromExternalAPI(endpoint: string) {
@@ -54,13 +54,13 @@ async function fetchImageFromExternalAPI(endpoint: string) {
 
 export async function POST() {
   try {
-    if (!process.env.DATABASE_URL) {
+    if (!process.env.POSTGRES_URL) {
       return NextResponse.json({ error: 'Database URL not configured' }, {
         status: 500,
       });
     }
 
-    const db = neon(`${process.env.DATABASE_URL}`);
+    const db = sql;
 
     if (db === null) {
       return NextResponse.json({ error: 'Database connection failed' }, {

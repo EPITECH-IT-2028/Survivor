@@ -1,18 +1,18 @@
-import { NeonQueryFunction } from "@neondatabase/serverless"
+import postgres from 'postgres';
 
-export const getStartupsQuery = async (db: NeonQueryFunction<false, false>) => {
+export const getStartupsQuery = async (db: postgres.Sql) => {
   return await db`SELECT * FROM startups ORDER BY id ASC`;
 }
 
-export const getStartupEngagementsQuery = async (db: NeonQueryFunction<false, false>, startup_id: string) => {
+export const getStartupEngagementsQuery = async (db: postgres.Sql, startup_id: string) => {
   return await db`SELECT engagement_rate FROM startups WHERE id = ${startup_id}`;
 }
 
-export const updateStartupEngagementQuery = async (db: NeonQueryFunction<false, false>, startup_id: string, engagement_rate: number) => {
+export const updateStartupEngagementQuery = async (db: postgres.Sql, startup_id: string, engagement_rate: number) => {
   return await db`UPDATE startups SET engagement_rate = ${engagement_rate} WHERE id = ${startup_id} RETURNING *`;
 }
 
-export const insertStartupQuery = async (db: NeonQueryFunction<false, false>,
+export const insertStartupQuery = async (db: postgres.Sql,
   name: string,
   description: string,
   legal_status: string,
@@ -32,15 +32,15 @@ export const insertStartupQuery = async (db: NeonQueryFunction<false, false>,
     ${social_media_url}, ${project_status}, ${needs}, ${maturity}, ${sector}) RETURNING * `;
 }
 
-export const getStartupByIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
+export const getStartupByIdQuery = async (db: postgres.Sql, id: string) => {
   return await db`SELECT * FROM startups WHERE id = ${id} `;
 }
 
-export const deleteStartupByIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
+export const deleteStartupByIdQuery = async (db: postgres.Sql, id: string) => {
   return await db`DELETE FROM startups WHERE id = ${id} RETURNING * `;
 }
 
-export const updateStartupByIdQuery = async (db: NeonQueryFunction<false, false>,
+export const updateStartupByIdQuery = async (db: postgres.Sql,
   id: string,
   name: string,
   description: string,
@@ -72,7 +72,7 @@ export const updateStartupByIdQuery = async (db: NeonQueryFunction<false, false>
       WHERE id = ${id} RETURNING * `;
 }
 
-export const getStartupsByFounderIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
+export const getStartupsByFounderIdQuery = async (db: postgres.Sql, id: string) => {
   return await db`
     SELECT s.*
     FROM founder_startup AS fs
@@ -81,7 +81,7 @@ export const getStartupsByFounderIdQuery = async (db: NeonQueryFunction<false, f
   `;
 }
 
-export const getStartupByFounderAndStartupIdQuery = async (db: NeonQueryFunction<false, false>, founder_id: string, startup_id: string) => {
+export const getStartupByFounderAndStartupIdQuery = async (db: postgres.Sql, founder_id: string, startup_id: string) => {
   return await db`
     SELECT s.*
     FROM startups s

@@ -1,11 +1,11 @@
-import { NeonQueryFunction } from "@neondatabase/serverless"
+import postgres from 'postgres';
 
-export const getPartnersQuery = async (db: NeonQueryFunction<false, false>) => {
+export const getPartnersQuery = async (db: postgres.Sql) => {
   return await db`SELECT * FROM partners ORDER BY id ASC`;
 }
 
 export const insertPartnerQuery = async (
-  db: NeonQueryFunction<false, false>,
+  db: postgres.Sql,
   name: string,
   legal_status: string,
   address: string,
@@ -18,16 +18,16 @@ export const insertPartnerQuery = async (
       VALUES (${name}, ${legal_status}, ${address}, ${email}, ${phone}, ${description}, ${partnership_type}) RETURNING *`;
 }
 
-export const getPartnerByIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
+export const getPartnerByIdQuery = async (db: postgres.Sql, id: string) => {
   return await db`SELECT * FROM partners WHERE id = ${id}`;
 }
 
-export const deletePartnerByIdQuery = async (db: NeonQueryFunction<false, false>, id: string) => {
+export const deletePartnerByIdQuery = async (db: postgres.Sql, id: string) => {
   return await db`DELETE FROM partners WHERE id = ${id} RETURNING *`;
 }
 
 export const updatePartnerByIdQuery = async (
-  db: NeonQueryFunction<false, false>,
+  db: postgres.Sql,
   id: string,
   name: string,
   legal_status: string,
