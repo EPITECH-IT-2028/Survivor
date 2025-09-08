@@ -105,7 +105,6 @@ export async function POST() {
       if (imageBuffer) {
         await db`UPDATE investors SET image = ${imageBuffer}
           WHERE legacy_id = ${i.legacy_id}`;
-        console.log(`Image updated for investor ID ${i.legacy_id}`);
       } else {
         console.log(`No image found for investor ID ${i.legacy_id}`);
       }
