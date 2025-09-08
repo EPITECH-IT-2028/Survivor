@@ -4,7 +4,7 @@ import { useState, useEffect} from "react"
 import { TEvent } from "@/app/types/event"
 import { getEvents } from "@/app/hooks/events/getEvents"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
-import { Card, CardTitle, CardHeader } from "@/components/ui/card"
+import EventCard from "@/components/EventCard"
 
 export default function Event() {
   const [eventInfo, setEventInfo] = useState<TEvent[]>([])
@@ -17,27 +17,62 @@ export default function Event() {
     fetchEvent();
   }, []);
 
+  const workshops = eventInfo.filter(event => event.event_type?.toLowerCase() === 'workshop')
+  const conferences = eventInfo.filter(event => event.event_type?.toLowerCase() === 'conference')
+  const pitchSessions = eventInfo.filter(event => event.event_type?.toLowerCase() === 'pitch session')
+
   return (
-    <div>
-      <Carousel>
-        <CarouselContent>
-          {
-            eventInfo.map((value) => (
-              <CarouselItem key={value.id}>
-                <Card className='h-64 w-full transform rounded-xl border border-gray-200 p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer bg-white'>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg font-bold text-gray-900 line-clamp-2 h-14">
-                    {value.name}
-                  </CardTitle>
-                </CardHeader>
-                </Card>
-              </CarouselItem>
-            ))
-          }
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+    <div className="space-y-8 p-6">
+      {workshops.length > 0 && (
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Workshops</h2>
+          <Carousel className="w-full max-w-7xl mx-auto">
+            <CarouselContent className="-ml-1">
+              {workshops.map((event) => (
+                <CarouselItem key={event.id} className="pl-1 md:basis-1/2 lg:basis-1/3">
+                  <EventCard event={event} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      )}
+
+      {conferences.length > 0 && (
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Conferences</h2>
+          <Carousel className="w-full max-w-7xl mx-auto">
+            <CarouselContent className="-ml-1">
+              {conferences.map((event) => (
+                <CarouselItem key={event.id} className="pl-1 md:basis-1/2 lg:basis-1/3">
+                  <EventCard event={event} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      )}
+
+      {pitchSessions.length > 0 && (
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Pitch Sessions</h2>
+          <Carousel className="w-full max-w-7xl mx-auto">
+            <CarouselContent className="-ml-1">
+              {pitchSessions.map((event) => (
+                <CarouselItem key={event.id} className="pl-1 md:basis-1/2 lg:basis-1/3">
+                  <EventCard event={event} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      )}
     </div>
   )
 }

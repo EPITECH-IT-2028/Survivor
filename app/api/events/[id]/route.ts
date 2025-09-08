@@ -1,8 +1,8 @@
 'use server';
 
 import { getSql } from "@/lib/db";
-import { deleteEventQuery, getEventByIdQuery, updateEventQuery } from "@/lib/queries/events/events";
-import { NextRequest } from "next/server";
+import { deleteEventQuery, getEventByIdQuery, getEventImageByIdQuery, updateEventQuery } from "@/lib/queries/events/events";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   _request: NextRequest,

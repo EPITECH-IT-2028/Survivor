@@ -4,7 +4,7 @@ import { TStartups } from '../types/startup';
 import { useEffect, useState } from "react"
 import { Input } from '@/components/ui/input';
 import { getStartups } from '../hooks/startups/getStartups';
-import Modal from '@/components/Modal';
+import StartupModal from '@/components/StartupModal';
 
 export default function Catalog() {
 
@@ -59,7 +59,7 @@ export default function Catalog() {
         </h2>
         {
           startupDisp.map((value) => (
-            <Modal key={value.id} startup={value} image="image" />
+            <StartupModal key={value.id} startup={value} image="image" />
           ))
         }
       </div>
