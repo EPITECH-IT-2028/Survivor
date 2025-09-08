@@ -21,7 +21,7 @@ import CreateUserOrStartup from "@/components/createUserOrStartup";
 import { getEvents } from "../hooks/events/getEvents";
 import UpdateEvent from "@/components/updateEvents";
 import CreateEvent from "@/components/createEvent";
-import {format} from "date-fns";
+import { format } from "date-fns";
 
 export default function Dashboard() {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
@@ -70,7 +70,7 @@ export default function Dashboard() {
     setIsUpdateOpen(true);
   };
 
-    const handleEventClickRow = (id: number) => {
+  const handleEventClickRow = (id: number) => {
     setIdClicked(id);
     setIsEventUpdateOpen(true);
   };
@@ -100,9 +100,9 @@ export default function Dashboard() {
   ) : isEventUpdateOpen ? (
     <UpdateEvent
       data={eventsData.find(e => e.id === idClicked) || eventsData[0]}
-      isOpen={isEventUpdateOpen} 
-      onClose={() => setIsEventUpdateOpen(false)} 
-      onDataChanged={refreshData} 
+      isOpen={isEventUpdateOpen}
+      onClose={() => setIsEventUpdateOpen(false)}
+      onDataChanged={refreshData}
     />
   ) : isCreateOpen ? (
     <CreateUserOrStartup isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} isStartup={isStartup} onDataChanged={refreshData} />
@@ -111,170 +111,170 @@ export default function Dashboard() {
   ) : (
     <div>
       {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="size-auto m-8">
-            <CardHeader>
-              <CardTitle className="text-2xl font-semibold">
-                Number of startups
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-3xl font-bold">{`${startupsData.length}`}</CardContent>
-          </Card>
-          <Card className="size-auto m-8">
-            <CardHeader>
-              <CardTitle className="text-2xl font-semibold">
-                Project views
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-3xl font-bold">652</CardContent>
-          </Card>
-          <Card className="size-auto m-8">
-            <CardHeader>
-              <CardTitle className="text-2xl font-semibold">
-                Engagement rate
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-3xl font-bold">4</CardContent>
-          </Card>
-        </div>
-        <div className="space-y-8 p-4">
-          {/* Table projects */}
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between">
-                <CardTitle className="text-xl font-semibold">
-                  Startups
-                </CardTitle>
-                <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(true)} />
-              </div>
-            </CardHeader>
-            <Table className="size-fit">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Id</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Legal status</TableHead>
-                  <TableHead>Address</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Sector</TableHead>
-                  <TableHead>Maturity</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {startupsData.slice(pageStartup * 5, pageStartup * 5 + 5).map((startup) => (
-                  <TableRow
-                    key={startup.id}
-                    onClick={() => handleClickRow(startup.id, true)}
-                    className="cursor-pointer"
-                  >
-                    <TableCell>{startup.id}</TableCell>
-                    <TableCell>{startup.name}</TableCell>
-                    <TableCell>{startup.legal_status}</TableCell>
-                    <TableCell>{startup.address}</TableCell>
-                    <TableCell>{startup.email}</TableCell>
-                    <TableCell>{startup.phone}</TableCell>
-                    <TableCell>{startup.sector}</TableCell>
-                    <TableCell>{startup.maturity}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <div className="flex px-4">
-              <ChevronLeft onClick={() => setPageStartup(pageStartup - 1 > 0 ? pageStartup - 1 : 0)} className="cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-              <ChevronRight onClick={() => setPageStartup((pageStartup + 1) * 5 > startupsData.length ? pageStartup : pageStartup + 1)} className="cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-            </div>
-          </Card>
-          {/* Table user */}
-          <Card className="w-auto">
-            <CardHeader>
-              <div className="flex justify-between">
-                <CardTitle className="text-xl font-semibold">
-                  Users
-                </CardTitle>
-                <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(false)} />
-              </div>
-            </CardHeader>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Id</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Founder Id</TableHead>
-                  <TableHead>Investor Id</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {usersData.slice(pageUser * 5, pageUser * 5 + 5).map((user) => (
-                  <TableRow
-                    key={user.id}
-                    onClick={() => handleClickRow(user.id, false)}
-                    className="cursor-pointer"
-                  >
-                    <TableCell>{user.id}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.role}</TableCell>
-                    <TableCell>
-                      {user.founder_id ? user.founder_id : "-"}
-                    </TableCell>
-                    <TableCell>
-                      {user.investor_id ? user.investor_id : "-"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <div className="flex px-4">
-              <ChevronLeft onClick={() => setPageUser(pageUser - 1 > 0 ? pageUser - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-              <ChevronRight onClick={() => setPageUser((pageUser + 1) * 5 >= usersData.length ? pageUser : pageUser + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-            </div>
-          </Card>
-          <Card className="w-auto">
-            <CardHeader>
-              <div className="flex justify-between">
-                <CardTitle className="text-xl font-semibold">
-                  Events
-                </CardTitle>
-                <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleEventCreateButton()} />
-              </div>
-            </CardHeader>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Id</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Event Type</TableHead>
-                  <TableHead>Dates</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Target Audience</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {eventsData.slice(pageEvent * 5, pageEvent * 5 + 5).map((event) => (
-                  <TableRow
-                    key={event.id}
-                    onClick={() => handleEventClickRow(event.id)}
-                    className="cursor-pointer"
-                  >
-                    <TableCell>{event.id}</TableCell>
-                    <TableCell>{event.name}</TableCell>
-                    <TableCell>{event.event_type}</TableCell>
-                    <TableCell>{event.dates ? format(event.dates, "MMMM do, yyyy") : "-"}</TableCell>
-                    <TableCell>{event.location ?? "-"}</TableCell>
-                    <TableCell>{event.target_audience ?? "-"}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <div className="flex px-4">
-              <ChevronLeft onClick={() => setPageEvent(pageEvent - 1 > 0 ? pageEvent - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-              <ChevronRight onClick={() => setPageEvent((pageEvent + 1) * 5 >= eventsData.length ? pageEvent : pageEvent + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-            </div>
-          </Card>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="size-auto m-8">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold">
+              Number of startups
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-3xl font-bold">{`${startupsData.length}`}</CardContent>
+        </Card>
+        <Card className="size-auto m-8">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold">
+              Project views
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-3xl font-bold">652</CardContent>
+        </Card>
+        <Card className="size-auto m-8">
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold">
+              Engagement rate
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-3xl font-bold">4</CardContent>
+        </Card>
       </div>
-    );
+      <div className="space-y-8 p-4">
+        {/* Table projects */}
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between">
+              <CardTitle className="text-xl font-semibold">
+                Startups
+              </CardTitle>
+              <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(true)} />
+            </div>
+          </CardHeader>
+          <Table className="size-fit">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Id</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Legal status</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Sector</TableHead>
+                <TableHead>Maturity</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {startupsData.slice(pageStartup * 5, pageStartup * 5 + 5).map((startup) => (
+                <TableRow
+                  key={startup.id}
+                  onClick={() => handleClickRow(startup.id, true)}
+                  className="cursor-pointer"
+                >
+                  <TableCell>{startup.id}</TableCell>
+                  <TableCell>{startup.name}</TableCell>
+                  <TableCell>{startup.legal_status}</TableCell>
+                  <TableCell>{startup.address}</TableCell>
+                  <TableCell>{startup.email}</TableCell>
+                  <TableCell>{startup.phone}</TableCell>
+                  <TableCell>{startup.sector}</TableCell>
+                  <TableCell>{startup.maturity}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <div className="flex px-4">
+            <ChevronLeft onClick={() => setPageStartup(pageStartup - 1 > 0 ? pageStartup - 1 : 0)} className="cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+            <ChevronRight onClick={() => setPageStartup((pageStartup + 1) * 5 > startupsData.length ? pageStartup : pageStartup + 1)} className="cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+          </div>
+        </Card>
+        {/* Table user */}
+        <Card className="w-auto">
+          <CardHeader>
+            <div className="flex justify-between">
+              <CardTitle className="text-xl font-semibold">
+                Users
+              </CardTitle>
+              <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(false)} />
+            </div>
+          </CardHeader>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Id</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Founder Id</TableHead>
+                <TableHead>Investor Id</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {usersData.slice(pageUser * 5, pageUser * 5 + 5).map((user) => (
+                <TableRow
+                  key={user.id}
+                  onClick={() => handleClickRow(user.id, false)}
+                  className="cursor-pointer"
+                >
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.role}</TableCell>
+                  <TableCell>
+                    {user.founder_id ? user.founder_id : "-"}
+                  </TableCell>
+                  <TableCell>
+                    {user.investor_id ? user.investor_id : "-"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <div className="flex px-4">
+            <ChevronLeft onClick={() => setPageUser(pageUser - 1 > 0 ? pageUser - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+            <ChevronRight onClick={() => setPageUser((pageUser + 1) * 5 >= usersData.length ? pageUser : pageUser + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+          </div>
+        </Card>
+        <Card className="w-auto">
+          <CardHeader>
+            <div className="flex justify-between">
+              <CardTitle className="text-xl font-semibold">
+                Events
+              </CardTitle>
+              <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleEventCreateButton()} />
+            </div>
+          </CardHeader>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Id</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Event Type</TableHead>
+                <TableHead>Dates</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>Target Audience</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {eventsData.slice(pageEvent * 5, pageEvent * 5 + 5).map((event) => (
+                <TableRow
+                  key={event.id}
+                  onClick={() => handleEventClickRow(event.id)}
+                  className="cursor-pointer"
+                >
+                  <TableCell>{event.id}</TableCell>
+                  <TableCell>{event.name}</TableCell>
+                  <TableCell>{event.event_type}</TableCell>
+                  <TableCell>{event.dates ? format(event.dates, "MMMM do, yyyy") : "-"}</TableCell>
+                  <TableCell>{event.location ?? "-"}</TableCell>
+                  <TableCell>{event.target_audience ?? "-"}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <div className="flex px-4">
+            <ChevronLeft onClick={() => setPageEvent(pageEvent - 1 > 0 ? pageEvent - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+            <ChevronRight onClick={() => setPageEvent((pageEvent + 1) * 5 >= eventsData.length ? pageEvent : pageEvent + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
 }

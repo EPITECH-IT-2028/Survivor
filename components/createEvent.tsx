@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -25,7 +25,7 @@ export default function CreateEvent({
 }: UpdateEventProps) {
   const [eventData, setEventData] = useState<TEvent>({
     name: "",
-    dates: null,
+    dates: undefined,
     location: null,
     description: null,
     event_type: "-",
@@ -74,7 +74,10 @@ export default function CreateEvent({
             placeholder="Location"
             onChange={(e) => { setEventData({ ...eventData!, location: e.target.value }) }}
           />
-          <DatePickerEvent date={eventData?.dates} onSelectAction={(value: string) => setEventData(prev => ({ ...prev, dates: value }))} />
+          <DatePickerEvent
+            date={eventData?.dates} 
+            onSelectAction={(value: Date) => setEventData(prev => ({ ...prev, dates: value }))} 
+          />
           <FiltersComboBoxResponsive
             filtersList={targetAudienceFilters.filter(f => f.value !== '-')}
             placeHolder={targetAudienceFilters[targetAudienceId[eventData.target_audience ?? '-']]}
