@@ -21,6 +21,7 @@ import CreateUserOrStartup from "@/components/createUserOrStartup";
 import { getEvents } from "../hooks/events/getEvents";
 import UpdateEvent from "@/components/updateEvents";
 import CreateEvent from "@/components/createEvent";
+import {format} from "date-fns";
 
 export default function Dashboard() {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
@@ -179,7 +180,7 @@ export default function Dashboard() {
                 ))}
               </TableBody>
             </Table>
-            <div className="flex justify-end px-4">
+            <div className="flex px-4">
               <ChevronLeft onClick={() => setPageStartup(pageStartup - 1 > 0 ? pageStartup - 1 : 0)} className="cursor-pointer hover:bg-gray-100 rounded-full p-1" />
               <ChevronRight onClick={() => setPageStartup((pageStartup + 1) * 5 > startupsData.length ? pageStartup : pageStartup + 1)} className="cursor-pointer hover:bg-gray-100 rounded-full p-1" />
             </div>
@@ -261,7 +262,7 @@ export default function Dashboard() {
                     <TableCell>{event.id}</TableCell>
                     <TableCell>{event.name}</TableCell>
                     <TableCell>{event.event_type}</TableCell>
-+                    <TableCell>{event.dates ? new Date(event.dates).toLocaleString() : "-"}</TableCell>
+                    <TableCell>{event.dates ? format(event.dates, "MMMM do, yyyy") : "-"}</TableCell>
                     <TableCell>{event.location ?? "-"}</TableCell>
                     <TableCell>{event.target_audience ?? "-"}</TableCell>
                   </TableRow>
