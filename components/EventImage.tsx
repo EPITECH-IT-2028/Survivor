@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getEventImage } from "@/app/hooks/events/getEventImage";
+import Image from "next/image";
 
 export default function EventImage({ id }: { id: number }) {
   const [imgSrc, setImgSrc] = useState<string | null>(null);
@@ -19,7 +20,7 @@ export default function EventImage({ id }: { id: number }) {
     loadImage();
   }, [id]);
 
-  if (!imgSrc) return <p>Aucune image disponible</p>;
+  if (!imgSrc) return <p>No provided image</p>;
 
-  return <img src={imgSrc} alt={`Event ${id}`} className="rounded-xl shadow-md" />;
+  return <Image src={imgSrc} alt={`No provided image`} width={0} height={0} className="rounded-xl shadow-md w-auto h-auto"/>;
 }

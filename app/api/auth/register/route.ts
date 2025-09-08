@@ -1,4 +1,4 @@
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import generateToken from "@/lib/auth-utils";
@@ -12,8 +12,6 @@ export async function POST(req: Request) {
         { error: "All fields are required" },
         { status: 400 },
       );
-
-    const sql = getSql();
 
     const foundUsers = await getUserByEmailQuery(sql, email);
     if (foundUsers.length > 0)

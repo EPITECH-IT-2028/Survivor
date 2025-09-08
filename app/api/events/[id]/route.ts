@@ -1,14 +1,14 @@
 'use server';
 
-import { getSql } from "@/lib/db";
-import { deleteEventQuery, getEventByIdQuery, getEventImageByIdQuery, updateEventQuery } from "@/lib/queries/events/events";
-import { NextRequest, NextResponse } from "next/server";
+import sql from "@/lib/db";
+import { deleteEventQuery, getEventByIdQuery, updateEventQuery } from "@/lib/queries/events/events";
+import { NextRequest } from "next/server";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -37,7 +37,7 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -67,7 +67,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
