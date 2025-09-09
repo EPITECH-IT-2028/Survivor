@@ -211,6 +211,8 @@ export default function Modal({
               <div className="flex h-full flex-col">
                 <div className="relative border-b p-6">
                   <button
+                    type="button"
+                    aria-label="Fermer le panneau"
                     onClick={() => setIsOpen(false)}
                     className="absolute top-4 left-4 cursor-pointer rounded-full transition-colors hover:bg-gray-100"
                   >
