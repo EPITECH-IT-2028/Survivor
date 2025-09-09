@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { getStartups } from "../hooks/startups/getStartups";
 import Modal from "@/components/Modal";
 import { FiltersComboBoxResponsive } from "@/components/filter";
-import { X } from "lucide-react";
 
 export default function Catalog() {
   const [sectorFilter, setSectorFilter] = useState("");
@@ -45,9 +44,9 @@ export default function Catalog() {
   }, [sectorFilter, maturityFilter, locationFilter, startupsInfo]);
 
   return (
-    <div className="relative left-1/2 mt-12 flex -translate-x-1/2 justify-center gap-4 md:w-4xl lg:w-6xl">
-      <div className="flex min-w-full space-y-8 rounded-xl bg-muted/75 p-6">
-        <div className="mr-6 flex flex-col gap-8">
+    <div className="mx-4 mt-12 flex justify-center lg:max-w-6xl">
+      <div className="flex gap-6 rounded-xl bg-muted/75 p-6">
+        <div className="min-w-4xs mr-6 flex flex-col gap-8">
           <h1 className="text-2xl font-bold">Filters</h1>
 
           <div className="flex flex-col gap-4">
@@ -113,6 +112,7 @@ export default function Catalog() {
                 Clear
               </Button>
             </div>
+
             <Button
               disabled={!sectorFilter && !maturityFilter && !locationFilter}
               variant="outline"
@@ -127,14 +127,16 @@ export default function Catalog() {
           </div>
         </div>
 
-        <div className="mr-4 grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div
+          className={`grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 ${startupDisp.length === 0 ? "rounded-md border border-dashed" : ""}`}
+        >
           {startupDisp.length > 0 ? (
             startupDisp.map((value) => (
               <Modal key={value.id} startup={value} image="image" />
             ))
           ) : (
-            <div className="col-span-full flex w-full flex-col items-center justify-center rounded-lg border border-dashed border-gray-300">
-              <p className="mt-4 text-lg font-semibold">Not Found</p>
+            <div className="relative col-span-full flex flex-col items-center justify-center md:px-28 lg:px-52">
+              <p className="text-lg font-semibold">Not Found</p>
               <p className="text-sm text-gray-500">
                 No startups match the current filters.
               </p>
