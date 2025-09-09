@@ -40,7 +40,16 @@ export async function POST(request: Request) {
   try {
     const { title, location, category, startup_id, description, news_date, startup } = await request.json();
 
-    const response = await insertNewsQuery(db, title, location, category, startup_id, description, news_date, startup);
+    if (!news_date) {
+      return new Response(JSON.stringify({ error: 'news_date is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const formattedDate = new Date(news_date).toISOString();
+
+    const response = await insertNewsQuery(db, title, location, category, startup_id, description, formattedDate, startup);
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },

@@ -9,10 +9,10 @@ import { Input } from "./ui/input";
 import { FiltersComboBoxResponsive } from "./filter";
 import { Button } from "./ui/button";
 import { targetAudienceId, targetAudienceFilters, TEvent, TargetAudience, eventTypeFilters, EventType, eventTypeId } from "@/app/types/event";
-import { DatePickerEvent } from "./ui/datePicker";
+import { DatePicker } from "./ui/datePicker";
 import { addEvent } from "@/app/hooks/events/addEvent";
 
-interface UpdateEventProps {
+interface CreateEventProps {
   isOpen: boolean;
   onClose: () => void;
   onDataChanged?: () => void;
@@ -22,7 +22,7 @@ export default function CreateEvent({
   isOpen,
   onClose,
   onDataChanged,
-}: UpdateEventProps) {
+}: CreateEventProps) {
   const [eventData, setEventData] = useState<TEvent>({
     name: "",
     dates: undefined,
@@ -74,7 +74,7 @@ export default function CreateEvent({
             placeholder="Location"
             onChange={(e) => { setEventData({ ...eventData!, location: e.target.value }) }}
           />
-          <DatePickerEvent
+          <DatePicker
             date={eventData?.dates} 
             onSelectAction={(value: Date) => setEventData(prev => ({ ...prev, dates: value }))} 
           />

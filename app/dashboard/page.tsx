@@ -19,9 +19,13 @@ import { getStartups } from "../hooks/startups/getStartups";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import CreateUserOrStartup from "@/components/createUserOrStartup";
 import { getEvents } from "../hooks/events/getEvents";
+import { getNews } from "../hooks/news/getNews";
 import UpdateEvent from "@/components/updateEvents";
 import CreateEvent from "@/components/createEvent";
 import { format } from "date-fns";
+import { TNews } from "../types/news";
+import UpdateNews from "@/components/updateNews";
+import CreateNews from "@/components/createNews";
 
 export default function Dashboard() {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
@@ -30,12 +34,18 @@ export default function Dashboard() {
   const [isStartup, setIsStartup] = useState(true);
   const [isEventCreateOpen, setIsEventCreateOpen] = useState(false);
   const [isEventUpdateOpen, setIsEventUpdateOpen] = useState(false);
-  const [usersData, setUsersData] = useState<TUser[]>([]);
-  const [startupsData, setStartupsData] = useState<TStartups[]>([]);
-  const [eventsData, setEventsData] = useState<TEvent[]>([]);
+  const [isNewsCreateOpen, setIsNewsCreateOpen] = useState(false);
+  const [isNewsUpdateOpen, setIsNewsUpdateOpen] = useState(false);
+
+  const [usersData, setUsersData] = useState<TUser[] | undefined>();
+  const [startupsData, setStartupsData] = useState<TStartups[] | undefined>();
+  const [eventsData, setEventsData] = useState<TEvent[] | undefined>();
+  const [newsData, setNewsData] = useState<TNews[] | undefined>();
+
   const [pageStartup, setPageStartup] = useState<number>(0);
   const [pageUser, setPageUser] = useState<number>(0);
   const [pageEvent, setPageEvent] = useState<number>(0);
+  const [pageNews, setPageNews] = useState<number>(0);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -50,10 +60,15 @@ export default function Dashboard() {
       const events = await getEvents();
       setEventsData(events);
     };
+    const fetchNews = async () => {
+      const news = await getNews();
+      setNewsData(news);
+    }
     fetchUsers();
     fetchStartups();
     fetchEvents();
-  }, [isUpdateOpen, isCreateOpen, isEventUpdateOpen, isEventCreateOpen]);
+    fetchNews();
+  }, [isUpdateOpen, isCreateOpen, isEventUpdateOpen, isEventCreateOpen, isNewsCreateOpen, isNewsUpdateOpen]);
 
   const refreshData = async () => {
     const users = await getUsers();
@@ -62,6 +77,8 @@ export default function Dashboard() {
     setStartupsData(startups);
     const events = await getEvents();
     setEventsData(events);
+    const news = await getNews();
+    setNewsData(news);
   };
 
   const handleClickRow = (id: number, isStartup: boolean) => {
@@ -75,6 +92,11 @@ export default function Dashboard() {
     setIsEventUpdateOpen(true);
   };
 
+  const handleNewsClickRow = (id: number) => {
+    setIdClicked(id);
+    setIsNewsUpdateOpen(true);
+  };
+
   const handleCreateButton = (isStartup: boolean) => {
     setIsStartup(isStartup);
     setIsCreateOpen(true);
@@ -85,6 +107,13 @@ export default function Dashboard() {
     setIsEventCreateOpen(true);
   };
 
+  const handleNewsCreateButton = () => {
+    setIsNewsCreateOpen(true);
+  };
+
+  if (!usersData || !startupsData || !eventsData || !newsData) {
+    return <div>Loading...</div>;
+  }
   return isUpdateOpen ? (
     <UpdateProfile
       data={
@@ -104,10 +133,19 @@ export default function Dashboard() {
       onClose={() => setIsEventUpdateOpen(false)}
       onDataChanged={refreshData}
     />
+  ) : isNewsUpdateOpen ? (
+    <UpdateNews
+      data={newsData.find(n => n.id === idClicked) || newsData[0]}
+      isOpen={isNewsUpdateOpen}
+      onClose={() => setIsNewsUpdateOpen(false)}
+      onDataChanged={refreshData}
+    />
   ) : isCreateOpen ? (
     <CreateUserOrStartup isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} isStartup={isStartup} onDataChanged={refreshData} />
   ) : isEventCreateOpen ? (
     <CreateEvent isOpen={isEventCreateOpen} onClose={() => setIsEventCreateOpen(false)} onDataChanged={refreshData} />
+    ) : isNewsCreateOpen ? (
+      <CreateNews isOpen={isNewsCreateOpen} onClose={() => setIsNewsCreateOpen(false)} onDataChanged={refreshData} />
   ) : (
     <div>
       {/* Stats */}
@@ -272,6 +310,48 @@ export default function Dashboard() {
           <div className="flex px-4">
             <ChevronLeft onClick={() => setPageEvent(pageEvent - 1 > 0 ? pageEvent - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
             <ChevronRight onClick={() => setPageEvent((pageEvent + 1) * 5 >= eventsData.length ? pageEvent : pageEvent + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+          </div>
+        </Card>
+        <Card className="w-auto">
+          <CardHeader>
+            <div className="flex justify-between">
+              <CardTitle className="text-xl font-semibold">
+                News
+              </CardTitle>
+              <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleNewsCreateButton()} />
+            </div>
+          </CardHeader>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Id</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead>Category</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Startup Id</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {newsData.slice(pageNews * 5, pageNews * 5 + 5).map((news) => (
+                <TableRow
+                  key={news.id}
+                  onClick={() => handleNewsClickRow(news.id)}
+                  className="cursor-pointer"
+                >
+                  <TableCell>{news.id}</TableCell>
+                  <TableCell>{news.title ? (news.title.length > 20 ? news.title.substring(0, 20) + "..." : news.title) : "-"}</TableCell>
+                  <TableCell>{news.category}</TableCell>
+                  <TableCell>{news.news_date ? format(news.news_date, "do MMMM yyyy") : "-"}</TableCell>
+                  <TableCell>{news.description ? (news.description.length > 20 ? news.description.substring(0, 20) + "..." : news.description) : "-"}</TableCell>
+                  <TableCell>{news.startup_id ?? "-"}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <div className="flex px-4">
+            <ChevronLeft onClick={() => setPageNews(pageNews - 1 > 0 ? pageNews - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+            <ChevronRight onClick={() => setPageNews((pageNews + 1) * 5 >= newsData.length ? pageNews : pageNews + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
           </div>
         </Card>
       </div>

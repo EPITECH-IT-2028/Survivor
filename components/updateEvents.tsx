@@ -11,7 +11,7 @@ import { Button } from "./ui/button";
 import { setEventById } from "@/app/hooks/events/setEventById";
 import { deleteEventById } from "@/app/hooks/events/deleteEventById";
 import { targetAudienceId, targetAudienceFilters, TEvent, TargetAudience, eventTypeFilters, EventType, eventTypeId } from "@/app/types/event";
-import { DatePickerEvent } from "./ui/datePicker";
+import { DatePicker } from "./ui/datePicker";
 
 interface UpdateEventProps {
   data: TEvent;
@@ -72,7 +72,7 @@ export default function UpdateEvent({
             onSelection={(value: EventType) => { setEventData({ ...eventData!, event_type: value }) }}
           />
           <Input value={eventData!.location ?? ""} onChange={(e) => { setEventData({ ...eventData!, location: e.target.value }) }}/>
-          <DatePickerEvent
+          <DatePicker
             date={eventData?.dates}
             onSelectAction={(value: Date) => setEventData({...eventData, dates: value})}
           />

@@ -79,16 +79,17 @@ export async function PUT(
   const { id } = await params;
 
   try {
-    const { title, location, category, startup_id, description, news_date, startup } = await request.json();
+    const { title, category, description, news_date } = await request.json();
 
-    const response = await updateNewsByIdQuery(db, id, title, location, category, startup_id, description, news_date, startup);
+    console.log("PUT /api/news/:id body: ", { title, category, description, news_date });
+    const response = await updateNewsByIdQuery(db, id, title, category, description, news_date);
 
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to delete investor' }), {
+    return new Response(JSON.stringify({ error: 'Failed to update news' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
