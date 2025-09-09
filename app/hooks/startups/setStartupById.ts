@@ -10,6 +10,7 @@ interface StartupPayload {
 	created_at: Date | string | null;
 	website_url: string | null;
 	social_media_url: string | null;
+	project_status: string | null;
 	needs: string | null;
 	maturity: string | null;
 	sector: string | null;
@@ -26,6 +27,7 @@ export async function setStartupById(startupId: number, startupData: TStartups):
       created_at: startupData.created_at,
       website_url: startupData.website_url,
       social_media_url: startupData.social_media_url,
+			project_status: startupData.project_status,
       needs: startupData.needs,
       maturity: startupData.maturity,
       sector: startupData.sector,

@@ -1,8 +1,14 @@
-import 'server-only';
-import { neon } from '@neondatabase/serverless';
+import postgres from "postgres";
 
-export function getSql() {
-  const url = process.env.DATABASE_URL;
-  if (!url) throw new Error('Missing env: DATABASE_URL');
-  return neon(url);
+const databaseUrl = process.env.POSTGRES_URL;
+
+if (!databaseUrl) {
+  throw new Error("POSTGRES_URL is not set");
 }
+
+const sql = postgres(databaseUrl, {
+  prepare: false,
+  ssl: process.env.NODE_ENV === "production",
+});
+
+export default sql;

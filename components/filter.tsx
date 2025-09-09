@@ -39,11 +39,13 @@ export function FiltersComboBoxResponsive({
   placeHolder,
   onSelection,
   disabled = false,
+  className = "",
 }: {
   filtersList: { value: any; label: any }[];
   placeHolder: { value: any; label: any };
   onSelection: (value: any) => void;
   disabled?: boolean;
+  className?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<{
@@ -103,13 +105,15 @@ function FiltersList({
   setOpen,
   setSelectedFilters,
   filtersList = filters,
+  className = "",
 }: {
   setOpen: (open: boolean) => void;
   setSelectedFilters: (status: Filters | null) => void;
   filtersList?: Filters[];
+  className?: string;
 }) {
   return (
-    <Command>
+    <Command className={className}>
       <CommandList>
         <CommandInput placeholder="Filter status..." />
         <CommandEmpty>No results found.</CommandEmpty>

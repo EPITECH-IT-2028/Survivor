@@ -1,6 +1,6 @@
 'use server';
 
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
 import { getStartupByFounderAndStartupIdQuery } from "@/lib/queries/startups/startups";
 import { NextRequest } from "next/server";
 
@@ -8,7 +8,7 @@ export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string, startup_id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
