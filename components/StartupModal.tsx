@@ -221,7 +221,9 @@ export default function Modal({
                   <DialogTitle className="mb-2 ml-12 text-2xl font-bold text-gray-900">
                     {startup.name}
                   </DialogTitle>
-                  <DrawerDescription className="sr-only">Startup Profile</DrawerDescription>
+                  <DrawerDescription className="sr-only">
+                    Startup Profile
+                  </DrawerDescription>
                   <p className="ml-12 text-sm text-gray-500">Startup Profile</p>
                 </div>
 
