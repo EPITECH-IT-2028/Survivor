@@ -1,7 +1,7 @@
 import postgres from 'postgres';
 
 export const getNewsQuery = async (db: postgres.Sql) => {
-  return await db`SELECT * FROM news`;
+  return await db`SELECT * FROM news ORDER BY news_date DESC`;
 }
 
 export const getNewsByIdQuery = async (db: postgres.Sql, id: string) => {
@@ -30,20 +30,20 @@ export const updateNewsByIdQuery = async (
   db: postgres.Sql,
   id: string,
   title: string,
-  location: string,
   category: string,
-  startup_id: number,
   description: string,
+  location: string,
   news_date: string,
-  startup: string
+  startup: string,
+  startup_id: number
 ) => {
   return await db`UPDATE news SET 
       title = ${title},
-      location = ${location},
       category = ${category},
-      startup_id = ${startup_id},
       description = ${description},
       news_date = ${news_date},
-      startup = ${startup}
-      WHERE id = ${id} RETURNING *`;
+      startup = ${startup},
+      startup_id = ${startup_id},
+      location = ${location}
+    WHERE id = ${id} RETURNING *`;
 }

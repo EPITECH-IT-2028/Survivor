@@ -79,17 +79,29 @@ export async function PUT(
   const { id } = await params;
 
   try {
-    const { title, category, description, news_date } = await request.json();
+    const { title, category, description, news_date, location, startup, startup_id } = await request.json();
 
-    console.log("PUT /api/news/:id body: ", { title, category, description, news_date });
-    const response = await updateNewsByIdQuery(db, id, title, category, description, news_date);
+    console.log("PUT /api/news/:id body: ", { title, category, description, news_date, location, startup, startup_id });
+
+    // Validate that news_date is provided
+    if (!news_date) {
+      return new Response(JSON.stringify({ error: 'news_date is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const formattedDate = new Date(news_date).toISOString();
+    
+    // Fix parameter order: (db, id, title, category, description, location, news_date, startup, startup_id)
+    const response = await updateNewsByIdQuery(db, id, title, category, description, location, formattedDate, startup, startup_id);
 
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to update news' }), {
+    return new Response(JSON.stringify({ error: `Failed to update news ${error}` }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

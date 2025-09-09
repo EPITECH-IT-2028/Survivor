@@ -13,6 +13,7 @@ import { deleteNewsById } from "@/app/hooks/news/deleteNewsById";
 import { categoryFilter, categoryId, CategoryNews, TNews } from "@/app/types/news";
 import { DatePicker } from "./ui/datePicker";
 import { getStartups } from "@/app/hooks/startups/getStartups";
+import { start } from "repl";
 
 interface UpdateNewsProps {
   data: TNews;
@@ -51,6 +52,7 @@ export default function UpdateNews({
   const handleUpdateNews = async () => {
     if (!newsData) return;
     try {
+      console.log("Updating news with data: ", newsData);
       await setNewsById(newsData.id, newsData);
       onDataChanged?.();
       onClose();
@@ -89,13 +91,16 @@ export default function UpdateNews({
             startupsList?.length > 0 &&
             <FiltersComboBoxResponsive
               filtersList={startupsList.filter(s => s.value !== 0)}
-              placeHolder={startupsList[0]}
+              placeHolder={startupsList.find(s => s.value === newsData.startup_id) || startupsList[0]}
               onSelection={(value: number) => {
-                setNewsData({ ...newsData!, startup_id: value });
+                setNewsData({ ...newsData!, 
+                  startup_id: value,
+                  startup: startupsList.find(s => s.value === value)?.label || "" });
               }}
             />
           }
           <Input value={newsData!.description} onChange={(e) => { setNewsData({ ...newsData!, description: e.target.value }) }} />
+          <Input value={newsData!.location} onChange={(e) => { setNewsData({ ...newsData!, location: e.target.value }) }} />
           <DatePicker
             date={newsData?.news_date}
             onSelectAction={(value: Date) => setNewsData({ ...newsData, news_date: value })}

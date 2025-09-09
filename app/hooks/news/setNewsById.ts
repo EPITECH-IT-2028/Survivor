@@ -6,20 +6,33 @@ export interface NewsPayload {
   news_date?: Date;
   description?: string;
   startup?: string;
+  location?: string;
+  startup_id?: number;
   image?: string;
 }
 
 
 export async function setNewsById(newsId: number, newsData: TNews): Promise<TNews | null> {
   try {
-    if (!newsData || !newsData.title || !newsData.news_date || !newsData.startup_id || !newsData.description || !newsData.category)
+    if (!newsData || 
+      !newsData.title ||
+       !newsData.news_date || 
+       !newsData.startup_id || 
+       !newsData.description || 
+       !newsData.category || 
+       !newsData.startup || 
+       !newsData.location
+      )
       throw new Error("newsData has at least one information null.");
 
     const payload: NewsPayload = {
-      title: newsData.title,
       category: newsData.category,
-      news_date: newsData.news_date,
       description: newsData.description,
+      location: newsData.location,
+      news_date: newsData.news_date,
+      startup: newsData.startup,
+      startup_id: newsData.startup_id,
+      title: newsData.title,
     };
 
     console.log("PUT /api/news/:id payload: ", payload);
