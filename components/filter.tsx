@@ -1,5 +1,3 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query";
 import { Button } from "@/components/ui/button";
@@ -23,7 +21,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { UserRole } from "@/app/types/users";
 import { ChevronsUpDown } from "lucide-react";
 
 export type Filters = {
@@ -53,31 +50,28 @@ export function FiltersComboBoxResponsive({
   disabled = false,
   className = "",
 }: {
-  filtersList: { value: any; label: any }[];
-  placeHolder: { value: any; label: any };
-  onSelection: (value: any) => void;
+  filtersList: Filters[];
+  placeHolder: Filters;
+  onSelection: (value: string) => void;
   disabled?: boolean;
   className?: string;
 }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [selectedFilters, setSelectedFilters] = useState<{
-    value: any;
-    label: any;
-  } | null>(null);
+  const [selectedFilters, setSelectedFilters] = useState<Filters | null>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const handleFilterChange = (newValue: { value: any; label: any } | null) => {
+  const handleFilterChange = (newValue: Filters | null) => {
     setSelectedFilters(newValue);
   };
 
   useEffect(() => {
     if (selectedFilters) {
-      onSelection(selectedFilters.value as UserRole);
+      onSelection(selectedFilters.value);
     }
   }, [selectedFilters, onSelection]);
 
