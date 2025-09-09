@@ -2,7 +2,7 @@ import { TEvent } from "@/app/types/event";
 
 export interface EventPayload {
   name: string;
-  dates: string | null;
+  dates: Date | null;
   location: string | null;
   description: string | null;
   event_type: string | null;
