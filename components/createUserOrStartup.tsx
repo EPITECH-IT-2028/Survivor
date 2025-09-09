@@ -284,22 +284,22 @@ export default function CreateUserOrStartup({
           />
           {foundersList.length > 0 && (
             <FiltersComboBoxResponsive
-              filtersList={foundersList.filter(f => f.value !== 0)}
-              placeHolder={foundersList[0]}
-              onSelection={(value: number) => {
-                setStartupData({ ...startupData!, founder: value });
+              filtersList={foundersList.filter(f => f.value !== 0).map(f => ({ value: f.value.toString(), label: f.label }))}
+              placeHolder={{ value: foundersList[0].value.toString(), label: foundersList[0].label }}
+              onSelection={(value: string) => {
+                setStartupData({ ...startupData!, founder: parseInt(value) });
               }}
             />
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Button
-              className="bg-green-400 hover:bg-green-500 cursor-pointer"
+              className="cursor-pointer bg-green-400 hover:bg-green-500"
               onClick={handleSubmitStartup}
             >
               Create
             </Button>
             <Button
-              className="bg-blue-400 hover:bg-blue-500 cursor-pointer"
+              className="cursor-pointer bg-blue-400 hover:bg-blue-500"
               onClick={onClose}
             >
               Cancel
@@ -331,18 +331,18 @@ export default function CreateUserOrStartup({
           <FiltersComboBoxResponsive
             filtersList={userRoleFilters}
             placeHolder={userRoleFilters[userRoleId[userData.role ?? "-"]]}
-            onSelection={(value: UserRole) => {
-              setUserData({ ...userData!, role: value });
+            onSelection={(value: string) => {
+              setUserData({ ...userData!, role: value as UserRole });
             }}
           />
           {userData.role === "founder" && (
             <>
               {startupsList.length > 0 && (
                 <FiltersComboBoxResponsive
-                  filtersList={startupsList.filter(s => s.value !== 0)}
-                  placeHolder={startupsList[0]}
-                  onSelection={(value: number) => {
-                    setStartupId(value);
+                  filtersList={startupsList.filter(s => s.value !== 0).map(s => ({ value: s.value.toString(), label: s.label }))}
+                  placeHolder={{ value: startupsList[0].value.toString(), label: startupsList[0].label }}
+                  onSelection={(value: string) => {
+                    setStartupId(parseInt(value));
                   }}
                 />
               )}
@@ -392,15 +392,15 @@ export default function CreateUserOrStartup({
               />
             </>
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Button
-              className="bg-green-400 hover:bg-green-500 cursor-pointer"
+              className="cursor-pointer bg-green-400 hover:bg-green-500"
               onClick={handleSubmitUser}
             >
               Create
             </Button>
             <Button
-              className="bg-blue-400 hover:bg-blue-500 cursor-pointer"
+              className="cursor-pointer bg-blue-400 hover:bg-blue-500"
               onClick={onClose}
             >
               Cancel

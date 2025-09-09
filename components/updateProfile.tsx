@@ -108,10 +108,10 @@ export default function UpdateProfile({
           <Input value={startupData!.name} onChange={(e) => { setStartupData({ ...startupData!, name: e.target.value }) }} />
           <Input value={startupData!.legal_status ?? ""} onChange={(e) => { setStartupData({ ...startupData!, legal_status: e.target.value }) }} />
           <Input value={startupData!.address ?? ""} onChange={(e) => { setStartupData({ ...startupData!, address: e.target.value }) }} />
-          <Button className="bg-red-400 hover:bg-red-500 cursor-pointer" onClick={handleDeleteStartup}>Delete profile</Button>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleUpdateStartup}>Apply</Button>
-            <Button className="bg-blue-400 hover:bg-blue-500 cursor-pointer" onClick={onClose}>Cancel</Button>
+          <Button className="cursor-pointer bg-red-400 hover:bg-red-500" onClick={handleDeleteStartup}>Delete profile</Button>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Button className="cursor-pointer bg-green-400 hover:bg-green-500" onClick={handleUpdateStartup}>Apply</Button>
+            <Button className="cursor-pointer bg-blue-400 hover:bg-blue-500" onClick={onClose}>Cancel</Button>
           </div>
         </DialogContent>
       </DialogContent>
@@ -128,14 +128,14 @@ export default function UpdateProfile({
           <FiltersComboBoxResponsive
             filtersList={userRoleFilters}
             placeHolder={userRoleFilters[userRoleId[userData?.role ?? '-']]}
-            onSelection={(value: UserRole) => { setUserData({ ...userData!, role: value }) }}
+            onSelection={(value: string) => { setUserData({ ...userData!, role: value as UserRole }) }}
           />
           <Input value={userData!.founder_id ?? "-"} disabled />
           <Input value={userData!.investor_id ?? "-"} disabled />
-          <Button className="bg-red-400 hover:bg-red-500 cursor-pointer" onClick={handleDeleteUser}>Delete user</Button>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleUpdateUser}>Apply</Button>
-            <Button className="bg-blue-400 hover:bg-blue-500 cursor-pointer" onClick={onClose}>Cancel</Button>
+          <Button className="cursor-pointer bg-red-400 hover:bg-red-500" onClick={handleDeleteUser}>Delete user</Button>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Button className="cursor-pointer bg-green-400 hover:bg-green-500" onClick={handleUpdateUser}>Apply</Button>
+            <Button className="cursor-pointer bg-blue-400 hover:bg-blue-500" onClick={onClose}>Cancel</Button>
           </div>
         </DialogContent>
       </DialogContent>
