@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/sideBar";
 import { sidebarItems } from "@/app/types/sidebarItems";
 import { MessagesStartup } from "@/components/startup/Messages";
 import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query";
-import { MobilMessagesStartup } from "@/components/startup/MobileMessages";
+import { MobileMessagesStartup } from "@/components/startup/MobileMessages";
 
 export default function StartupAreaMessages() {
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -16,7 +16,7 @@ export default function StartupAreaMessages() {
       {!isMobile ? (
         <MessagesStartup />
       ) : (
-        <MobilMessagesStartup />
+        <MobileMessagesStartup />
       )}
     </SidebarProvider >
   )

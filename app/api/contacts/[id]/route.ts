@@ -2,8 +2,9 @@ import sql from "@/lib/db";
 import { getContactsQuery } from "@/lib/queries/contacts/contacts";
 import { NextResponse } from "next/server";
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  const userId = params.id;
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const userId = id;
 
   const db = sql
   if (!db) {

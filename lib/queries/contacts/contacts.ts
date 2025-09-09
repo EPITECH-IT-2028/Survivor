@@ -17,7 +17,7 @@ export const getContactsQuery = async (db: postgres.Sql, userId: string) => {
     FROM contacts c
     JOIN users u ON c.contact_id = u.id
     WHERE c.user_id = ${userId}
-    ORDER BY c.created_at DESC
+    ORDER BY c.created_at ASC
   `;
 }
 

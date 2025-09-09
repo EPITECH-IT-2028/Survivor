@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Send, Users, Search, Plus, UserPlus, X } from 'lucide-react';
+import { Send, UserPlus, X } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { TContact } from '@/app/types/contacts';
 import { TMessage } from '@/app/types/messages';
@@ -17,11 +17,11 @@ import { insertMessage } from '@/app/hooks/messages/insertMessage';
 import { searchUsersFromQuery } from '@/app/hooks/users/searchUsers';
 import { insertContact } from '@/app/hooks/contacts/insertContact';
 
-export function MobilMessagesStartup() {
+export function MobileMessagesStartup() {
   const { user } = useAuth();
   const [selectedContact, setSelectedContact] = useState<TContact | null>(null);
   const [messageText, setMessageText] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, _setSearchQuery] = useState('');
   const [messages, setMessages] = useState<TMessage[]>([]);
   const [contacts, setContacts] = useState<TContact[]>([]);
   const [loading, setLoading] = useState(true);
