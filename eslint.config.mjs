@@ -18,6 +18,7 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "components/ui/**",
     ],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
@@ -27,8 +28,8 @@ const eslintConfig = [
     },
     settings: {
       "better-tailwindcss": {
-        "entryPoint": "app/globals.css",
-      }
+        entryPoint: "app/globals.css",
+      },
     },
     rules: {
       "better-tailwindcss/enforce-consistent-line-wrapping": "off",
@@ -48,4 +49,3 @@ const eslintConfig = [
 ];
 
 export default eslintConfig;
-

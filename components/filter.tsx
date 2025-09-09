@@ -1,6 +1,4 @@
-import * as React from "react";
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-
+import { useState, useEffect } from "react";
 import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { UserRole } from "@/app/types/users";
+import { ChevronsUpDown } from "lucide-react";
 
 export type Filters = {
   value: string;
@@ -46,54 +44,69 @@ export function FiltersComboBoxResponsive({
   disabled = false,
   className = "",
 }: {
-  filtersList: { value: any; label: any }[];
-  placeHolder: { value: any; label: any };
-  onSelection: (value: any) => void;
+  filtersList: Filters[];
+  placeHolder: Filters;
+  onSelection: (value: string) => void;
   disabled?: boolean;
   className?: string;
 }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [selectedFilters, setSelectedFilters] = React.useState<{
-    value: any;
-    label: any;
-  } | null>(null);
+  const [selectedFilters, setSelectedFilters] = useState<Filters | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
-  const handleFilterChange = (newValue: { value: any; label: any } | null) => {
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const handleFilterChange = (newValue: Filters | null) => {
     setSelectedFilters(newValue);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedFilters) {
-      onSelection(selectedFilters.value as UserRole);
+      onSelection(selectedFilters.value);
     }
-  }, [selectedFilters]);
+  }, [selectedFilters, onSelection]);
+
+  if (!isMounted) {
+    return (
+      <Button
+        variant="outline"
+        className="flex w-full justify-between"
+        disabled
+      >
+        {placeHolder.label}
+        <ChevronsUpDown className="opacity-50" />
+      </Button>
+    );
+  }
 
   if (isDesktop) {
     return (
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={`w-[150px] justify-start ${className}`}
-              disabled={disabled}
-            >
-              {selectedFilters ? (
-                <>{selectedFilters.label}</>
-              ) : (
-                <>{placeHolder.label}</>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0" align="start">
-            <FiltersList
-              setOpen={setOpen}
-              setSelectedFilters={handleFilterChange}
-              filtersList={filtersList}
-              className={className}
-            />
-          </PopoverContent>
-        </Popover>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className="flex w-full justify-between"
+            disabled={disabled}
+          >
+            {selectedFilters ? (
+              <>{selectedFilters.label}</>
+            ) : (
+              <>{placeHolder.label}</>
+            )}
+            <ChevronsUpDown className="opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[200px]" align="start">
+          <FiltersList
+            setOpen={setOpen}
+            setSelectedFilters={handleFilterChange}
+            filtersList={filtersList}
+          />
+        </PopoverContent>
+      </Popover>
     );
   }
 
@@ -147,8 +160,8 @@ function FiltersList({
               onSelect={(value) => {
                 setSelectedFilters(
                   filtersList.find(
-                    (filter) => filter.label.toString() === value
-                  ) || null
+                    (filter) => filter.label.toString() === value,
+                  ) || null,
                 );
                 setOpen(false);
               }}

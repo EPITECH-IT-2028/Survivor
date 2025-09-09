@@ -24,8 +24,8 @@ export default function GlobalNotFound() {
       >
         <AuthProvider>
           <Navbar />
-          <div className="flex flex-col justify-center items-center min-h-screen">
-            <div className="flex flex-col items-center text-center gap-8">
+          <div className="flex min-h-screen flex-col items-center justify-center">
+            <div className="flex flex-col items-center gap-8 text-center">
               <h1 className="text-3xl font-bold">404 Page Not Found</h1>
               <p className="text-md">
                 The page you try to access is not available, please go back to home
