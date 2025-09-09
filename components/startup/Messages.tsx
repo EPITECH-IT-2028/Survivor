@@ -1,21 +1,28 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Send, Users, Search, Plus, UserPlus } from 'lucide-react';
-import { useAuth } from '@/lib/auth-context';
-import { TContact } from '@/app/types/contacts';
-import { TMessage } from '@/app/types/messages';
-import { TUserMessage } from '@/app/types/users';
-import { getMessagesBetweenUsers } from '@/app/hooks/messages/getMessages';
-import { getContacts } from '@/app/hooks/contacts/getContacts';
-import { insertMessage } from '@/app/hooks/messages/insertMessage';
-import { searchUsersFromQuery } from '@/app/hooks/users/searchUsers';
-import { insertContact } from '@/app/hooks/contacts/insertContact';
+import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Send, Users, Search, Plus, UserPlus } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
+import { TContact } from "@/app/types/contacts";
+import { TMessage } from "@/app/types/messages";
+import { TUserMessage } from "@/app/types/users";
+import { getMessagesBetweenUsers } from "@/app/hooks/messages/getMessages";
+import { getContacts } from "@/app/hooks/contacts/getContacts";
+import { insertMessage } from "@/app/hooks/messages/insertMessage";
+import { searchUsersFromQuery } from "@/app/hooks/users/searchUsers";
+import { insertContact } from "@/app/hooks/contacts/insertContact";
+import supabase from "@/lib/supabase-client";
 
 export function MessagesStartup() {
   const { user } = useAuth();
@@ -52,17 +59,49 @@ export function MessagesStartup() {
     setLoading(false);
   };
 
-  const fetchMessages = async () => {
-    if (!user?.id || !selectedContact)
-      return;
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("messages")
+        .select("*")
+        .order("created_at", { ascending: true });
+      if (error) {
+        console.error("Error fetching messages:", error);
+      } else {
+        setMessages(data);
+      }
+      setLoading(false);
+    };
+    fetchData();
 
-    try {
-      const res = await getMessagesBetweenUsers(user.id, selectedContact.contact_id);
-      setMessages(res);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  };
+    const channel = supabase
+      .channel("messages_channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "messages" },
+        (payload) => {
+          console.log("new message:", payload);
+
+          if (payload.eventType === 'INSERT') {
+            setMessages(prev => [...prev, payload.new as TMessage]);
+          } else if (payload.eventType === 'UPDATE') {
+            setMessages(prev => prev.map(msg =>
+              msg.id === payload.new.id ? payload.new as TMessage : msg
+            ));
+          } else if (payload.eventType === 'DELETE') {
+            setMessages(prev => prev.filter(msg => msg.id !== payload.old.id));
+          }
+        },
+      )
+      .subscribe();
+    console.log("Subscribed to messages_channel");
+
+    return () => {
+      channel.unsubscribe();
+      console.log("Unsubscribed from messages_channel");
+    };
+  }, []);
 
   const sendMessage = async () => {
     if (!messageText.trim() || !user?.id || !selectedContact || sendingMessage)
@@ -128,15 +167,6 @@ export function MessagesStartup() {
   useEffect(() => {
     fetchContacts();
   }, [user]);
-
-  useEffect(() => {
-    if (selectedContact) {
-      setInterval(() => {
-        fetchMessages();
-      }, 5000);
-      fetchMessages();
-    }
-  }, [selectedContact, user]);
 
   useEffect(() => {
     if (userSearch.trim()) {
