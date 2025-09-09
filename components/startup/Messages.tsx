@@ -175,24 +175,24 @@ export function MessagesStartup() {
   }, [userSearch]);
 
   if (loading) {
-    return <div className="flex items-center justify-center h-96">Loading...</div>;
+    return <div className="flex h-96 items-center justify-center">Loading...</div>;
   }
 
   return (
-    <div className="flex flex-col w-full my-10">
-      <div className="flex-1 flex gap-3 max-w-7xl mx-auto w-full px-4">
+    <div className="my-10 flex w-full flex-col">
+      <div className="mx-auto flex w-full max-w-7xl flex-1 gap-3 px-4">
         {/* Contacts */}
-        <Card className="w-80 flex flex-col">
+        <Card className="flex w-80 flex-col">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
+                <Users className="size-5" />
                 Contacts
               </CardTitle>
               <Dialog open={showAddContact} onOpenChange={setShowAddContact}>
                 <DialogTrigger asChild>
                   <Button size="sm" variant="outline">
-                    <UserPlus className="h-4 w-4" />
+                    <UserPlus className="size-4" />
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -201,7 +201,7 @@ export function MessagesStartup() {
                   </DialogHeader>
                   <div className="space-y-4">
                     <div className="relative">
-                      <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute top-2.5 left-3 size-4 text-muted-foreground" />
                       <Input
                         placeholder="Search users..."
                         value={userSearch}
@@ -210,12 +210,12 @@ export function MessagesStartup() {
                       />
                     </div>
                     {searchingUsers && <div className="text-center text-sm text-muted-foreground">Searching...</div>}
-                    <div className="max-h-60 overflow-y-auto space-y-2">
+                    <div className="max-h-60 space-y-2 overflow-y-auto">
                       {searchResults.map((user) => (
-                        <div key={user.id} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-muted/50">
-                          <Avatar className="h-10 w-10">
+                        <div key={user.id} className="flex items-center gap-3 rounded-lg border p-3 hover:bg-muted/50">
+                          <Avatar className="size-10">
                             {user.image && <AvatarImage src={user.image} alt={user.name} />}
-                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                            <AvatarFallback className="bg-primary/10 font-semibold text-primary">
                               {getUserInitials(user.name)}
                             </AvatarFallback>
                           </Avatar>
@@ -224,7 +224,7 @@ export function MessagesStartup() {
                             <p className="text-sm text-muted-foreground">{user.email}</p>
                           </div>
                           <Button size="sm" onClick={() => addContact(user.id)}>
-                            <Plus className="h-4 w-4" />
+                            <Plus className="size-4" />
                           </Button>
                         </div>
                       ))}
@@ -234,7 +234,7 @@ export function MessagesStartup() {
               </Dialog>
             </div>
             <div className="relative">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute top-2.5 left-3 size-4 text-muted-foreground" />
               <Input
                 placeholder="Search contacts..."
                 value={searchQuery}
@@ -244,9 +244,9 @@ export function MessagesStartup() {
             </div>
           </CardHeader>
           <CardContent className="flex-1 p-0">
-            <div className="space-y-1 p-2 max-h-96 overflow-y-auto">
+            <div className="max-h-96 space-y-1 overflow-y-auto p-2">
               {filteredContacts.length === 0 ? (
-                <div className="text-center text-sm text-muted-foreground p-4">
+                <div className="p-4 text-center text-sm text-muted-foreground">
                   {contacts.length === 0 ? 'No contacts found' : 'No contacts match your search.'}
                 </div>
               ) : (
@@ -254,20 +254,20 @@ export function MessagesStartup() {
                   <div
                     key={contact.id}
                     onClick={() => setSelectedContact(contact)}
-                    className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-muted/50 transition-colors ${selectedContact?.id === contact.id ? 'bg-muted' : ''
+                    className={`flex cursor-pointer items-center gap-3 rounded-lg p-3 transition-colors hover:bg-muted/50 ${selectedContact?.id === contact.id ? 'bg-muted' : ''
                       }`}
                   >
                     <div className="relative">
-                      <Avatar className="h-12 w-12">
+                      <Avatar className="size-12">
                         {contact.image && <AvatarImage src={contact.image} alt={contact.name} />}
-                        <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                        <AvatarFallback className="bg-primary/10 font-semibold text-primary">
                           {getUserInitials(contact.name)}
                         </AvatarFallback>
                       </Avatar>
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between">
-                        <p className="font-semibold text-sm">{contact.name}</p>
+                        <p className="text-sm font-semibold">{contact.name}</p>
                       </div>
                     </div>
                   </div>
@@ -278,16 +278,16 @@ export function MessagesStartup() {
         </Card>
 
         {/* Chat */}
-        <Card className="flex-1 flex flex-col">
+        <Card className="flex flex-1 flex-col">
           {selectedContact ? (
             <>
-              <CardHeader className="pb-3 border-b">
+              <CardHeader className="border-b pb-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="relative">
-                      <Avatar className="h-10 w-10">
+                      <Avatar className="size-10">
                         {selectedContact.image && <AvatarImage src={selectedContact.image} alt={selectedContact.name} />}
-                        <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                        <AvatarFallback className="bg-primary/10 font-semibold text-primary">
                           {getUserInitials(selectedContact.name)}
                         </AvatarFallback>
                       </Avatar>
@@ -300,8 +300,8 @@ export function MessagesStartup() {
                 </div>
               </CardHeader>
 
-              <CardContent className="flex-1 flex flex-col p-0">
-                <div className="flex-1 p-4 overflow-y-auto">
+              <CardContent className="flex flex-1 flex-col p-0">
+                <div className="flex-1 overflow-y-auto p-4">
                   <div className="space-y-4">
                     {(
                       messages
@@ -316,22 +316,22 @@ export function MessagesStartup() {
                             key={message.id}
                             className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
                           >
-                            <div className={`flex items-end gap-2 max-w-xs lg:max-w-md ${isOwn ? 'flex-row-reverse' : 'flex-row'
+                            <div className={`flex max-w-xs items-end gap-2 lg:max-w-md ${isOwn ? 'flex-row-reverse' : 'flex-row'
                               }`}>
                               {!isOwn && (
-                                <Avatar className="h-6 w-6">
+                                <Avatar className="size-6">
                                   {selectedContact.image && <AvatarImage src={selectedContact.image} alt={selectedContact.name} />}
                                   <AvatarFallback className="bg-muted text-xs">
                                     {getUserInitials(selectedContact.name)}
                                   </AvatarFallback>
                                 </Avatar>
                               )}
-                              <div className={`px-4 py-2 rounded-2xl ${isOwn
-                                ? 'bg-primary text-primary-foreground rounded-br-md'
-                                : 'bg-muted rounded-bl-md'
+                              <div className={`rounded-2xl px-4 py-2 ${isOwn
+                                ? 'rounded-br-md bg-primary text-primary-foreground'
+                                : 'rounded-bl-md bg-muted'
                                 }`}>
                                 <p className="text-sm">{message.content}</p>
-                                <p className="text-xs opacity-70 mt-1">
+                                <p className="mt-1 text-xs opacity-70">
                                   {formatMessageTime(message.created_at)}
                                 </p>
                               </div>
@@ -343,7 +343,7 @@ export function MessagesStartup() {
                   </div>
                 </div>
 
-                <div className="p-4 border-t bg-background">
+                <div className="border-t bg-background p-4">
                   <div className="flex gap-2">
                     <Input
                       placeholder="Enter your message..."
@@ -362,16 +362,16 @@ export function MessagesStartup() {
                       disabled={!messageText.trim() || sendingMessage}
                       onClick={sendMessage}
                     >
-                      <Send className="h-4 w-4" />
+                      <Send className="size-4" />
                     </Button>
                   </div>
                 </div>
               </CardContent>
             </>
           ) : (
-            <div className="flex-1 flex items-center justify-center">
+            <div className="flex flex-1 items-center justify-center">
               <div className="text-center text-muted-foreground">
-                <Users className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                <Users className="mx-auto mb-4 size-16 opacity-50" />
                 <p className="text-lg font-semibold">Choose a contact</p>
               </div>
             </div>
