@@ -119,7 +119,6 @@ export default function CreateUserOrStartup({
         const founder = await addFounder({
           name: newUser.name ?? ""
         });
-        console.log("New founder created:", founder);
         await updateUserWithFounderId(newUser.id, newUser, founder?.id ?? 0);
         if (founder && founder.id && startupId)
           await addFounderStartup(founder?.id, startupId);
@@ -147,7 +146,6 @@ export default function CreateUserOrStartup({
           investor_type: investorData.investor_type ?? null,
           investment_focus: investorData.investment_focus ?? null,
         });
-        console.log("New investor created:", investor);
         await updateUserWithInvestorId(newUser.id, newUser, investor?.id ?? 0);
       } else {
         console.log("Failed to create user or retrieve user ID." + newUser);
@@ -175,7 +173,6 @@ export default function CreateUserOrStartup({
   }, []);
 
   useEffect(() => {
-    console.log("User data changed:", userData);
     if (startupId && userData.role !== "founder") {
       setUserData({ ...userData, founder_id: undefined });
     }

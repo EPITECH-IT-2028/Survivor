@@ -24,3 +24,10 @@ export interface TUser {
   role: UserRole;
   password?: string;
 }
+
+export interface TUserMessage {
+  id: number;
+  name: string;
+  email: string;
+  image?: string;
+}
