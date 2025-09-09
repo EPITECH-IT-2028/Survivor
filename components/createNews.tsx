@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
@@ -17,6 +18,7 @@ import {
 import { DatePicker } from "./ui/datePicker";
 import { addNews } from "@/app/hooks/news/addNews";
 import { getStartups } from "@/app/hooks/startups/getStartups";
+import { PulseLoader } from "react-spinners";
 
 interface CreateNewsProps {
   isOpen: boolean;
@@ -71,50 +73,58 @@ export default function CreateEvent({
     }
   };
 
+  if (!newsData) {
+    return (
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <PulseLoader size={30} color="#F18585" />
+      </div>
+    );
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <DialogTitle>Create News</DialogTitle>
-        <DialogContent>
-          <Input
-            value={newsData.title ?? ""}
-            placeholder="News Title"
-            onChange={(e) => { setNewsData({ ...newsData!, title: e.target.value }) }}
-          />
+        <DialogHeader>
+          <DialogTitle>Create News</DialogTitle>
+        </DialogHeader>
+        <Input
+          value={newsData.title ?? ""}
+          placeholder="News Title"
+          onChange={(e) => { setNewsData({ ...newsData!, title: e.target.value }) }}
+        />
+        <FiltersComboBoxResponsive
+          filtersList={categoryFilter.filter(f => f.value !== '-')}
+          placeHolder={categoryFilter[categoryId['-']]}
+          onSelection={(value: CategoryNews) => { setNewsData({ ...newsData!, category: value }) }}
+        />
+        <Input
+          value={newsData!.description ?? ""}
+          placeholder="Description"
+          onChange={(e) => { setNewsData({ ...newsData!, description: e.target.value }) }}
+        />
+        <Input
+          value={newsData!.location ?? ""}
+          placeholder="Location"
+          onChange={(e) => { setNewsData({ ...newsData!, location: e.target.value }) }}
+        />
+        <DatePicker
+          date={newsData?.news_date}
+          onSelectAction={(value: Date) => setNewsData(prev => ({ ...prev, news_date: value }))}
+        />
+        {
+          startupsList?.length > 0 &&
           <FiltersComboBoxResponsive
-            filtersList={categoryFilter.filter(f => f.value !== '-')}
-            placeHolder={categoryFilter[categoryId['-']]}
-            onSelection={(value: CategoryNews) => { setNewsData({ ...newsData!, category: value }) }}
+            filtersList={startupsList.filter(s => s.value !== 0)}
+            placeHolder={startupsList[0]}
+            onSelection={(value: number) => {
+              setNewsData({ ...newsData!, startup_id: value, startup: startupsList.find(s => s.value === value)?.label || "" });
+            }}
           />
-          <Input
-            value={newsData!.description ?? ""}
-            placeholder="Description"
-            onChange={(e) => { setNewsData({ ...newsData!, description: e.target.value }) }}
-          />
-          <Input
-            value={newsData!.location ?? ""}
-            placeholder="Location"
-            onChange={(e) => { setNewsData({ ...newsData!, location: e.target.value }) }}
-          />
-          <DatePicker
-            date={newsData?.news_date}
-            onSelectAction={(value: Date) => setNewsData(prev => ({ ...prev, news_date: value }))}
-          />
-          {
-            startupsList?.length > 0 &&
-            <FiltersComboBoxResponsive
-              filtersList={startupsList.filter(s => s.value !== 0)}
-              placeHolder={startupsList[0]}
-              onSelection={(value: number) => {
-                setNewsData({ ...newsData!, startup_id: value, startup: startupsList.find(s => s.value === value)?.label || "" });
-              }}
-            />
-          }
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleCreateNews}>Apply</Button>
-            <Button className="bg-blue-400 hover:bg-blue-500 cursor-pointer" onClick={onClose}>Cancel</Button>
-          </div>
-        </DialogContent>
+        }
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleCreateNews}>Apply</Button>
+          <Button className="bg-blue-400 hover:bg-blue-500 cursor-pointer" onClick={onClose}>Cancel</Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

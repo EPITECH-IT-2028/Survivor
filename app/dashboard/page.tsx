@@ -14,10 +14,8 @@ import { getUsers } from "../hooks/users/getUsers";
 import { TUser } from "../types/users";
 import { TStartups } from "../types/startup";
 import { TEvent } from "../types/event";
-import UpdateProfile from "@/components/updateProfile";
 import { getStartups } from "../hooks/startups/getStartups";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import CreateUserOrStartup from "@/components/createUserOrStartup";
 import { getEvents } from "../hooks/events/getEvents";
 import { getNews } from "../hooks/news/getNews";
 import UpdateEvent from "@/components/updateEvents";
@@ -27,12 +25,17 @@ import { TNews } from "../types/news";
 import UpdateNews from "@/components/updateNews";
 import CreateNews from "@/components/createNews";
 import PulseLoader from "react-spinners/PulseLoader";
+import CreateUser from "@/components/createUser";
+import CreateStartup from "@/components/createStartup";
+import UpdateStartup from "@/components/updateStartup";
+import UpdateUser from "@/components/updateUser";
 
 export default function Dashboard() {
-  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isUpdateUserOpen, setIsUpdateUserOpen] = useState(false);
+  const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
+  const [isUpdateStartupOpen, setIsUpdateStartupOpen] = useState(false);
+  const [isCreateStartupOpen, setIsCreateStartupOpen] = useState(false);
   const [idClicked, setIdClicked] = useState<number | null>(null);
-  const [isStartup, setIsStartup] = useState(true);
   const [isEventCreateOpen, setIsEventCreateOpen] = useState(false);
   const [isEventUpdateOpen, setIsEventUpdateOpen] = useState(false);
   const [isNewsCreateOpen, setIsNewsCreateOpen] = useState(false);
@@ -69,7 +72,16 @@ export default function Dashboard() {
     fetchStartups();
     fetchEvents();
     fetchNews();
-  }, [isUpdateOpen, isCreateOpen, isEventUpdateOpen, isEventCreateOpen, isNewsCreateOpen, isNewsUpdateOpen]);
+  }, [
+    isCreateUserOpen,
+    isCreateStartupOpen,
+    isUpdateUserOpen,
+    isUpdateStartupOpen,
+    isEventUpdateOpen,
+    isEventCreateOpen,
+    isNewsCreateOpen,
+    isNewsUpdateOpen
+  ]);
 
   const refreshData = async () => {
     const users = await getUsers();
@@ -82,10 +94,14 @@ export default function Dashboard() {
     setNewsData(news);
   };
 
-  const handleClickRow = (id: number, isStartup: boolean) => {
+  const handleUserClickRow = (id: number) => {
     setIdClicked(id);
-    setIsStartup(isStartup);
-    setIsUpdateOpen(true);
+    setIsUpdateUserOpen(true);
+  };
+
+  const handleStartupClickRow = (id: number) => {
+    setIdClicked(id);
+    setIsUpdateStartupOpen(true);
   };
 
   const handleEventClickRow = (id: number) => {
@@ -98,11 +114,13 @@ export default function Dashboard() {
     setIsNewsUpdateOpen(true);
   };
 
-  const handleCreateButton = (isStartup: boolean) => {
-    setIsStartup(isStartup);
-    setIsCreateOpen(true);
+  const handleCreateUserButton = () => {
+    setIsCreateUserOpen(true);
   };
 
+  const handleCreateStartupButton = () => {
+    setIsCreateStartupOpen(true);
+  };
 
   const handleEventCreateButton = () => {
     setIsEventCreateOpen(true);
@@ -113,22 +131,36 @@ export default function Dashboard() {
   };
 
   if (!usersData || !startupsData || !eventsData || !newsData) {
-
     return (
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <PulseLoader size={30} color="#F18585"/>
+        <PulseLoader size={30} color="#F18585" />
       </div>);
   }
-  return isUpdateOpen ? (
-    <UpdateProfile
-      data={
-        isStartup
-          ? startupsData.find(s => s.id === idClicked) || startupsData[0]
-          : usersData.find(u => u.id === idClicked) || usersData[0]
-      }
-      isOpen={isUpdateOpen}
-      onClose={() => setIsUpdateOpen(false)}
-      isStartup={isStartup}
+
+  return isUpdateUserOpen ? (
+    <UpdateUser
+      data={usersData.find(u => u.id === idClicked) || usersData[0]}
+      isOpen={isUpdateUserOpen}
+      onClose={() => setIsUpdateUserOpen(false)}
+      onDataChanged={refreshData}
+    />
+  ) : isCreateUserOpen ? (
+    <CreateUser
+      isOpen={isCreateUserOpen}
+      onClose={() => setIsCreateUserOpen(false)}
+      onDataChanged={refreshData}
+    />
+  ) : isCreateStartupOpen ? (
+    <CreateStartup
+      isOpen={isCreateStartupOpen}
+      onClose={() => setIsCreateStartupOpen(false)}
+      onDataChanged={refreshData}
+    />
+  ) : isUpdateStartupOpen ? (
+    <UpdateStartup
+      data={startupsData.find(s => s.id === idClicked) || startupsData[0]}
+      isOpen={isUpdateStartupOpen}
+      onClose={() => setIsUpdateStartupOpen(false)}
       onDataChanged={refreshData}
     />
   ) : isEventUpdateOpen ? (
@@ -138,6 +170,12 @@ export default function Dashboard() {
       onClose={() => setIsEventUpdateOpen(false)}
       onDataChanged={refreshData}
     />
+  ) : isEventCreateOpen ? (
+    <CreateEvent
+      isOpen={isEventCreateOpen}
+      onClose={() => setIsEventCreateOpen(false)}
+      onDataChanged={refreshData}
+    />
   ) : isNewsUpdateOpen ? (
     <UpdateNews
       data={newsData.find(n => n.id === idClicked) || newsData[0]}
@@ -145,12 +183,12 @@ export default function Dashboard() {
       onClose={() => setIsNewsUpdateOpen(false)}
       onDataChanged={refreshData}
     />
-  ) : isCreateOpen ? (
-    <CreateUserOrStartup isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} isStartup={isStartup} onDataChanged={refreshData} />
-  ) : isEventCreateOpen ? (
-    <CreateEvent isOpen={isEventCreateOpen} onClose={() => setIsEventCreateOpen(false)} onDataChanged={refreshData} />
   ) : isNewsCreateOpen ? (
-    <CreateNews isOpen={isNewsCreateOpen} onClose={() => setIsNewsCreateOpen(false)} onDataChanged={refreshData} />
+    <CreateNews
+      isOpen={isNewsCreateOpen}
+      onClose={() => setIsNewsCreateOpen(false)}
+      onDataChanged={refreshData}
+    />
   ) : (
     <div>
       {/* Stats */}
@@ -188,7 +226,7 @@ export default function Dashboard() {
               <CardTitle className="text-xl font-semibold">
                 Startups
               </CardTitle>
-              <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(true)} />
+              <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateStartupButton()} />
             </div>
           </CardHeader>
           <Table className="size-fit">
@@ -208,7 +246,7 @@ export default function Dashboard() {
               {startupsData.slice(pageStartup * 5, pageStartup * 5 + 5).map((startup) => (
                 <TableRow
                   key={startup.id}
-                  onClick={() => handleClickRow(startup.id, true)}
+                  onClick={() => handleStartupClickRow(startup.id)}
                   className="cursor-pointer"
                 >
                   <TableCell>{startup.id}</TableCell>
@@ -235,7 +273,7 @@ export default function Dashboard() {
               <CardTitle className="text-xl font-semibold">
                 Users
               </CardTitle>
-              <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateButton(false)} />
+              <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleCreateUserButton()} />
             </div>
           </CardHeader>
           <Table>
@@ -253,7 +291,7 @@ export default function Dashboard() {
               {usersData.slice(pageUser * 5, pageUser * 5 + 5).map((user) => (
                 <TableRow
                   key={user.id}
-                  onClick={() => handleClickRow(user.id, false)}
+                  onClick={() => handleUserClickRow(user.id)}
                   className="cursor-pointer"
                 >
                   <TableCell>{user.id}</TableCell>
@@ -305,7 +343,7 @@ export default function Dashboard() {
                   <TableCell>{event.id}</TableCell>
                   <TableCell>{event.name}</TableCell>
                   <TableCell>{event.event_type}</TableCell>
-                  <TableCell>{event.dates ? format(event.dates, "MMMM do, yyyy") : "-"}</TableCell>
+                  <TableCell>{event.dates ? format(event.dates, "do MMMM yyyy") : "-"}</TableCell>
                   <TableCell>{event.location ?? "-"}</TableCell>
                   <TableCell>{event.target_audience ?? "-"}</TableCell>
                 </TableRow>

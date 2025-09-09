@@ -11,7 +11,6 @@ import { Textarea } from "./ui/textarea";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
 
-
 export function UpdateStartup() {
   const { startups } = useAuth();
   const [startupsData, setStartupsData] = useState<TStartups[] | null>();

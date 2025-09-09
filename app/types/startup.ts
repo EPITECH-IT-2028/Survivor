@@ -51,6 +51,4 @@ export interface TStartups {
   project_status: string | null;
   needs: string | null;
   description: string | null;
-  founder: number | null;
-  news: number | null;
 }

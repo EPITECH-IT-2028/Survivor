@@ -11,7 +11,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import {
   Popover,
   PopoverContent,
@@ -106,6 +106,9 @@ export function FiltersComboBoxResponsive({
           </Button>
         </DrawerTrigger>
         <DrawerContent>
+          <DrawerTitle className="mb-4 text-lg font-medium">
+            {placeHolder.label}
+          </DrawerTitle>
           <div className="mt-4 border-t">
             <FiltersList
               setOpen={setOpen}

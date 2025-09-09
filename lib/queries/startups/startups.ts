@@ -19,17 +19,19 @@ export const insertStartupQuery = async (db: postgres.Sql,
   address: string,
   email: string,
   phone: string,
-  created_at: string,
   website_url: string,
   social_media_url: string,
   project_status: string,
   needs: string,
   maturity: string,
-  sector: string) => {
-  return await db`INSERT INTO startups(name, description, legal_status, address, email, phone, created_at,
-    website_url, social_media_url, project_status, needs, maturity, sector)
-  VALUES(${name}, ${description}, ${legal_status}, ${address}, ${email}, ${phone}, ${created_at}, ${website_url},
-    ${social_media_url}, ${project_status}, ${needs}, ${maturity}, ${sector}) RETURNING * `;
+  sector: string,
+  engagement_rate: number,
+  project_view: number,
+  legacy_id: number | null) => {
+  return await db`INSERT INTO startups(name, description, legal_status, address, email, phone,
+    website_url, social_media_url, project_status, needs, maturity, sector, engagement_rate, project_view, legacy_id)
+  VALUES(${name}, ${description}, ${legal_status}, ${address}, ${email}, ${phone}, ${website_url},
+    ${social_media_url}, ${project_status}, ${needs}, ${maturity}, ${sector}, ${engagement_rate}, ${project_view}, ${legacy_id}) RETURNING * `;
 }
 
 export const getStartupByIdQuery = async (db: postgres.Sql, id: string) => {

@@ -38,12 +38,42 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { name, description, legal_status, address, email, phone, created_at, website_url, social_media_url,
-      project_status, needs, maturity, sector } = await request.json();
+    const { 
+      name, 
+      description, 
+      legal_status, 
+      address, 
+      email, 
+      phone, 
+      website_url, 
+      social_media_url,
+      project_status, 
+      needs, 
+      maturity, 
+      sector,
+      engagement_rate,
+      project_view,
+      legacy_id
+    } = await request.json();
 
-
-    const response = await insertStartupQuery(db, name, description, legal_status, address, email, phone, created_at,
-      website_url, social_media_url, project_status, needs, maturity, sector);
+    const response = await insertStartupQuery(
+      db, 
+      name, 
+      description, 
+      legal_status, 
+      address, 
+      email, 
+      phone, 
+      website_url, 
+      social_media_url, 
+      project_status, 
+      needs, 
+      maturity, 
+      sector,
+      engagement_rate,
+      project_view,
+      legacy_id
+    );
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },
