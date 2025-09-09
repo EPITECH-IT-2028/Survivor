@@ -154,7 +154,12 @@ export default function UpdateProfile({
       </DialogContent>
     </Dialog>
   ) : (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
       <DialogContent>
         <DialogTitle>Update User</DialogTitle>
         <DialogDescription className="sr-only">
