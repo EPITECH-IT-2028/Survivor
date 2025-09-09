@@ -1,13 +1,14 @@
 'use server';
 
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
+import { deleteNewsByIdQuery, getNewsByIdQuery, updateNewsByIdQuery } from "@/lib/queries/news/news";
 import { NextRequest } from "next/server";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -19,7 +20,7 @@ export async function GET(
   const { id } = await params;
 
   try {
-    const response = await db`SELECT * FROM news WHERE id = ${id}`;
+    const response = await getNewsByIdQuery(db, id);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -36,7 +37,7 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -48,7 +49,7 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    const response = await db`DELETE FROM news WHERE id = ${id} RETURNING *`;
+    const response = await deleteNewsByIdQuery(db, id);
 
     return new Response(JSON.stringify(response), {
       status: 200,
@@ -66,7 +67,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -80,15 +81,7 @@ export async function PUT(
   try {
     const { title, location, category, startup_id, description, news_date, startup } = await request.json();
 
-    const response = await db`UPDATE news SET 
-      title = ${title},
-      location = ${location},
-      category = ${category},
-      startup_id = ${startup_id},
-      description = ${description},
-      news_date = ${news_date},
-      startup = ${startup}
-      WHERE id = ${id} RETURNING *`;
+    const response = await updateNewsByIdQuery(db, id, title, location, category, startup_id, description, news_date, startup);
 
     return new Response(JSON.stringify(response), {
       status: 200,

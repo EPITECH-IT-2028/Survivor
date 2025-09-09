@@ -1,7 +1,8 @@
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import generateToken from "@/lib/auth-utils";
+import { getUserByEmailQuery } from "@/lib/queries/users/users";
 
 export async function POST(req: Request) {
   try {
@@ -12,10 +13,9 @@ export async function POST(req: Request) {
         { status: 400 },
       );
 
-    const sql = getSql();
+    const db = sql;
 
-    const foundUsers =
-      await sql`SELECT * FROM public.users WHERE email = ${email}`;
+    const foundUsers = await getUserByEmailQuery(db, email);
     if (foundUsers.length == 0)
       return NextResponse.json(
         { error: "Invalid email or password" },

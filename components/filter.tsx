@@ -1,6 +1,4 @@
-import * as React from "react";
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-
+import { useState, useEffect } from "react";
 import { useMediaQuery } from "@/app/hooks/mediaQuery/use-media-query";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,13 +9,19 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+  DrawerDescription,
+} from "@/components/ui/drawer";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { UserRole } from "@/app/types/users";
+import { ChevronsUpDown } from "lucide-react";
 
 export type Filters = {
   value: string;
@@ -44,28 +48,45 @@ export function FiltersComboBoxResponsive({
   placeHolder,
   onSelection,
   disabled = false,
+  className = "",
 }: {
-  filtersList: { value: any; label: any }[];
-  placeHolder: { value: any; label: any };
-  onSelection: (value: any) => void;
+  filtersList: Filters[];
+  placeHolder: Filters;
+  onSelection: (value: string) => void;
   disabled?: boolean;
+  className?: string;
 }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [selectedFilters, setSelectedFilters] = React.useState<{
-    value: any;
-    label: any;
-  } | null>(null);
+  const [selectedFilters, setSelectedFilters] = useState<Filters | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
-  const handleFilterChange = (newValue: { value: any; label: any } | null) => {
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const handleFilterChange = (newValue: Filters | null) => {
     setSelectedFilters(newValue);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedFilters) {
-      onSelection(selectedFilters.value as UserRole);
+      onSelection(selectedFilters.value);
     }
-  }, [selectedFilters]);
+  }, [selectedFilters, onSelection]);
+
+  if (!isMounted) {
+    return (
+      <Button
+        variant="outline"
+        className="flex w-full justify-between"
+        disabled
+      >
+        {placeHolder.label}
+        <ChevronsUpDown className="opacity-50" />
+      </Button>
+    );
+  }
 
   if (isDesktop) {
     return (
@@ -73,7 +94,7 @@ export function FiltersComboBoxResponsive({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-[150px] justify-start"
+            className="flex w-full justify-between"
             disabled={disabled}
           >
             {selectedFilters ? (
@@ -81,9 +102,10 @@ export function FiltersComboBoxResponsive({
             ) : (
               <>{placeHolder.label}</>
             )}
+            <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0" align="start">
+        <PopoverContent className="w-[200px]" align="start">
           <FiltersList
             setOpen={setOpen}
             setSelectedFilters={handleFilterChange}
@@ -97,11 +119,19 @@ export function FiltersComboBoxResponsive({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[150px] justify-start">
+        <Button
+          variant="outline"
+          className="w-[150px] justify-start"
+          disabled={disabled}
+        >
           {selectedFilters ? <>{selectedFilters.label}</> : <>Select filters</>}
         </Button>
       </DrawerTrigger>
       <DrawerContent>
+        <DrawerTitle className="sr-only">Filters</DrawerTitle>
+        <DrawerDescription className="sr-only">
+          Select a filter to apply.
+        </DrawerDescription>
         <div className="mt-4 border-t">
           <FiltersList
             setOpen={setOpen}
@@ -118,13 +148,15 @@ function FiltersList({
   setOpen,
   setSelectedFilters,
   filtersList = filters,
+  className = "",
 }: {
   setOpen: (open: boolean) => void;
   setSelectedFilters: (status: Filters | null) => void;
   filtersList?: Filters[];
+  className?: string;
 }) {
   return (
-    <Command>
+    <Command className={className}>
       <CommandList>
         <CommandInput placeholder="Filter status..." />
         <CommandEmpty>No results found.</CommandEmpty>
@@ -136,8 +168,8 @@ function FiltersList({
               onSelect={(value) => {
                 setSelectedFilters(
                   filtersList.find(
-                    (filter) => filter.label.toString() === value
-                  ) || null
+                    (filter) => filter.label.toString() === value,
+                  ) || null,
                 );
                 setOpen(false);
               }}

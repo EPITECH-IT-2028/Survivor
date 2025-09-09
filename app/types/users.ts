@@ -1,6 +1,3 @@
-import { TFounder } from "./founder";
-import { TInvestor } from "./investor";
-
 export type UserRole = 'admin' | 'founder' | 'investor' | '-';
 
 export enum userRoleId {
@@ -26,4 +23,11 @@ export interface TUser {
   name: string;
   role: UserRole;
   password?: string;
+}
+
+export interface TUserMessage {
+  id: number;
+  name: string;
+  email: string;
+  image?: string;
 }

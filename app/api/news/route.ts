@@ -1,8 +1,9 @@
 'use server';
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
+import { getNewsQuery, insertNewsQuery } from "@/lib/queries/news/news";
 
 export async function GET() {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -12,7 +13,7 @@ export async function GET() {
   }
 
   try {
-    const response = await db`SELECT * FROM news`;
+    const response = await getNewsQuery(db);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -27,7 +28,7 @@ export async function GET() {
 
 
 export async function POST(request: Request) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -39,8 +40,7 @@ export async function POST(request: Request) {
   try {
     const { title, location, category, startup_id, description, news_date, startup } = await request.json();
 
-    const response = await db`INSERT INTO news (title, location, category, startup_id, description, news_date, startup)
-      VALUES (${title}, ${location}, ${category}, ${startup_id}, ${description}, ${news_date}, ${startup}) RETURNING *`;
+    const response = await insertNewsQuery(db, title, location, category, startup_id, description, news_date, startup);
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },

@@ -10,7 +10,6 @@ export async function addFounder(founderData: FounderPayload): Promise<TFounder 
     const payload: FounderPayload = {
       name: founderData.name,
     };
-    console.log("Founder payload:", payload);
     const res = await fetch("/api/founders", {
       method: "POST",
       headers: {

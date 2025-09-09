@@ -1,13 +1,14 @@
 'use server';
 
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
+import { deletePartnerByIdQuery, getPartnerByIdQuery, updatePartnerByIdQuery } from "@/lib/queries/partners/partners";
 import { NextRequest } from "next/server";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -19,7 +20,7 @@ export async function GET(
   const { id } = await params;
 
   try {
-    const response = await db`SELECT * FROM partners WHERE id = ${id}`;
+    const response = await getPartnerByIdQuery(db, id);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -36,7 +37,7 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -48,7 +49,7 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    const response = await db`DELETE FROM partners WHERE id = ${id} RETURNING *`;
+    const response = await deletePartnerByIdQuery(db, id);
 
     return new Response(JSON.stringify(response), {
       status: 200,
@@ -66,7 +67,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -80,16 +81,7 @@ export async function PUT(
   try {
     const { name, legal_status, address, email, phone, description, partnership_type } = await request.json();
 
-    const response = await db`UPDATE partners SET 
-      name = ${name},
-      legal_status = ${legal_status},
-      address = ${address},
-      email = ${email},
-      phone = ${phone},
-      description = ${description},
-      partnership_type = ${partnership_type}
-      WHERE id = ${id} RETURNING *`;
-
+    const response = await updatePartnerByIdQuery(db, id, name, legal_status, address, email, phone, description, partnership_type);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

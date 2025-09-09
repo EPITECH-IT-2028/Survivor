@@ -1,13 +1,14 @@
 'use server';
 
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
+import { getStartupByFounderAndStartupIdQuery } from "@/lib/queries/startups/startups";
 import { NextRequest } from "next/server";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string, startup_id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -19,12 +20,7 @@ export async function GET(
   const { id, startup_id } = await params;
 
   try {
-    const startups = await db`
-      SELECT s.*
-      FROM startups s
-      JOIN founder_startup fs ON fs.startup_id = s.id
-      WHERE fs.founder_id = ${id} AND fs.startup_id = ${startup_id}
-    `;
+    const startups = await getStartupByFounderAndStartupIdQuery(db, id, startup_id);
 
     return new Response(JSON.stringify(startups), {
       status: 200,

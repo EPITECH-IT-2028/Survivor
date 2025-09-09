@@ -1,13 +1,15 @@
 'use server';
 
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
+import { insertFounderStartupQuery } from "@/lib/queries/founder_startup/fs";
+import { getFoundersByStartupIdQuery } from "@/lib/queries/founders/founders";
 import { NextRequest } from "next/server";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -19,12 +21,7 @@ export async function GET(
   const { id } = await params;
 
   try {
-    const founders = await db`
-      SELECT f.*
-      FROM founders f
-      JOIN founder_startup fs ON fs.founder_id = f.id
-      WHERE fs.startup_id = ${id}
-    `;
+    const founders = await getFoundersByStartupIdQuery(db, id);
 
     return new Response(JSON.stringify(founders), {
       status: 200,
@@ -42,7 +39,7 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -56,12 +53,7 @@ export async function POST(
   try {
     const { founder_id } = await request.json();
 
-    const response = await db`
-      INSERT INTO founder_startup (founder_id, startup_id)
-      VALUES (${founder_id}, ${id})
-      ON CONFLICT (founder_id, startup_id) DO NOTHING
-      RETURNING *
-    `;
+    const response = await insertFounderStartupQuery(db, founder_id, id);
     if (response.length === 0) {
       return new Response(JSON.stringify({ message: 'Association already exists' }), {
         status: 200,

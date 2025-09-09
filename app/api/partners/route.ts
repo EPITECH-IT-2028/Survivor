@@ -1,8 +1,9 @@
 'use server';
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
+import { getPartnersQuery, insertPartnerQuery } from "@/lib/queries/partners/partners";
 
 export async function GET() {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -12,7 +13,7 @@ export async function GET() {
   }
 
   try {
-    const response = await db`SELECT * FROM partners`;
+    const response = await getPartnersQuery(db);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -26,7 +27,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -38,8 +39,8 @@ export async function POST(request: Request) {
   try {
     const { name, legal_status, address, email, phone, description, partnership_type } = await request.json();
 
-    const response = await db`INSERT INTO partners (name, legal_status, address, email, phone, description, partnership_type)
-      VALUES (${name}, ${legal_status}, ${address}, ${email}, ${phone}, ${description}, ${partnership_type}) RETURNING *`;
+    const response = await insertPartnerQuery(db, name, legal_status, address, email, phone, description, partnership_type);
+
     return new Response(JSON.stringify(response), {
       status: 201,
       headers: { 'Content-Type': 'application/json' },

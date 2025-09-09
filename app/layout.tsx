@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Instrument_Serif } from "next/font/google";
-import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
 import Footer from "@/components/Footer";
 import "./globals.css";
+import ConditionalNavbar from "@/components/conditionalNavbar";
+import ConditionalContainer from "@/components/conditionalContainer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
   description: "A place to nourish your ideas and develop your projects.",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,8 +41,10 @@ export default function RootLayout({
         className={`font-sf-pro ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
         <AuthProvider>
-          <Navbar />
-          <div className="mx-auto min-h-screen max-w-6xl">{children}</div>
+          <ConditionalNavbar />
+          <ConditionalContainer>
+            {children}
+          </ConditionalContainer>
           <Toaster position="bottom-right" richColors />
         </AuthProvider>
         <Footer />

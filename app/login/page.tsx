@@ -103,6 +103,14 @@ export default function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+
+              <Button
+                variant="link"
+                className="h-auto w-fit p-0 text-sm"
+                onClick={() => router.push("/reset-password")}
+              >
+                Reset password
+              </Button>
             </div>
           </div>
         </CardContent>

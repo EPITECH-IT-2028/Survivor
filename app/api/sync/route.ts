@@ -1,7 +1,7 @@
 'use server';
 
 import { NextResponse } from 'next/server';
-import { neon } from '@neondatabase/serverless';
+import sql from '@/lib/db';
 
 
 async function fetchDataFromExternalAPI(endpoint: string) {
@@ -28,16 +28,39 @@ async function fetchDataFromExternalAPI(endpoint: string) {
   }
 }
 
+async function fetchImageFromExternalAPI(endpoint: string) {
+  const response = await fetch(`https://api.jeb-incubator.com/${endpoint}`, {
+    method: 'GET',
+    headers: {
+      'X-Group-Authorization': `${process.env.JEB_API_KEY}`
+    },
+  });
+
+  if (!response.ok) {
+    console.error(`Failed to fetch image ${endpoint}:`, response.status);
+    return null;
+  }
+
+  try {
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    return buffer;
+  } catch (err) {
+    console.error(`Failed to process image from ${endpoint}:`, err);
+    return null;
+  }
+}
+
 
 export async function POST() {
   try {
-    if (!process.env.DATABASE_URL) {
+    if (!process.env.POSTGRES_URL) {
       return NextResponse.json({ error: 'Database URL not configured' }, {
         status: 500,
       });
     }
 
-    const db = neon(`${process.env.DATABASE_URL}`);
+    const db = sql;
 
     if (db === null) {
       return NextResponse.json({ error: 'Database connection failed' }, {
@@ -70,6 +93,21 @@ export async function POST() {
       investor_type = EXCLUDED.investor_type,
       investment_focus = EXCLUDED.investment_focus,
       email = EXCLUDED.email`;
+    }
+
+    const investorIds = await db`SELECT legacy_id FROM investors ORDER BY legacy_id`;
+
+    for (const i of investorIds) {
+      console.log(`Fetching image for investor ID ${i.legacy_id}`);
+
+      const imageBuffer = await fetchImageFromExternalAPI(`investors/${i.legacy_id}/image`);
+
+      if (imageBuffer) {
+        await db`UPDATE investors SET image = ${imageBuffer}
+          WHERE legacy_id = ${i.legacy_id}`;
+      } else {
+        console.log(`No image found for investor ID ${i.legacy_id}`);
+      }
     }
 
     const startupResponse = await fetchDataFromExternalAPI('startups');
@@ -131,6 +169,27 @@ export async function POST() {
       }
     }
 
+    const foundersWithStartupIds = await db`
+      SELECT f.legacy_id as founder_legacy_id, s.legacy_id as startup_legacy_id 
+      FROM founders f
+      JOIN founder_startup fs ON f.id = fs.founder_id
+      JOIN startups s ON s.id = fs.startup_id
+      ORDER BY f.legacy_id`;
+
+    for (const founder of foundersWithStartupIds) {
+      console.log(`Fetching image for founder ID ${founder.founder_legacy_id} from startup ${founder.startup_legacy_id}`);
+
+      const imageBuffer = await fetchImageFromExternalAPI(`startups/${founder.startup_legacy_id}/founders/${founder.founder_legacy_id}/image`);
+
+      if (imageBuffer) {
+        await db`UPDATE founders SET image = ${imageBuffer}
+          WHERE legacy_id = ${founder.founder_legacy_id}`;
+        console.log(`Image updated for founder ID ${founder.founder_legacy_id}`);
+      } else {
+        console.log(`No image found for founder ID ${founder.founder_legacy_id}`);
+      }
+    }
+
     const response = await fetchDataFromExternalAPI('users');
 
     if (!response) {
@@ -160,6 +219,22 @@ export async function POST() {
           legacy_id = EXCLUDED.legacy_id`;
     }
 
+    const userIds = await db`SELECT legacy_id FROM users ORDER BY legacy_id`;
+
+    for (const u of userIds) {
+      console.log(`Fetching image for user ID ${u.legacy_id}`);
+
+      const imageBuffer = await fetchImageFromExternalAPI(`users/${u.legacy_id}/image`);
+
+      if (imageBuffer) {
+        await db`UPDATE users SET image = ${imageBuffer}
+          WHERE legacy_id = ${u.legacy_id}`;
+        console.log(`Image updated for user ID ${u.legacy_id}`);
+      } else {
+        console.log(`No image found for user ID ${u.legacy_id}`);
+      }
+    }
+
     const eventsResponse = await fetchDataFromExternalAPI('events');
 
     if (!eventsResponse) {
@@ -177,6 +252,22 @@ export async function POST() {
       ON CONFLICT(name, dates) DO NOTHING`;
     }
 
+    const eventIds = await db`SELECT legacy_id FROM events ORDER BY legacy_id`;
+
+    for (const e of eventIds) {
+      console.log(`Fetching image for event ID ${e.legacy_id}`);
+
+      const imageBuffer = await fetchImageFromExternalAPI(`events/${e.legacy_id}/image`);
+
+      if (imageBuffer) {
+        await db`UPDATE events SET image = ${imageBuffer}
+          WHERE legacy_id = ${e.legacy_id}`;
+        console.log(`Image updated for event ID ${e.legacy_id}`);
+      } else {
+        console.log(`No image found for event ID ${e.legacy_id}`);
+      }
+    }
+
     const partnersResponse = await fetchDataFromExternalAPI('partners');
 
     if (!partnersResponse) {
@@ -192,7 +283,7 @@ export async function POST() {
         VALUES(${partner.name}, ${partner.legal_status}, ${partner.address}, ${partner.email}, ${partner.phone},
           ${partner.created_at}, ${partner.description}, ${partner.partnership_type}, ${partner.id})
       ON CONFLICT (legacy_id) DO UPDATE SET
-        name = EXCLUDED.name,
+          name = EXCLUDED.name,
           legal_status = EXCLUDED.legal_status,
           address = EXCLUDED.address,
           phone = EXCLUDED.phone,
@@ -240,6 +331,20 @@ export async function POST() {
 
       await db`UPDATE news SET description = ${detail.description}
         WHERE legacy_id = ${n.legacy_id}`;
+    }
+
+    for (const n of newsIds) {
+      console.log(`Fetching image for news ID ${n.legacy_id}`);
+
+      const imageBuffer = await fetchImageFromExternalAPI(`news/${n.legacy_id}/image`);
+
+      if (imageBuffer) {
+        await db`UPDATE news SET image = ${imageBuffer}
+          WHERE legacy_id = ${n.legacy_id}`;
+        console.log(`Image updated for news ID ${n.legacy_id}`);
+      } else {
+        console.log(`No image found for news ID ${n.legacy_id}`);
+      }
     }
 
     return NextResponse.json({ message: 'Data synchronized successfully' });

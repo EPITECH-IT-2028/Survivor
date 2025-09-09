@@ -1,13 +1,14 @@
 'use server';
 
-import { getSql } from "@/lib/db";
+import sql from "@/lib/db";
+import { deleteUserQuery, getUserByIdQuery, updateUserQuery } from "@/lib/queries/users/users";
 import { NextRequest } from "next/server";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -19,7 +20,7 @@ export async function GET(
   const { id } = await params;
 
   try {
-    const response = await db`SELECT * FROM users WHERE id = ${id}`;
+    const response = await getUserByIdQuery(db, id);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -36,7 +37,7 @@ export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -48,7 +49,7 @@ export async function DELETE(
   const { id } = await params;
 
   try {
-    const response = await db`DELETE FROM users WHERE id = ${id} RETURNING *`;
+    const response = await deleteUserQuery(db, id);
 
     return new Response(JSON.stringify(response), {
       status: 200,
@@ -66,7 +67,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const db = getSql();
+  const db = sql;
 
   if (db === null) {
     return new Response(JSON.stringify({ error: 'Database connection failed' }), {
@@ -80,14 +81,7 @@ export async function PUT(
   try {
     const { name, role, email, founder_id, investor_id } = await request.json();
 
-    const response = await db`UPDATE users SET 
-      name = ${name},
-      role = ${role},
-      email = ${email},
-      founder_id = ${founder_id},
-      investor_id = ${investor_id}
-      WHERE id = ${id} RETURNING *`;
-
+    const response = updateUserQuery(db, id, name, role, email, founder_id, investor_id);
     return new Response(JSON.stringify(response), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
