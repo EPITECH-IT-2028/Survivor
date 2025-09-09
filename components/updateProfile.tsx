@@ -103,7 +103,7 @@ export default function UpdateProfile({
       <DialogContent>
         <DialogTitle>Update Startup</DialogTitle>
         <DialogDescription className="sr-only">Update startup by filling the form.</DialogDescription>
-        <DialogContent>
+        <div>
           <Input value={startupData!.id} disabled />
           <Input value={startupData!.name} onChange={(e) => { setStartupData({ ...startupData!, name: e.target.value }) }} />
           <Input value={startupData!.legal_status ?? ""} onChange={(e) => { setStartupData({ ...startupData!, legal_status: e.target.value }) }} />
@@ -113,7 +113,7 @@ export default function UpdateProfile({
             <Button className="cursor-pointer bg-green-400 hover:bg-green-500" onClick={handleUpdateStartup}>Apply</Button>
             <Button className="cursor-pointer bg-blue-400 hover:bg-blue-500" onClick={onClose}>Cancel</Button>
           </div>
-        </DialogContent>
+        </div>
       </DialogContent>
     </Dialog>
   ) : (
@@ -121,7 +121,7 @@ export default function UpdateProfile({
       <DialogContent>
         <DialogTitle>Update User</DialogTitle>
         <DialogDescription className="sr-only">Update user by filling the form.</DialogDescription>
-        <DialogContent>
+        <div>
           <Input value={userData!.id} disabled />
           <Input value={userData!.name} onChange={(e) => { setUserData({ ...userData!, name: e.target.value }) }} />
           <Input value={userData!.email} onChange={(e) => { setUserData({ ...userData!, email: e.target.value }) }} />
@@ -137,7 +137,7 @@ export default function UpdateProfile({
             <Button className="cursor-pointer bg-green-400 hover:bg-green-500" onClick={handleUpdateUser}>Apply</Button>
             <Button className="cursor-pointer bg-blue-400 hover:bg-blue-500" onClick={onClose}>Cancel</Button>
           </div>
-        </DialogContent>
+        </div>
       </DialogContent>
     </Dialog>
   );
