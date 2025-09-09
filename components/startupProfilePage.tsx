@@ -108,7 +108,7 @@ export function UpdateStartup() {
                     <Input
                       value={startup.name}
                       onChange={(e) => handleChangeInputValue(e.target.value, startup.id, "name")}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2 rounded-sm"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -116,7 +116,7 @@ export function UpdateStartup() {
                     <Input
                       value={startup.email}
                       onChange={(e) => handleChangeInputValue(e.target.value, startup.id, "email")}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2 rounded-sm"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -124,7 +124,7 @@ export function UpdateStartup() {
                     <Input
                       value={startup?.address || ""}
                       onChange={(e) => handleChangeInputValue(e.target.value, startup.id, "address")}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2  rounded-sm"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -135,7 +135,7 @@ export function UpdateStartup() {
                       onSelection={(value: string) => {
                         handleChangeInputValue(value, startup.id, "sector");
                       }}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2  rounded-sm"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -143,7 +143,7 @@ export function UpdateStartup() {
                     <Input
                       value={startup?.website_url || ""}
                       onChange={(e) => (handleChangeInputValue(e.target.value, startup.id, "website_url"))}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2  rounded-sm"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -151,7 +151,7 @@ export function UpdateStartup() {
                     <Input
                       value={startup?.social_media_url || ""}
                       onChange={(e) => (handleChangeInputValue(e.target.value, startup.id, "social_media_url"))}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2 rounded-sm"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -162,7 +162,7 @@ export function UpdateStartup() {
                       onSelection={(value: string) => {
                         handleChangeInputValue(value, startup.id, "project_status");
                       }}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2 rounded-sm"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -173,7 +173,7 @@ export function UpdateStartup() {
                       onSelection={(value: string) => {
                         handleChangeInputValue(value, startup.id, "needs");
                       }}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2 rounded-sm"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -181,7 +181,7 @@ export function UpdateStartup() {
                     <Textarea
                       value={startup?.description || ""}
                       onChange={(e) => (handleChangeInputValue(e.target.value, startup.id, "description"))}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2 rounded-sm"
                     />
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -192,7 +192,7 @@ export function UpdateStartup() {
                       onSelection={(value: string) => {
                         handleChangeInputValue(value, startup.id, "maturity");
                       }}
-                      className="flex-1 px-3 py-2 border rounded"
+                      className="flex-1 px-3 py-2 rounded-sm"
                     />
                   </div>
                 </div>
