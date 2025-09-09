@@ -5,6 +5,7 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerTrigger,
+  DrawerDescription,
 } from "@/components/ui/drawer";
 import { DialogTitle } from "@/components/ui/dialog";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
@@ -168,14 +169,13 @@ export default function Modal({
       <Card
         key={startup.id}
         onClick={onClick}
-        className="w-full transform cursor-pointer rounded-xl border border-gray-200"
       >
         <CardHeader className="mx-4 flex items-center rounded-md px-4 py-2">
           <CardTitle className="line-clamp-2 text-lg font-bold">
             {startup.name}
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col">
+        <CardContent>
           <div className="space-y-2">
             <div className="grid grid-cols-1 md:grid-cols-3">
               <span className="text-xs font-medium text-gray-500">Sector:</span>
@@ -218,6 +218,7 @@ export default function Modal({
                   <DialogTitle className="mb-2 ml-12 text-2xl font-bold text-gray-900">
                     {startup.name}
                   </DialogTitle>
+                  <DrawerDescription className="sr-only">Startup Profile</DrawerDescription>
                   <p className="ml-12 text-sm text-gray-500">Startup Profile</p>
                 </div>
 

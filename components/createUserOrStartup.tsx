@@ -6,7 +6,7 @@ import {
   userRoleFilters,
   userRoleId,
 } from "@/app/types/users";
-import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { FiltersComboBoxResponsive } from "./filter";
 import { Button } from "./ui/button";
@@ -185,6 +185,7 @@ export default function CreateUserOrStartup({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogTitle>Create startup</DialogTitle>
+        <DialogDescription className="sr-only">Create a new startup by filling the form.</DialogDescription>
         <DialogContent>
           <Input
             value={"The id will be set in the database to avoid error."}
@@ -311,6 +312,7 @@ export default function CreateUserOrStartup({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogTitle>Update User</DialogTitle>
+        <DialogDescription className="sr-only">Update user by filling the form.</DialogDescription>
         <DialogContent>
           <Input
             placeholder="Name of the user"

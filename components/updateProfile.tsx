@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  DialogDescription,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { FiltersComboBoxResponsive } from "./filter";
@@ -101,6 +102,7 @@ export default function UpdateProfile({
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent>
         <DialogTitle>Update Startup</DialogTitle>
+        <DialogDescription className="sr-only">Update startup by filling the form.</DialogDescription>
         <DialogContent>
           <Input value={startupData!.id} disabled />
           <Input value={startupData!.name} onChange={(e) => { setStartupData({ ...startupData!, name: e.target.value }) }} />
@@ -118,6 +120,7 @@ export default function UpdateProfile({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogTitle>Update User</DialogTitle>
+        <DialogDescription className="sr-only">Update user by filling the form.</DialogDescription>
         <DialogContent>
           <Input value={userData!.id} disabled />
           <Input value={userData!.name} onChange={(e) => { setUserData({ ...userData!, name: e.target.value }) }} />

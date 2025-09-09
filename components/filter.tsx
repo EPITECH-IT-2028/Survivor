@@ -11,7 +11,13 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+  DrawerDescription,
+} from "@/components/ui/drawer";
 import {
   Popover,
   PopoverContent,
@@ -124,6 +130,10 @@ export function FiltersComboBoxResponsive({
         </Button>
       </DrawerTrigger>
       <DrawerContent>
+        <DrawerTitle className="sr-only">Filters</DrawerTitle>
+        <DrawerDescription className="sr-only">
+          Select a filter to apply.
+        </DrawerDescription>
         <div className="mt-4 border-t">
           <FiltersList
             setOpen={setOpen}
