@@ -22,5 +22,5 @@ export default function NewsImage({ id }: { id: number }) {
 
   if (!imgSrc) return <p>No provided image</p>;
 
-  return <Image src={imgSrc} alt={`No provided image`} width={0} height={0} className="rounded-xl shadow-md w-auto h-auto" />;
+  return <Image src={imgSrc} alt={`No provided image`} width={0} height={0} className="rounded-xl shadow-md w-auto h-60" />;
 }

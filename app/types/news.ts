@@ -6,5 +6,6 @@ export interface TNews {
   news_date?: Date;
   description: string | null;
   startup_id: number | null;
+  created_at?: Date;
   readonly id: number;
 }
