@@ -113,8 +113,6 @@ export function MessagesStartup() {
 
       if (res) {
         setMessageText('');
-        await fetchMessages();
-
       }
     } catch (error) {
       console.error('Error sending message:', error);
@@ -306,7 +304,12 @@ export function MessagesStartup() {
                 <div className="flex-1 p-4 overflow-y-auto">
                   <div className="space-y-4">
                     {(
-                      messages.map((message) => {
+                      messages
+                        .filter((message) =>
+                          (message.sender_id === user?.id && message.receiver_id === selectedContact.contact_id) ||
+                          (message.sender_id === selectedContact.contact_id && message.receiver_id === user?.id)
+                        )
+                        .map((message) => {
                         const isOwn = message.sender_id === user?.id;
                         return (
                           <div
