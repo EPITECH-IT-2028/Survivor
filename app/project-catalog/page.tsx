@@ -46,7 +46,7 @@ export default function Catalog() {
   return (
     <div className="mx-4 mt-12 flex justify-center lg:max-w-6xl">
       <div className="flex gap-6 rounded-xl bg-muted/75 p-6">
-        <div className="min-w-4xs mr-6 flex flex-col gap-8">
+        <div className="mr-6 flex flex-col gap-8">
           <h1 className="text-2xl font-bold">Filters</h1>
 
           <div className="flex flex-col gap-4">
