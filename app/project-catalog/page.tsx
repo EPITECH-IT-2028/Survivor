@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getStartups } from "../hooks/startups/getStartups";
-import Modal from "@/components/Modal";
+import StartupModal from "@/components/StartupModal";
 import { FiltersComboBoxResponsive } from "@/components/filter";
 
 export default function Catalog() {
@@ -132,7 +132,7 @@ export default function Catalog() {
         >
           {startupDisp.length > 0 ? (
             startupDisp.map((value) => (
-              <Modal key={value.id} startup={value} image="image" />
+              <StartupModal key={value.id} startup={value} image="image" />
             ))
           ) : (
             <div className="relative col-span-full flex flex-col items-center justify-center md:px-28 lg:px-52">
