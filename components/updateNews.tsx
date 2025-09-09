@@ -13,7 +13,6 @@ import { deleteNewsById } from "@/app/hooks/news/deleteNewsById";
 import { categoryFilter, categoryId, CategoryNews, TNews } from "@/app/types/news";
 import { DatePicker } from "./ui/datePicker";
 import { getStartups } from "@/app/hooks/startups/getStartups";
-import { start } from "repl";
 
 interface UpdateNewsProps {
   data: TNews;
