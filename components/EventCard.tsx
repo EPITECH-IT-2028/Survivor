@@ -6,7 +6,7 @@ export default function EventCard({ event }: { event: TEvent }) {
 
   const formatDate = (date: string | Date) => {
     const dateObject = typeof date === 'string' ? new Date(date) : date;
-    return dateObject.toLocaleDateString('en-US', {
+    return dateObject.toLocaleDateString('en-UK', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
