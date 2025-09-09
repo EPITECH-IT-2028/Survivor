@@ -27,25 +27,24 @@ import supabase from "@/lib/supabase-client";
 export function MessagesStartup() {
   const { user } = useAuth();
   const [selectedContact, setSelectedContact] = useState<TContact | null>(null);
-  const [messageText, setMessageText] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [messageText, setMessageText] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [messages, setMessages] = useState<TMessage[]>([]);
   const [contacts, setContacts] = useState<TContact[]>([]);
   const [loading, setLoading] = useState(true);
   const [sendingMessage, setSendingMessage] = useState(false);
 
   const [showAddContact, setShowAddContact] = useState(false);
-  const [userSearch, setUserSearch] = useState('');
+  const [userSearch, setUserSearch] = useState("");
   const [searchResults, setSearchResults] = useState<TUserMessage[]>([]);
   const [searchingUsers, setSearchingUsers] = useState(false);
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const fetchContacts = async () => {
-    if (!user?.id)
-      return;
+    if (!user?.id) return;
 
     try {
       const res = await getContacts(user.id);
@@ -54,7 +53,7 @@ export function MessagesStartup() {
         setSelectedContact(res[0]);
       }
     } catch (error) {
-      console.error('Error fetching contacts:', error);
+      console.error("Error fetching contacts:", error);
     }
     setLoading(false);
   };
@@ -83,14 +82,18 @@ export function MessagesStartup() {
         (payload) => {
           console.log("new message:", payload);
 
-          if (payload.eventType === 'INSERT') {
-            setMessages(prev => [...prev, payload.new as TMessage]);
-          } else if (payload.eventType === 'UPDATE') {
-            setMessages(prev => prev.map(msg =>
-              msg.id === payload.new.id ? payload.new as TMessage : msg
-            ));
-          } else if (payload.eventType === 'DELETE') {
-            setMessages(prev => prev.filter(msg => msg.id !== payload.old.id));
+          if (payload.eventType === "INSERT") {
+            setMessages((prev) => [...prev, payload.new as TMessage]);
+          } else if (payload.eventType === "UPDATE") {
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.id === payload.new.id ? (payload.new as TMessage) : msg,
+              ),
+            );
+          } else if (payload.eventType === "DELETE") {
+            setMessages((prev) =>
+              prev.filter((msg) => msg.id !== payload.old.id),
+            );
           }
         },
       )
@@ -109,57 +112,65 @@ export function MessagesStartup() {
 
     setSendingMessage(true);
     try {
-      const res = await insertMessage(user.id, selectedContact.contact_id, messageText.trim());
+      const res = await insertMessage(
+        user.id,
+        selectedContact.contact_id,
+        messageText.trim(),
+      );
 
       if (res) {
-        setMessageText('');
+        setMessageText("");
       }
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
     }
     setSendingMessage(false);
   };
 
   const searchUsers = async (searchTerm: string) => {
-    if (!searchTerm.trim() || !user?.id)
-      return;
+    if (!searchTerm.trim() || !user?.id) return;
 
     setSearchingUsers(true);
     try {
       const res = await searchUsersFromQuery(user.id, searchTerm);
       setSearchResults(res);
     } catch (error) {
-      console.error('Error searching users:', error);
+      console.error("Error searching users:", error);
     }
     setSearchingUsers(false);
   };
 
   const addContact = async (contactUserId: number) => {
-    if (!user?.id)
-      return;
+    if (!user?.id) return;
 
     try {
       const res = await insertContact(user.id, contactUserId);
 
       if (res) {
         setShowAddContact(false);
-        setUserSearch('');
+        setUserSearch("");
         setSearchResults([]);
         await fetchContacts();
       }
     } catch (error) {
-      console.error('Error adding contact:', error);
+      console.error("Error adding contact:", error);
     }
   };
 
   const formatMessageTime = (timestamp: string) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   const getUserInitials = (name: string) => {
-    const names = name.split(' ');
-    return names.map(n => n.charAt(0).toUpperCase()).join('').slice(0, 2);
+    const names = name.split(" ");
+    return names
+      .map((n) => n.charAt(0).toUpperCase())
+      .join("")
+      .slice(0, 2);
   };
 
   useEffect(() => {
@@ -175,7 +186,9 @@ export function MessagesStartup() {
   }, [userSearch]);
 
   if (loading) {
-    return <div className="flex h-96 items-center justify-center">Loading...</div>;
+    return (
+      <div className="flex h-96 items-center justify-center">Loading...</div>
+    );
   }
 
   return (
@@ -209,19 +222,30 @@ export function MessagesStartup() {
                         className="pl-9"
                       />
                     </div>
-                    {searchingUsers && <div className="text-center text-sm text-muted-foreground">Searching...</div>}
+                    {searchingUsers && (
+                      <div className="text-center text-sm text-muted-foreground">
+                        Searching...
+                      </div>
+                    )}
                     <div className="max-h-60 space-y-2 overflow-y-auto">
                       {searchResults.map((user) => (
-                        <div key={user.id} className="flex items-center gap-3 rounded-lg border p-3 hover:bg-muted/50">
+                        <div
+                          key={user.id}
+                          className="flex items-center gap-3 rounded-lg border p-3 hover:bg-muted/50"
+                        >
                           <Avatar className="size-10">
-                            {user.image && <AvatarImage src={user.image} alt={user.name} />}
+                            {user.image && (
+                              <AvatarImage src={user.image} alt={user.name} />
+                            )}
                             <AvatarFallback className="bg-primary/10 font-semibold text-primary">
                               {getUserInitials(user.name)}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1">
                             <p className="font-medium">{user.name}</p>
-                            <p className="text-sm text-muted-foreground">{user.email}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {user.email}
+                            </p>
                           </div>
                           <Button size="sm" onClick={() => addContact(user.id)}>
                             <Plus className="size-4" />
@@ -247,19 +271,24 @@ export function MessagesStartup() {
             <div className="max-h-96 space-y-1 overflow-y-auto p-2">
               {filteredContacts.length === 0 ? (
                 <div className="p-4 text-center text-sm text-muted-foreground">
-                  {contacts.length === 0 ? 'No contacts found' : 'No contacts match your search.'}
+                  {contacts.length === 0
+                    ? "No contacts found"
+                    : "No contacts match your search."}
                 </div>
               ) : (
                 filteredContacts.map((contact) => (
                   <div
                     key={contact.id}
                     onClick={() => setSelectedContact(contact)}
-                    className={`flex cursor-pointer items-center gap-3 rounded-lg p-3 transition-colors hover:bg-muted/50 ${selectedContact?.id === contact.id ? 'bg-muted' : ''
-                      }`}
+                    className={`flex cursor-pointer items-center gap-3 rounded-lg p-3 transition-colors hover:bg-muted/50 ${
+                      selectedContact?.id === contact.id ? "bg-muted" : ""
+                    }`}
                   >
                     <div className="relative">
                       <Avatar className="size-12">
-                        {contact.image && <AvatarImage src={contact.image} alt={contact.name} />}
+                        {contact.image && (
+                          <AvatarImage src={contact.image} alt={contact.name} />
+                        )}
                         <AvatarFallback className="bg-primary/10 font-semibold text-primary">
                           {getUserInitials(contact.name)}
                         </AvatarFallback>
@@ -286,15 +315,24 @@ export function MessagesStartup() {
                   <div className="flex items-center gap-3">
                     <div className="relative">
                       <Avatar className="size-10">
-                        {selectedContact.image && <AvatarImage src={selectedContact.image} alt={selectedContact.name} />}
+                        {selectedContact.image && (
+                          <AvatarImage
+                            src={selectedContact.image}
+                            alt={selectedContact.name}
+                          />
+                        )}
                         <AvatarFallback className="bg-primary/10 font-semibold text-primary">
                           {getUserInitials(selectedContact.name)}
                         </AvatarFallback>
                       </Avatar>
                     </div>
                     <div>
-                      <CardTitle className="text-lg">{selectedContact.name}</CardTitle>
-                      <p className="text-sm text-muted-foreground">{selectedContact.email}</p>
+                      <CardTitle className="text-lg">
+                        {selectedContact.name}
+                      </CardTitle>
+                      <p className="text-sm text-muted-foreground">
+                        {selectedContact.email}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -303,33 +341,47 @@ export function MessagesStartup() {
               <CardContent className="flex flex-1 flex-col p-0">
                 <div className="flex-1 overflow-y-auto p-4">
                   <div className="space-y-4">
-                    {(
-                      messages
-                        .filter((message) =>
-                          (message.sender_id === user?.id && message.receiver_id === selectedContact.contact_id) ||
-                          (message.sender_id === selectedContact.contact_id && message.receiver_id === user?.id)
-                        )
-                        .map((message) => {
+                    {messages
+                      .filter(
+                        (message) =>
+                          (message.sender_id === user?.id &&
+                            message.receiver_id ===
+                              selectedContact.contact_id) ||
+                          (message.sender_id === selectedContact.contact_id &&
+                            message.receiver_id === user?.id),
+                      )
+                      .map((message) => {
                         const isOwn = message.sender_id === user?.id;
                         return (
                           <div
                             key={message.id}
-                            className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
+                            className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
                           >
-                            <div className={`flex max-w-xs items-end gap-2 lg:max-w-md ${isOwn ? 'flex-row-reverse' : 'flex-row'
-                              }`}>
+                            <div
+                              className={`flex max-w-xs items-end gap-2 lg:max-w-md ${
+                                isOwn ? "flex-row-reverse" : "flex-row"
+                              }`}
+                            >
                               {!isOwn && (
                                 <Avatar className="size-6">
-                                  {selectedContact.image && <AvatarImage src={selectedContact.image} alt={selectedContact.name} />}
+                                  {selectedContact.image && (
+                                    <AvatarImage
+                                      src={selectedContact.image}
+                                      alt={selectedContact.name}
+                                    />
+                                  )}
                                   <AvatarFallback className="bg-muted text-xs">
                                     {getUserInitials(selectedContact.name)}
                                   </AvatarFallback>
                                 </Avatar>
                               )}
-                              <div className={`rounded-2xl px-4 py-2 ${isOwn
-                                ? 'rounded-br-md bg-primary text-primary-foreground'
-                                : 'rounded-bl-md bg-muted'
-                                }`}>
+                              <div
+                                className={`rounded-2xl px-4 py-2 ${
+                                  isOwn
+                                    ? "rounded-br-md bg-primary text-primary-foreground"
+                                    : "rounded-bl-md bg-muted"
+                                }`}
+                              >
                                 <p className="text-sm">{message.content}</p>
                                 <p className="mt-1 text-xs opacity-70">
                                   {formatMessageTime(message.created_at)}
@@ -338,8 +390,7 @@ export function MessagesStartup() {
                             </div>
                           </div>
                         );
-                      })
-                    )}
+                      })}
                   </div>
                 </div>
 
@@ -351,7 +402,11 @@ export function MessagesStartup() {
                       onChange={(e) => setMessageText(e.target.value)}
                       className="flex-1 rounded-full"
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter' && messageText.trim() && !sendingMessage) {
+                        if (
+                          e.key === "Enter" &&
+                          messageText.trim() &&
+                          !sendingMessage
+                        ) {
                           sendMessage();
                         }
                       }}
