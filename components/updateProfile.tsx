@@ -13,8 +13,8 @@ import { Button } from "./ui/button";
 import { setUserById } from "@/app/hooks/users/setUserById";
 import { setStartupById } from "@/app/hooks/startups/setStartupById";
 import { userRoleId } from "@/app/types/users";
-import { deleteUser } from "@/app/hooks/users/deleteUser"
-import { deleteStartup } from "@/app/hooks/startups/deleteStartup"
+import { deleteUser } from "@/app/hooks/users/deleteUser";
+import { deleteStartup } from "@/app/hooks/startups/deleteStartup";
 
 interface UpdateProfileProps {
   data: TUser | TStartups;
@@ -29,7 +29,7 @@ export default function UpdateProfile({
   isOpen,
   onClose,
   isStartup,
-  onDataChanged
+  onDataChanged,
 }: UpdateProfileProps) {
   const [startupData, setStartupData] = useState<TStartups | null>(null);
   const [userData, setUserData] = useState<TUser | null>(null);
@@ -59,7 +59,7 @@ export default function UpdateProfile({
     } catch (e) {
       console.error("Failed to update user", e);
     }
-  }
+  };
 
   const handleUpdateStartup = async () => {
     if (!startupData) return;
@@ -70,7 +70,7 @@ export default function UpdateProfile({
     } catch (e) {
       console.error("Failed to update startup", e);
     }
-  }
+  };
 
   const handleDeleteStartup = async () => {
     if (startupData === null || startupData.id == null) {
@@ -83,7 +83,7 @@ export default function UpdateProfile({
     } catch (e) {
       console.error("Failed to delete startup", e);
     }
-  }
+  };
 
   const handleDeleteUser = async () => {
     if (userData === null || userData.id == null) {
@@ -96,22 +96,59 @@ export default function UpdateProfile({
     } catch (e) {
       console.error("Failed to delete user", e);
     }
-  }
+  };
 
   return isStartup ? (
-    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
       <DialogContent>
         <DialogTitle>Update Startup</DialogTitle>
-        <DialogDescription className="sr-only">Update startup by filling the form.</DialogDescription>
+        <DialogDescription className="sr-only">
+          Update startup by filling the form.
+        </DialogDescription>
         <div>
           <Input value={startupData!.id} disabled />
-          <Input value={startupData!.name} onChange={(e) => { setStartupData({ ...startupData!, name: e.target.value }) }} />
-          <Input value={startupData!.legal_status ?? ""} onChange={(e) => { setStartupData({ ...startupData!, legal_status: e.target.value }) }} />
-          <Input value={startupData!.address ?? ""} onChange={(e) => { setStartupData({ ...startupData!, address: e.target.value }) }} />
-          <Button className="cursor-pointer bg-red-400 hover:bg-red-500" onClick={handleDeleteStartup}>Delete profile</Button>
+          <Input
+            value={startupData!.name}
+            onChange={(e) => {
+              setStartupData({ ...startupData!, name: e.target.value });
+            }}
+          />
+          <Input
+            value={startupData!.legal_status ?? ""}
+            onChange={(e) => {
+              setStartupData({ ...startupData!, legal_status: e.target.value });
+            }}
+          />
+          <Input
+            value={startupData!.address ?? ""}
+            onChange={(e) => {
+              setStartupData({ ...startupData!, address: e.target.value });
+            }}
+          />
+          <Button
+            className="cursor-pointer bg-red-400 hover:bg-red-500"
+            onClick={handleDeleteStartup}
+          >
+            Delete profile
+          </Button>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Button className="cursor-pointer bg-green-400 hover:bg-green-500" onClick={handleUpdateStartup}>Apply</Button>
-            <Button className="cursor-pointer bg-blue-400 hover:bg-blue-500" onClick={onClose}>Cancel</Button>
+            <Button
+              className="cursor-pointer bg-green-400 hover:bg-green-500"
+              onClick={handleUpdateStartup}
+            >
+              Apply
+            </Button>
+            <Button
+              className="cursor-pointer bg-blue-400 hover:bg-blue-500"
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
           </div>
         </div>
       </DialogContent>
@@ -120,22 +157,51 @@ export default function UpdateProfile({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogTitle>Update User</DialogTitle>
-        <DialogDescription className="sr-only">Update user by filling the form.</DialogDescription>
+        <DialogDescription className="sr-only">
+          Update user by filling the form.
+        </DialogDescription>
         <div>
           <Input value={userData!.id} disabled />
-          <Input value={userData!.name} onChange={(e) => { setUserData({ ...userData!, name: e.target.value }) }} />
-          <Input value={userData!.email} onChange={(e) => { setUserData({ ...userData!, email: e.target.value }) }} />
+          <Input
+            value={userData!.name}
+            onChange={(e) => {
+              setUserData({ ...userData!, name: e.target.value });
+            }}
+          />
+          <Input
+            value={userData!.email}
+            onChange={(e) => {
+              setUserData({ ...userData!, email: e.target.value });
+            }}
+          />
           <FiltersComboBoxResponsive
             filtersList={userRoleFilters}
-            placeHolder={userRoleFilters[userRoleId[userData?.role ?? '-']]}
-            onSelection={(value: string) => { setUserData({ ...userData!, role: value as UserRole }) }}
+            placeHolder={userRoleFilters[userRoleId[userData?.role ?? "-"]]}
+            onSelection={(value: string) => {
+              setUserData({ ...userData!, role: value as UserRole });
+            }}
           />
           <Input value={userData!.founder_id ?? "-"} disabled />
           <Input value={userData!.investor_id ?? "-"} disabled />
-          <Button className="cursor-pointer bg-red-400 hover:bg-red-500" onClick={handleDeleteUser}>Delete user</Button>
+          <Button
+            className="cursor-pointer bg-red-400 hover:bg-red-500"
+            onClick={handleDeleteUser}
+          >
+            Delete user
+          </Button>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Button className="cursor-pointer bg-green-400 hover:bg-green-500" onClick={handleUpdateUser}>Apply</Button>
-            <Button className="cursor-pointer bg-blue-400 hover:bg-blue-500" onClick={onClose}>Cancel</Button>
+            <Button
+              className="cursor-pointer bg-green-400 hover:bg-green-500"
+              onClick={handleUpdateUser}
+            >
+              Apply
+            </Button>
+            <Button
+              className="cursor-pointer bg-blue-400 hover:bg-blue-500"
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
           </div>
         </div>
       </DialogContent>
