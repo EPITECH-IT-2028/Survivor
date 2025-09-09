@@ -26,6 +26,7 @@ import { format } from "date-fns";
 import { TNews } from "../types/news";
 import UpdateNews from "@/components/updateNews";
 import CreateNews from "@/components/createNews";
+import PulseLoader from "react-spinners/PulseLoader";
 
 export default function Dashboard() {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
@@ -112,7 +113,11 @@ export default function Dashboard() {
   };
 
   if (!usersData || !startupsData || !eventsData || !newsData) {
-    return <div>Loading...</div>;
+
+    return (
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <PulseLoader size={30} color="#F18585"/>
+      </div>);
   }
   return isUpdateOpen ? (
     <UpdateProfile
@@ -144,8 +149,8 @@ export default function Dashboard() {
     <CreateUserOrStartup isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} isStartup={isStartup} onDataChanged={refreshData} />
   ) : isEventCreateOpen ? (
     <CreateEvent isOpen={isEventCreateOpen} onClose={() => setIsEventCreateOpen(false)} onDataChanged={refreshData} />
-    ) : isNewsCreateOpen ? (
-      <CreateNews isOpen={isNewsCreateOpen} onClose={() => setIsNewsCreateOpen(false)} onDataChanged={refreshData} />
+  ) : isNewsCreateOpen ? (
+    <CreateNews isOpen={isNewsCreateOpen} onClose={() => setIsNewsCreateOpen(false)} onDataChanged={refreshData} />
   ) : (
     <div>
       {/* Stats */}
