@@ -23,8 +23,8 @@ export function DatePicker({
   return (
     <Card className="w-fit h-full">
       <Calendar
-        captionLayout="dropdown"
-        defaultMonth={selectedDate ?? undefined}
+        mode="single"
+        selected={selectedDate}
         onDayClick={handleDateChange}
       />
     </Card>
