@@ -9,7 +9,7 @@ export const getEventByIdQuery = async (db: postgres.Sql, id: string) => {
 }
 
 export const getEventImageByIdQuery = async (db: postgres.Sql, id: string) => {
-  console.log(`Searching for event with ID: ${id}`);
+  console.log (`Searching for event with ID: ${id}`);
   const result = await db`SELECT id, legacy_id, image FROM events WHERE id = ${id} OR legacy_id = ${id}`;
   console.log(`Found ${result.length} events with ID ${id}`);
   if (result.length > 0) {

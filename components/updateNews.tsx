@@ -52,7 +52,6 @@ export default function UpdateNews({
   const handleUpdateNews = async () => {
     if (!newsData) return;
     try {
-      console.log("Updating news with data: ", newsData);
       await setNewsById(newsData.id, newsData);
       onDataChanged?.();
       onClose();

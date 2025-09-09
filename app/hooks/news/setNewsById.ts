@@ -35,9 +35,6 @@ export async function setNewsById(newsId: number, newsData: TNews): Promise<TNew
       title: newsData.title,
     };
 
-    console.log("PUT /api/news/:id payload: ", payload);
-    console.log("id: ", newsId);
-
     const res = await fetch(`/api/news/${newsId}`, {
       method: "PUT",
       headers: {

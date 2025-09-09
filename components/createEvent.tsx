@@ -40,7 +40,6 @@ export default function CreateEvent({
   const handleCreateEvent = async () => {
     if (!eventData) return;
     try {
-      console.log("Creating event with data: ", eventData); 
       if (!eventData.name || !eventData.dates || eventData.event_type === '-'
         || eventData.target_audience === '-' || !eventData.location
         || !eventData.description) {

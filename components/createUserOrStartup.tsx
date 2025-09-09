@@ -123,7 +123,6 @@ export default function CreateUserOrStartup({
         if (founder && founder.id && startupId)
           await addFounderStartup(founder?.id, startupId);
       } else {
-        console.log("Failed to create user or retrieve user ID." + newUser);
         return;
       }
       if (onDataChanged) onDataChanged();
@@ -148,7 +147,6 @@ export default function CreateUserOrStartup({
         });
         await updateUserWithInvestorId(newUser.id, newUser, investor?.id ?? 0);
       } else {
-        console.log("Failed to create user or retrieve user ID." + newUser);
         return;
       }
       if (onDataChanged) onDataChanged();
