@@ -14,7 +14,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 630) {
+      if (window.innerWidth <= 736) {
         setIsPageMobile(true);
       } else {
         setIsPageMobile(false);
