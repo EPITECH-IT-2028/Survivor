@@ -14,5 +14,5 @@ export default function ConditionalContainer({ children }: ConditionalContainerP
     return <div className="h-screen w-full">{children}</div>;
   }
 
-  return <div className="mx-auto max-w-3xl">{children}</div>;
+  return <div className="mx-auto max-w-6xl">{children}</div>;
 }
