@@ -230,7 +230,7 @@ export default function CreateUserOrStartup({
           <FiltersComboBoxResponsive
             filtersList={sectorFilters.filter(s => s.value !== '-')}
             placeHolder={sectorFilters[0]}
-            onSelection={(value: Sector) => {
+            onSelection={(value: string) => {
               setStartupData({ ...startupData!, sector: value });
             }}
           />
