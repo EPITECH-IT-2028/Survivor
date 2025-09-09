@@ -11,8 +11,8 @@ export default function ConditionalContainer({ children }: ConditionalContainerP
   const isStartupArea = pathname.startsWith('/startup-area');
 
   if (isStartupArea) {
-    return <div className="w-full h-screen">{children}</div>;
+    return <div className="h-screen w-full">{children}</div>;
   }
 
-  return <div className="mx-auto max-w-3xl">{children}</div>;
+  return <div className="mx-auto max-w-6xl">{children}</div>;
 }

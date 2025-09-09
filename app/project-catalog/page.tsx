@@ -1,25 +1,26 @@
-"use client"
+"use client";
 
-import { TStartups } from '../types/startup';
-import { useEffect, useState } from "react"
-import { Input } from '@/components/ui/input';
-import { getStartups } from '../hooks/startups/getStartups';
-import StartupModal from '@/components/StartupModal';
+import { TStartups, sectorFilters, maturityFilters } from "@/app/types/startup";
+import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { getStartups } from "../hooks/startups/getStartups";
+import StartupModal from "@/components/StartupModal";
+import { FiltersComboBoxResponsive } from "@/components/filter";
 
 export default function Catalog() {
+  const [sectorFilter, setSectorFilter] = useState("");
+  const [maturityFilter, setMaturityFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
 
-  const [sectorFilter, setSectorFilter] = useState('')
-  const [maturityFilter, setMaturityFilter] = useState('')
-  const [locationFilter, setLocationFilter] = useState('')
-
-  const [startupsInfo, setStartupsInfo] = useState<TStartups[]>([])
-  const [startupDisp, setStartupDisp] = useState<TStartups[]>([])
+  const [startupsInfo, setStartupsInfo] = useState<TStartups[]>([]);
+  const [startupDisp, setStartupDisp] = useState<TStartups[]>([]);
 
   useEffect(() => {
     const fetchStartups = async () => {
       const startups = await getStartups();
       setStartupsInfo(startups);
-      setStartupDisp(startups)
+      setStartupDisp(startups);
     };
     fetchStartups();
   }, []);
@@ -30,15 +31,12 @@ export default function Catalog() {
     const l = locationFilter.trim().toLowerCase();
 
     const filtered = startupsInfo.filter((startup) => {
-      const sector = (startup.sector ?? '').toLowerCase();
-      const maturity = (startup.maturity ?? '').toLowerCase();
-      const location = (startup.address ?? '').toLowerCase();
-      if (s && !sector.includes(s))
-        return false;
-      if (m && !maturity.includes(m))
-        return false;
-      if (l && !location.includes(l))
-        return false;
+      const sector = (startup.sector ?? "").toLowerCase();
+      const maturity = (startup.maturity ?? "").toLowerCase();
+      const location = (startup.address ?? "").toLowerCase();
+      if (s && !sector.includes(s)) return false;
+      if (m && !maturity.includes(m)) return false;
+      if (l && !location.includes(l)) return false;
       return true;
     });
 
@@ -46,22 +44,105 @@ export default function Catalog() {
   }, [sectorFilter, maturityFilter, locationFilter, startupsInfo]);
 
   return (
-    <div>
-      <div className="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <h2>Sector
-          <Input type="text" placeholder="Sector" value={sectorFilter} onChange={(e) => setSectorFilter(e.target.value)} />
-        </h2>
-        <h2>Maturity
-          <Input type="text" placeholder="Maturity" value={maturityFilter} onChange={(e) => setMaturityFilter(e.target.value)} />
-        </h2>
-        <h2>Location
-          <Input type="text" placeholder="Location" value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)} />
-        </h2>
-        {
-          startupDisp.map((value) => (
-            <StartupModal key={value.id} startup={value} />
-          ))
-        }
+    <div className="mx-4 mt-12 flex justify-center lg:max-w-6xl">
+      <div className="flex gap-6 rounded-xl bg-muted/75 p-6">
+        <div className="mr-6 flex flex-col gap-8">
+          <h1 className="text-2xl font-bold">Filters</h1>
+
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col">
+              <p className="mb-2 font-bold">Sector</p>
+              <FiltersComboBoxResponsive
+                key={`sector-${sectorFilter}`}
+                filtersList={sectorFilters.filter((s) => s.value !== "-")}
+                placeHolder={
+                  sectorFilter
+                    ? { label: sectorFilter, value: sectorFilter }
+                    : { label: "Select filters", value: "" }
+                }
+                onSelection={(value) => {
+                  setSectorFilter(value);
+                }}
+              />
+              <Button
+                onClick={() => setSectorFilter("")}
+                className="relative cursor-pointer self-end rounded-md p-0 text-xs text-foreground/25 transition-colors hover:text-foreground/50"
+                variant="link"
+              >
+                Clear
+              </Button>
+            </div>
+
+            <div className="flex flex-col">
+              <p className="mb-2 font-bold">Maturity</p>
+              <FiltersComboBoxResponsive
+                key={`maturity-${maturityFilter}`}
+                filtersList={maturityFilters.filter((s) => s.value !== "-")}
+                placeHolder={
+                  maturityFilter
+                    ? { label: maturityFilter, value: maturityFilter }
+                    : { label: "Select filters", value: "" }
+                }
+                onSelection={(value) => {
+                  setMaturityFilter(value);
+                }}
+              />
+              <Button
+                onClick={() => setMaturityFilter("")}
+                className="relative cursor-pointer self-end rounded-md p-0 text-xs text-foreground/25 transition-colors hover:text-foreground/50"
+                variant="link"
+              >
+                Clear
+              </Button>
+            </div>
+
+            <div className="flex flex-col">
+              <p className="mb-2 font-bold">Location</p>
+              <Input
+                type="text"
+                placeholder="Location"
+                value={locationFilter}
+                onChange={(e) => setLocationFilter(e.target.value)}
+              />
+              <Button
+                onClick={() => setLocationFilter("")}
+                className="relative cursor-pointer self-end rounded-md p-0 text-xs text-foreground/25 transition-colors hover:text-foreground/50"
+                variant="link"
+              >
+                Clear
+              </Button>
+            </div>
+
+            <Button
+              disabled={!sectorFilter && !maturityFilter && !locationFilter}
+              variant="outline"
+              onClick={() => {
+                setSectorFilter("");
+                setMaturityFilter("");
+                setLocationFilter("");
+              }}
+            >
+              Clear All
+            </Button>
+          </div>
+        </div>
+
+        <div
+          className={`grid w-full grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 ${startupDisp.length === 0 ? "rounded-md border border-dashed" : ""}`}
+        >
+          {startupDisp.length > 0 ? (
+            startupDisp.map((value) => (
+              <StartupModal key={value.id} startup={value} image="image" />
+            ))
+          ) : (
+            <div className="relative col-span-full flex flex-col items-center justify-center md:px-28 lg:px-52">
+              <p className="text-lg font-semibold">Not Found</p>
+              <p className="text-sm text-gray-500">
+                No startups match the current filters.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
