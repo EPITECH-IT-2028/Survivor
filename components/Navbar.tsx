@@ -50,10 +50,16 @@ export default function Navbar() {
                     Discover Startups
                   </Link>
                   <Link
-                    href="#"
+                    href="/event-calendar"
                     className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:text-red-300 hover:bg-primary"
                   >
                     See Events
+                  </Link>
+                  <Link
+                    href="/news"
+                    className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:text-zinc-300"
+                  >
+                    See News
                   </Link>
                   {!loading &&
                     (isAuthenticated ? (
@@ -99,10 +105,17 @@ export default function Navbar() {
               <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
             </Link>
             <Link
-              href="#"
+              href="/event-calendar"
               className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
             >
               See Events
+              <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
+            </Link>
+            <Link
+              href="/news"
+              className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
+            >
+              See News
               <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
             </Link>
           </div>
