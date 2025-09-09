@@ -44,11 +44,13 @@ export function FiltersComboBoxResponsive({
   placeHolder,
   onSelection,
   disabled = false,
+  className = "",
 }: {
   filtersList: { value: any; label: any }[];
   placeHolder: { value: any; label: any };
   onSelection: (value: any) => void;
   disabled?: boolean;
+  className?: string;
 }) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -69,48 +71,52 @@ export function FiltersComboBoxResponsive({
 
   if (isDesktop) {
     return (
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className="w-[150px] justify-start"
-            disabled={disabled}
-          >
-            {selectedFilters ? (
-              <>{selectedFilters.label}</>
-            ) : (
-              <>{placeHolder.label}</>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0" align="start">
-          <FiltersList
-            setOpen={setOpen}
-            setSelectedFilters={handleFilterChange}
-            filtersList={filtersList}
-          />
-        </PopoverContent>
-      </Popover>
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className={`w-[150px] justify-start ${className}`}
+              disabled={disabled}
+            >
+              {selectedFilters ? (
+                <>{selectedFilters.label}</>
+              ) : (
+                <>{placeHolder.label}</>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[200px] p-0" align="start">
+            <FiltersList
+              setOpen={setOpen}
+              setSelectedFilters={handleFilterChange}
+              filtersList={filtersList}
+              className={className}
+            />
+          </PopoverContent>
+        </Popover>
     );
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[150px] justify-start">
-          {selectedFilters ? <>{selectedFilters.label}</> : <>Select filters</>}
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <div className="mt-4 border-t">
-          <FiltersList
-            setOpen={setOpen}
-            setSelectedFilters={handleFilterChange}
-            filtersList={filtersList}
-          />
-        </div>
-      </DrawerContent>
-    </Drawer>
+    <div className={className}>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          <Button variant="outline" className={`w-[150px] justify-start ${className}`}>
+            {selectedFilters ? <>{selectedFilters.label}</> : <>Select filters</>}
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <div className="mt-4 border-t">
+            <FiltersList
+              setOpen={setOpen}
+              setSelectedFilters={handleFilterChange}
+              filtersList={filtersList}
+              className={className}
+            />
+          </div>
+        </DrawerContent>
+      </Drawer>
+    </div>
   );
 }
 
@@ -118,13 +124,15 @@ function FiltersList({
   setOpen,
   setSelectedFilters,
   filtersList = filters,
+  className = "",
 }: {
   setOpen: (open: boolean) => void;
   setSelectedFilters: (status: Filters | null) => void;
   filtersList?: Filters[];
+  className?: string;
 }) {
   return (
-    <Command>
+    <Command className={className}>
       <CommandList>
         <CommandInput placeholder="Filter status..." />
         <CommandEmpty>No results found.</CommandEmpty>

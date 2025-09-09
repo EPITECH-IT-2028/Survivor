@@ -5,35 +5,35 @@ export type Sector = 'deeptech' | 'fintech' | 'saas' | 'logistics' | 'edtech' | 
 
 export const projectStatusFilters = [
   { value: '-', label: '-' },
-  { value: 'scale-up', label: 'Scale-up' },
-  { value: 'early-stage', label: 'Early-stage' },
-  { value: 'seed', label: 'Seed' },
-  { value: 'growth', label: 'Growth' },
+  { value: 'Scale-up', label: 'Scale-up' },
+  { value: 'Early Stage', label: 'Early Stage' },
+  { value: 'Seed', label: 'Seed' },
+  { value: 'Growth', label: 'Growth' },
 ]
 export const needsFilters = [
   { value: '-', label: '-' },
-  { value: 'talent-acquisition', label: 'Talent acquisition' },
-  { value: 'strategic-partnerships', label: 'Strategic partnerships' },
-  { value: 'funding', label: 'Funding' },
-  { value: 'mentorship', label: 'Mentorship' },
+  { value: 'Talent Acquisition', label: 'Talent acquisition' },
+  { value: 'Strategic Partnerships', label: 'Strategic partnerships' },
+  { value: 'Funding', label: 'Funding' },
+  { value: 'Mentorship', label: 'Mentorship' },
 ]
 
 export const maturityFilters = [
   { value: '-', label: '-' },
-  { value: 'idea', label: 'Idea' },
-  { value: 'mvp', label: 'MVP' },
-  { value: 'product-market-fit', label: 'Product-market-fit' },
-  { value: 'prototype', label: 'Prototype' },
+  { value: 'Idea', label: 'Idea' },
+  { value: 'MVP', label: 'MVP' },
+  { value: 'Product-Market Fit', label: 'Product-Market Fit' },
+  { value: 'Prototype', label: 'Prototype' },
 ]
 
 export const sectorFilters = [
   { value: '-', label: '-' },
-  { value: 'deeptech', label: 'Deeptech' },
-  { value: 'fintech', label: 'Fintech' },
-  { value: 'saas', label: 'SaaS' },
-  { value: 'logistics', label: 'Logistics' },
-  { value: 'edtech', label: 'Edtech' },
-  { value: 'healthtech', label: 'Healthtech' },
+  { value: 'DeepTech', label: 'DeepTech' },
+  { value: 'Fintech', label: 'Fintech' },
+  { value: 'SaaS', label: 'SaaS' },
+  { value: 'Logistics', label: 'Logistics' },
+  { value: 'EdTech', label: 'EdTech' },
+  { value: 'HealthTech', label: 'HealthTech' },
 ]
 
 export interface TStartups {

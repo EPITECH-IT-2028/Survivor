@@ -56,3 +56,14 @@ export const updateUserPasswordQuery = async (db: postgres.Sql,
       password = ${password}
       WHERE id = ${id} RETURNING *`;
 }
+
+export const searchUsersQuery = async (db: postgres.Sql, searchTerm: string, userId: string) => {
+  return await db`
+    SELECT id, name, email, image
+    FROM users 
+    WHERE (name ILIKE ${`%${searchTerm}%`} OR email ILIKE ${`%${searchTerm}%`})
+      AND id != ${userId}
+    ORDER BY name
+    LIMIT 10
+  `;
+}

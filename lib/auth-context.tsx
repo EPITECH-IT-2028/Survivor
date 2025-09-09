@@ -1,6 +1,7 @@
 "use client";
 
 import { getUsersById } from "@/app/hooks/users/getUsersById";
+import { TUser } from "@/app/types/users";
 import {
   createContext,
   useContext,
@@ -8,6 +9,8 @@ import {
   useState,
   ReactNode,
 } from "react";
+import { getStartupByFounderId } from "@/app/hooks/startups/getStartupByFounderId";
+import { TStartups } from "@/app/types/startup";
 
 interface AuthContextType {
   token: string | null;
@@ -16,6 +19,8 @@ interface AuthContextType {
   login: (token: string) => void;
   logout: () => void;
   loading: boolean;
+  user?: TUser | null;
+  startups?: TStartups[] | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,8 +32,8 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<TUser | undefined | null>();
+  const [startups, setStartups] = useState<TStartups[] | undefined | null>();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("session_token");
@@ -63,7 +68,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     };
 
+    const fetchStartup = async () => {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const userId = payload.userId;
+        const fetchedUserArray = await getUsersById(userId);
+        const fetchedUser: TUser | null = Array.isArray(fetchedUserArray) ? fetchedUserArray[0] || null : fetchedUserArray;
+        let fetchedStartup: TStartups[] = [];
+        fetchedStartup = await getStartupByFounderId(fetchedUser?.founder_id ?? 0);
+        setStartups(fetchedStartup);
+      } catch (error) {
+        console.error("Error decoding token or fetching user:", error);
+        setUser(undefined);
+      }
+    }
+
     fetchUser();
+    fetchStartup();
   }, [token]);
 
   useEffect(() => {
@@ -72,7 +93,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setToken(localStorage.getItem("session_token"));
       }
     };
-
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
@@ -107,7 +127,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout,
     isAdmin,
     loading,
-  };
+    user,
+    startups
+  } as const;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
