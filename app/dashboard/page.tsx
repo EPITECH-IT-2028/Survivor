@@ -192,8 +192,8 @@ export default function Dashboard() {
   ) : (
     <div>
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="size-auto m-8">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <Card className="m-8 size-auto">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">
               Number of startups
@@ -201,7 +201,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent className="text-3xl font-bold">{`${startupsData.length}`}</CardContent>
         </Card>
-        <Card className="size-auto m-8">
+        <Card className="m-8 size-auto">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">
               Project views
@@ -209,7 +209,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent className="text-3xl font-bold">652</CardContent>
         </Card>
-        <Card className="size-auto m-8">
+        <Card className="m-8 size-auto">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">
               Engagement rate
@@ -262,8 +262,8 @@ export default function Dashboard() {
             </TableBody>
           </Table>
           <div className="flex px-4">
-            <ChevronLeft onClick={() => setPageStartup(pageStartup - 1 > 0 ? pageStartup - 1 : 0)} className="cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-            <ChevronRight onClick={() => setPageStartup((pageStartup + 1) * 5 > startupsData.length ? pageStartup : pageStartup + 1)} className="cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+            <ChevronLeft onClick={() => setPageStartup(pageStartup - 1 > 0 ? pageStartup - 1 : 0)} className="cursor-pointer rounded-full p-1 hover:bg-gray-100" />
+            <ChevronRight onClick={() => setPageStartup((pageStartup + 1) * 5 > startupsData.length ? pageStartup : pageStartup + 1)} className="cursor-pointer rounded-full p-1 hover:bg-gray-100" />
           </div>
         </Card>
         {/* Table user */}
@@ -309,8 +309,8 @@ export default function Dashboard() {
             </TableBody>
           </Table>
           <div className="flex px-4">
-            <ChevronLeft onClick={() => setPageUser(pageUser - 1 > 0 ? pageUser - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-            <ChevronRight onClick={() => setPageUser((pageUser + 1) * 5 >= usersData.length ? pageUser : pageUser + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+            <ChevronLeft onClick={() => setPageUser(pageUser - 1 > 0 ? pageUser - 1 : 0)} className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100" />
+            <ChevronRight onClick={() => setPageUser((pageUser + 1) * 5 >= usersData.length ? pageUser : pageUser + 1)} className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100" />
           </div>
         </Card>
         <Card className="w-auto">
@@ -319,7 +319,7 @@ export default function Dashboard() {
               <CardTitle className="text-xl font-semibold">
                 Events
               </CardTitle>
-              <Plus className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" onClick={() => handleEventCreateButton()} />
+              <Plus className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100" onClick={() => handleEventCreateButton()} />
             </div>
           </CardHeader>
           <Table>
@@ -351,8 +351,8 @@ export default function Dashboard() {
             </TableBody>
           </Table>
           <div className="flex px-4">
-            <ChevronLeft onClick={() => setPageEvent(pageEvent - 1 > 0 ? pageEvent - 1 : 0)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
-            <ChevronRight onClick={() => setPageEvent((pageEvent + 1) * 5 >= eventsData.length ? pageEvent : pageEvent + 1)} className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1" />
+            <ChevronLeft onClick={() => setPageEvent(pageEvent - 1 > 0 ? pageEvent - 1 : 0)} className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100" />
+            <ChevronRight onClick={() => setPageEvent((pageEvent + 1) * 5 >= eventsData.length ? pageEvent : pageEvent + 1)} className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100" />
           </div>
         </Card>
         <Card className="w-auto">

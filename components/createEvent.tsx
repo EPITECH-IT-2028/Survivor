@@ -62,42 +62,45 @@ export default function CreateEvent({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Event</DialogTitle>
-        </DialogHeader>
-        <Input
-          value={eventData!.name}
-          placeholder="Event Name"
-          onChange={(e) => { setEventData({ ...eventData!, name: e.target.value }) }}
-        />
-        <FiltersComboBoxResponsive
-          filtersList={eventTypeFilters.filter(f => f.value !== '-')}
-          placeHolder={eventTypeFilters[eventTypeId['-']]}
-          onSelection={(value: EventType) => { setEventData({ ...eventData!, event_type: value }) }}
-        />
-        <Input
-          value={eventData!.location ?? ""}
-          placeholder="Location"
-          onChange={(e) => { setEventData({ ...eventData!, location: e.target.value }) }}
-        />
-        <DatePicker
-          date={eventData?.dates}
-          onSelectAction={(value: Date) => setEventData(prev => ({ ...prev, dates: value }))}
-        />
-        <FiltersComboBoxResponsive
-          filtersList={targetAudienceFilters.filter(f => f.value !== '-')}
-          placeHolder={targetAudienceFilters[targetAudienceId[eventData.target_audience ?? '-']]}
-          onSelection={(value: TargetAudience) => { setEventData({ ...eventData!, target_audience: value }) }}
-        />
-        <Input
-          value={eventData!.description ?? ""}
-          placeholder="Description"
-          onChange={(e) => { setEventData({ ...eventData!, description: e.target.value }) }}
-        />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleCreateEvent}>Apply</Button>
-          <Button className="bg-blue-400 hover:bg-blue-500 cursor-pointer" onClick={onClose}>Cancel</Button>
-        </div>
+        <DialogTitle>Create Event</DialogTitle>
+          <Input
+            value={eventData!.name}
+            placeholder="Event Name"
+            onChange={(e) => { setEventData({ ...eventData!, name: e.target.value }) }}
+          />
+          <FiltersComboBoxResponsive
+            filtersList={eventTypeFilters.filter(f => f.value !== '-')}
+            placeHolder={eventTypeFilters[eventTypeId['-']]}
+            onSelection={(value: string) => {
+              setEventData({ ...eventData!, event_type: value as EventType })
+            }}
+          />
+          <Input
+            value={eventData!.location ?? ""}
+            placeholder="Location"
+            onChange={(e) => { setEventData({ ...eventData!, location: e.target.value }) }}
+          />
+          <DatePickerEvent
+            date={eventData?.dates}
+            onSelectAction={(value: Date) => setEventData(prev => ({ ...prev, dates: value }))}
+          />
+          <FiltersComboBoxResponsive
+            filtersList={targetAudienceFilters.filter(f => f.value !== '-')}
+            placeHolder={targetAudienceFilters[targetAudienceId[eventData.target_audience ?? '-']]}
+            onSelection={(value: string) => {
+              setEventData({ ...eventData!, target_audience: value as TargetAudience })
+            }
+            }
+          />
+          <Input
+            value={eventData!.description ?? ""}
+            placeholder="Description"
+            onChange={(e) => { setEventData({ ...eventData!, description: e.target.value }) }}
+          />
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Button className="cursor-pointer bg-green-400 hover:bg-green-500" onClick={handleCreateEvent}>Apply</Button>
+            <Button className="cursor-pointer bg-blue-400 hover:bg-blue-500" onClick={onClose}>Cancel</Button>
+          </div>
       </DialogContent>
     </Dialog>
   );

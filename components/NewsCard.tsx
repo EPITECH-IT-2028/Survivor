@@ -28,9 +28,9 @@ export default function NewsCard({ news }: { news: TNews }) {
 
   return (
     <>
-    <Card className='h-112 w-full transform rounded-xl border border-gray-200 p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer bg-white' onClick={onClick}>
+    <Card className='h-112 w-full transform cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl' onClick={onClick}>
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-bold text-gray-900 line-clamp-2">
+        <CardTitle className="line-clamp-2 text-lg font-bold text-gray-900">
           {news.title}
         </CardTitle>
       </CardHeader>
@@ -40,21 +40,21 @@ export default function NewsCard({ news }: { news: TNews }) {
         </div>
         <div className="space-y-2">
           <div className="flex items-center">
-            <span className="text-md font-medium text-gray-500 w-16">Date:</span>
+            <span className="text-md w-16 font-medium text-gray-500">Date:</span>
             <span className="text-lg text-gray-700">
             {news.news_date ? formatDate(news.news_date) : 'N/A'}
             </span>
           </div>
           <div className="flex items-center">
-            <span className="text-md font-medium text-gray-500 w-16">Location:</span>
-            <span className="text-lg text-gray-700 truncate">
+            <span className="text-md w-16 font-medium text-gray-500">Location:</span>
+            <span className="truncate text-lg text-gray-700">
               {news.location || 'N/A'}
             </span>
           </div>
         </div>
       </CardContent>
       <Dialog open={isOpen}>
-        <DialogContent className="w-full max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-h-[80vh] w-full overflow-y-auto">
           {news && (
             <div className="space-y-6">
               <DialogHeader>
@@ -76,14 +76,14 @@ export default function NewsCard({ news }: { news: TNews }) {
                 </div>
 
                 <div className="prose max-w-none">
-                  <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  <div className="leading-relaxed whitespace-pre-wrap text-gray-700">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {news.description}
                     </ReactMarkdown>
                   </div>
                 </div>
               </div>
-              <div className="flex justify-end pt-4 border-t">
+              <div className="flex justify-end border-t pt-4">
                 <Button onClick={() => setIsOpen(false)}>
                   Close
                 </Button>
