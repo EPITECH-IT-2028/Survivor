@@ -61,13 +61,15 @@ export function AppSidebar({ items }: { items: Item[] }) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="#">
+              <Link href="/" onClick={() => {
+                localStorage.removeItem("session_token");
+              }}>
                 <span>Logout</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-    </Sidebar>
+    </Sidebar >
   )
 }

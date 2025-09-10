@@ -2,9 +2,28 @@
 import { useAuth } from "@/lib/auth-context";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import CountUp from "./ui/countUp";
+import { useEffect, useState } from "react";
+import { getStartupEngagement } from "@/app/hooks/startups/getStartupEngagement";
+import { getStartupView } from "@/app/hooks/startups/getStartupView";
 
 export function DashboardStartup() {
   const { startups } = useAuth();
+  const [engagementRate, setEngagementRate] = useState<number | null>(null);
+  const [projectViews, setProjectViews] = useState<number | null>(null);
+
+  useEffect(() => {
+    async function fetchMetrics() {
+      const engagementResponse = await getStartupEngagement(startups?.[0]?.id || 0);
+      const projectViewsResponse = await getStartupView(startups?.[0]?.id || 0);
+      if (engagementResponse && projectViewsResponse) {
+        setEngagementRate(engagementResponse);
+        setProjectViews(projectViewsResponse);
+      }
+    }
+    if (startups && startups.length > 0) {
+      fetchMetrics();
+    }
+  }, [startups]);
 
   return (
     <div className="flex flex-col w-full">
@@ -23,7 +42,7 @@ export function DashboardStartup() {
             <CardContent className="text-3xl font-bold">
               <CountUp
                 from={0}
-                to={652}
+                to={projectViews || 0}
                 direction="up"
                 duration={0.5}
                 className="count-up-text"
@@ -39,7 +58,7 @@ export function DashboardStartup() {
             <CardContent className="text-3xl font-bold">
               <CountUp
                 from={0}
-                to={19}
+                to={engagementRate || 0}
                 direction="up"
                 duration={0.5}
               />
