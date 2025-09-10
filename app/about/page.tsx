@@ -4,10 +4,17 @@ export default function About() {
       <div>
         <h1>Our vision and mission</h1>
         <p>
-          This web platform is designed to showcase projects emerging from the incubator.
-          It provides visibility for startups and their founders while facilitating connections 
-          with investors, partners, and potential clients. It also serves as a space to promote innovation and collaboration, 
-          ensuring dynamic updates on projects and their progress.
+          This web platform is dedicated to showcasing the projects that emerge from the incubator, 
+          acting as a window into the creativity and entrepreneurial spirit of its startups.
+          Its primary goal is to provide greater visibility to project leaders and their ventures, 
+          helping them reach a broader audience and strengthen their market presence. 
+          Beyond visibility, the platform serves as a bridge between startups and key stakeholders such as investors, 
+          strategic partners, and potential clients, fostering opportunities for growth and collaboration. 
+          It also aims to promote a culture of innovation by highlighting cutting-edge ideas and success stories, 
+          inspiring both the entrepreneurial community and external supporters. 
+          To remain engaging and relevant, the platform ensures dynamic and regular updates on projects, 
+          highlighting milestones, achievements, and ongoing progress, 
+          thereby creating a living showcase of innovation in action.
         </p>
       </div>
       <div>
