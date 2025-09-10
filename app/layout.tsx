@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Instrument_Serif } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
+import Footer from "@/components/Footer";
 import "./globals.css";
 import ConditionalNavbar from "@/components/conditionalNavbar";
 import ConditionalContainer from "@/components/conditionalContainer";
@@ -46,7 +47,8 @@ export default function RootLayout({
           </ConditionalContainer>
           <Toaster position="bottom-right" richColors />
         </AuthProvider>
-      </body >
-    </html >
+        <Footer />
+      </body>
+    </html>
   );
 }
