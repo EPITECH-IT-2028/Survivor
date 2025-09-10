@@ -72,7 +72,7 @@ export default function Home() {
         const startupData = await getStartups();
         const parsedStartups = startupData.map((startup) => ({
           title: startup.name,
-          link: "#",
+          link: "/project-catalog",
           thumbnail:
             "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
         }));
