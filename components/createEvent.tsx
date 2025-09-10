@@ -40,7 +40,7 @@ export default function CreateEvent({
   const handleCreateEvent = async () => {
     if (!eventData) return;
     try {
-      console.log("Creating event with data: ", eventData); 
+      console.log("Creating event with data: ", eventData);
       if (!eventData.name || !eventData.dates || eventData.event_type === '-'
         || eventData.target_audience === '-' || !eventData.location
         || !eventData.description) {
@@ -67,7 +67,9 @@ export default function CreateEvent({
           <FiltersComboBoxResponsive
             filtersList={eventTypeFilters.filter(f => f.value !== '-')}
             placeHolder={eventTypeFilters[eventTypeId['-']]}
-            onSelection={(value: EventType) => { setEventData({ ...eventData!, event_type: value }) }}
+            onSelection={(value: string) => {
+              setEventData({ ...eventData!, event_type: value as EventType })
+            }}
           />
           <Input
             value={eventData!.location ?? ""}
@@ -75,22 +77,25 @@ export default function CreateEvent({
             onChange={(e) => { setEventData({ ...eventData!, location: e.target.value }) }}
           />
           <DatePickerEvent
-            date={eventData?.dates} 
-            onSelectAction={(value: Date) => setEventData(prev => ({ ...prev, dates: value }))} 
+            date={eventData?.dates}
+            onSelectAction={(value: Date) => setEventData(prev => ({ ...prev, dates: value }))}
           />
           <FiltersComboBoxResponsive
             filtersList={targetAudienceFilters.filter(f => f.value !== '-')}
             placeHolder={targetAudienceFilters[targetAudienceId[eventData.target_audience ?? '-']]}
-            onSelection={(value: TargetAudience) => { setEventData({ ...eventData!, target_audience: value }) }}
+            onSelection={(value: string) => {
+              setEventData({ ...eventData!, target_audience: value as TargetAudience })
+            }
+            }
           />
           <Input
             value={eventData!.description ?? ""}
             placeholder="Description"
             onChange={(e) => { setEventData({ ...eventData!, description: e.target.value }) }}
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button className="bg-green-400 hover:bg-green-500 cursor-pointer" onClick={handleCreateEvent}>Apply</Button>
-            <Button className="bg-blue-400 hover:bg-blue-500 cursor-pointer" onClick={onClose}>Cancel</Button>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Button className="cursor-pointer bg-green-400 hover:bg-green-500" onClick={handleCreateEvent}>Apply</Button>
+            <Button className="cursor-pointer bg-blue-400 hover:bg-blue-500" onClick={onClose}>Cancel</Button>
           </div>
         </DialogContent>
       </DialogContent>
