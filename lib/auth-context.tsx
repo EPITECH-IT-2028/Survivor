@@ -41,7 +41,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setLoading(false);
   }, []);
 
-
   useEffect(() => {
     if (token) {
       localStorage.setItem("session_token", token);
@@ -73,15 +72,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const payload = JSON.parse(atob(token.split(".")[1]));
         const userId = payload.userId;
         const fetchedUserArray = await getUsersById(userId);
-        const fetchedUser: TUser | null = Array.isArray(fetchedUserArray) ? fetchedUserArray[0] || null : fetchedUserArray;
+        const fetchedUser: TUser | null = Array.isArray(fetchedUserArray)
+          ? fetchedUserArray[0] || null
+          : fetchedUserArray;
         let fetchedStartup: TStartups[] = [];
-        fetchedStartup = await getStartupByFounderId(fetchedUser?.founder_id ?? 0);
+        fetchedStartup = await getStartupByFounderId(
+          fetchedUser?.founder_id ?? 0,
+        );
         setStartups(fetchedStartup);
       } catch (error) {
         console.error("Error decoding token or fetching user:", error);
         setUser(undefined);
       }
-    }
+    };
 
     fetchUser();
     fetchStartup();
@@ -128,7 +131,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     isAdmin,
     loading,
     user,
-    startups
+    startups,
   } as const;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

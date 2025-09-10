@@ -8,7 +8,7 @@ export async function setStartupView(startupId: number, projectView: number): Pr
       body: JSON.stringify({ project_view: projectView }),
     });
     if (!res.ok) {
-      throw new Error(`POST/api/startups/${startupId}/view -> ${res.status} ${res.statusText}`);
+      throw new Error(`PUT /api/startups/${startupId}/view -> ${res.status} ${res.statusText}`);
     }
     return true;
   } catch (error) {
