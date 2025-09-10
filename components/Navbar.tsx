@@ -61,6 +61,12 @@ export default function Navbar() {
                   >
                     See News
                   </Link>
+                  <Link
+                    href="/about"
+                    className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:text-zinc-300"
+                  >
+                    About us
+                  </Link>
                   {!loading &&
                     (isAuthenticated ? (
                       <Link
@@ -116,6 +122,13 @@ export default function Navbar() {
               className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
             >
               See News
+              <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
+            </Link>
+            <Link
+              href="/about"
+              className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
+            >
+              About us
               <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
             </Link>
           </div>
