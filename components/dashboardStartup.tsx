@@ -7,14 +7,14 @@ export function DashboardStartup() {
   const { startups } = useAuth();
 
   return (
-    <div className="flex flex-col w-full">
-      <div className=" items-center text-center gap-8">
-        <h1 className="pt-2 text-4xl p-8">
+    <div className="flex w-full flex-col">
+      <div className="items-center gap-8 text-center">
+        <h1 className="p-8 pt-2 text-4xl">
           {startups?.length === 0 ? "Please create a startup" :
             startups?.length === 1 ? startups[0].name : startups?.map(startup => startup.name).join(", ")}
         </h1>
         <div className="grid grid-cols-2">
-          <Card className="size-auto m-8">
+          <Card className="m-8 size-auto">
             <CardHeader>
               <CardTitle className="text-2xl font-semibold">
                 Project views
@@ -30,7 +30,7 @@ export function DashboardStartup() {
               />
             </CardContent>
           </Card>
-          <Card className="size-auto m-8">
+          <Card className="m-8 size-auto">
             <CardHeader>
               <CardTitle className="text-2xl font-semibold">
                 Engagement rate

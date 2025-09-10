@@ -1,7 +1,7 @@
 'use server';
 
 import sql from "@/lib/db";
-import { getEventImageByIdQuery } from "@/lib/queries/events/events";
+import { getNewsImageByIdQuery } from "@/lib/queries/news/news";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -20,17 +20,17 @@ export async function GET(
   const { id } = await params
 
   try {
-    const result = await getEventImageByIdQuery(db, id);
+    const result = await getNewsImageByIdQuery(db, id);
 
     if (!result || result.length === 0) {
-      console.log(`No event found with ID: ${id}`);
+      console.log(`No news found with ID: ${id}`);
       return NextResponse.json({ error: 'Event not found' }, { status: 200 });
     }
 
     const imageBuffer = result[0].image
     
     if (!imageBuffer) {
-      return NextResponse.json({ error: 'No image found for this event' }, { status: 200 });
+      return NextResponse.json({ error: 'No image found for this news' }, { status: 200 });
     }
 
     const contentType = "image/jpeg";
@@ -45,7 +45,7 @@ export async function GET(
     });
   } catch (error) {
 
-    console.error('Error fetching event image:', error);
+    console.error('Error fetching news image:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
