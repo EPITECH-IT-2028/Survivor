@@ -107,21 +107,21 @@ export default function Navbar() {
           <div className="items-left flex justify-center gap-8">
             <Link
               href="/project-catalog"
-              className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
+              className="group text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
             >
               Discover Startups
               <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
             </Link>
             <Link
               href="/event-calendar"
-              className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
+              className="group text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
             >
               See Events
               <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
             </Link>
             <Link
               href="/news"
-              className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
+              className="group text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
             >
               See News
               <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>

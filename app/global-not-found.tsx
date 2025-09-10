@@ -20,7 +20,7 @@ export default function GlobalNotFound() {
   return (
     <html lang="en">
       <body
-        className={`font-sf-pro ${geistMono.variable} antialiased`}
+        className={`font-open-sans ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
           <Navbar />
