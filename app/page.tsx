@@ -164,8 +164,8 @@ export default function Home() {
 
   return (
     <div>
-      <div className="relative left-1/2 z-10 mb-18 max-h-[140rem] w-dvw -translate-x-1/2 overflow-hidden">
-        <div className="pointer-events-none absolute bottom-28 z-10 size-6 h-[10rem] w-full bg-gradient-to-t from-white to-transparent" />
+      <div className="relative left-1/2 z-10 mb-18 max-h-[40rem] w-dvw -translate-x-1/2 overflow-hidden md:max-h-[100rem] lg:max-h-[140rem]">
+        <div className="pointer-events-none absolute bottom-0 z-10 size-6 h-[10rem] w-full bg-gradient-to-t from-white to-transparent lg:bottom-28" />
         <HeroParallax products={startups} />
       </div>
       <div className="rounded-lg bg-muted p-6 shadow-md">
