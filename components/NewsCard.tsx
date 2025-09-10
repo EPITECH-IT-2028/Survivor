@@ -62,7 +62,6 @@ export default function NewsCard({ news }: { news: TNews }) {
                   {news.title}
                 </DialogTitle>
               </DialogHeader>
-
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
