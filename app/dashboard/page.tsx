@@ -22,6 +22,7 @@ import { getEvents } from "../hooks/events/getEvents";
 import UpdateEvent from "@/components/updateEvents";
 import CreateEvent from "@/components/createEvent";
 import { format } from "date-fns";
+import { getMetrics } from "../hooks/admin/metrics/getMetrics";
 
 export default function Dashboard() {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
@@ -36,6 +37,10 @@ export default function Dashboard() {
   const [pageStartup, setPageStartup] = useState<number>(0);
   const [pageUser, setPageUser] = useState<number>(0);
   const [pageEvent, setPageEvent] = useState<number>(0);
+  const [metrics, setMetrics] = useState<{ total_project_views: number; total_engagement_rate: number }>({
+    total_project_views: 0,
+    total_engagement_rate: 0
+  });
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -50,6 +55,11 @@ export default function Dashboard() {
       const events = await getEvents();
       setEventsData(events);
     };
+    const fetchMetrics = async () => {
+      const metricsData = await getMetrics();
+      setMetrics(metricsData[0]);
+    }
+    fetchMetrics();
     fetchUsers();
     fetchStartups();
     fetchEvents();
@@ -126,7 +136,7 @@ export default function Dashboard() {
               Project views
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-3xl font-bold">652</CardContent>
+          <CardContent className="text-3xl font-bold">{metrics.total_project_views}</CardContent>
         </Card>
         <Card className="m-8 size-auto">
           <CardHeader>
@@ -134,7 +144,7 @@ export default function Dashboard() {
               Engagement rate
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-3xl font-bold">4</CardContent>
+          <CardContent className="text-3xl font-bold">{metrics.total_engagement_rate}</CardContent>
         </Card>
       </div>
       <div className="space-y-8 p-4">

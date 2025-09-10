@@ -83,7 +83,7 @@ export default function RegisterForm() {
     }
   };
   return (
-    <Card className="absolute top-1/2 left-1/2 w-[350px] -translate-1/2">
+    <Card className="relative mx-auto my-36 w-[350px]">
       <CardHeader>
         <CardTitle>Register</CardTitle>
         <CardDescription>Create a new account</CardDescription>

@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 import ConditionalNavbar from "@/components/conditionalNavbar";
 import ConditionalContainer from "@/components/conditionalContainer";
+import ConditionalFooter from "@/components/conditionalFooter";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +48,7 @@ export default function RootLayout({
           </ConditionalContainer>
           <Toaster position="bottom-right" richColors />
         </AuthProvider>
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   );
