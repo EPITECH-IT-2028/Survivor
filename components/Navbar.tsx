@@ -64,6 +64,7 @@ export default function Navbar() {
                   >
                     See News
                   </Link>
+                  <Separator className="w-full" />
                   {!loading &&
                     (isAuthenticated ? (
                       <Link
