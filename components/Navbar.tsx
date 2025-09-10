@@ -7,6 +7,7 @@ import { List } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 export default function Navbar() {
   const { isAuthenticated, isAdmin, loading } = useAuth();
@@ -99,8 +100,9 @@ export default function Navbar() {
         >
           {/* Left: Title */}
           <div className="flex items-center">
-            <Link href="/" className="ml-2">
-              <TextRipple className="font-montserrat text-4xl whitespace-nowrap text-white">JEB Incubator.</TextRipple>
+            <Link href="/" className="ml-2 flex items-center gap-4">
+          <Image src="/icon.png" alt="JEB Incubator Logo" width={50} height={50} className="rounded-sm" />
+              <TextRipple className="font-montserrat text-4xl font-bold whitespace-nowrap text-white">JEB Incubator.</TextRipple>
             </Link>
           </div>
           {/* Center: Links */}
