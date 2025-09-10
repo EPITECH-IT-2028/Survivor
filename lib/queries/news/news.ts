@@ -8,6 +8,10 @@ export const getNewsByIdQuery = async (db: postgres.Sql, id: string) => {
   return await db`SELECT * FROM news WHERE id = ${id}`;
 }
 
+export const getNewsImageByIdQuery = async (db: postgres.Sql, id: string) => {
+  return await db`SELECT id, legacy_id, image FROM news WHERE id = ${id} OR legacy_id = ${id}`;
+}
+
 export const insertNewsQuery = async (
   db: postgres.Sql,
   title: string,

@@ -14,7 +14,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 630) {
+      if (window.innerWidth <= 736) {
         setIsPageMobile(true);
       } else {
         setIsPageMobile(false);
@@ -31,17 +31,17 @@ export default function Navbar() {
       <div>
         <nav
           aria-label="Navigation principale"
-          className="mx-2 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary px-4 font-canela-black text-secondary"
+          className="flex mx-2 px-4 mt-5 h-24 items-center justify-between rounded-xl bg-primary font-canela-black text-secondary"
         >
           <Link href="/" className="w-auto">
-            <TextRipple className="text-2xl whitespace-nowrap text-white">JEB Incubator.</TextRipple>
+            <TextRipple className="text-2xl text-white whitespace-nowrap">JEB Incubator.</TextRipple>
           </Link>
           <div className="flex items-center justify-between">
             <Popover>
               <PopoverTrigger asChild>
-                <List className="flex-1 text-white" onClick={() => setMenuOpen(!menuOpen)} />
+                <List className="text-white flex-1" onClick={() => setMenuOpen(!menuOpen)} />
               </PopoverTrigger>
-              <PopoverContent className="rounded-lg bg-secondary p-4 shadow-lg">
+              <PopoverContent className="bg-secondary p-4 rounded-lg shadow-lg">
                 <div className="flex flex-col gap-4">
                   <Link
                     href="/project-catalog"
@@ -50,10 +50,16 @@ export default function Navbar() {
                     Discover Startups
                   </Link>
                   <Link
-                    href="#"
-                    className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:bg-primary hover:text-red-300"
+                    href="/event-calendar"
+                    className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:text-red-300 hover:bg-primary"
                   >
                     See Events
+                  </Link>
+                  <Link
+                    href="/news"
+                    className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:text-zinc-300"
+                  >
+                    See News
                   </Link>
                   {!loading &&
                     (isAuthenticated ? (
@@ -81,16 +87,16 @@ export default function Navbar() {
       <div>
         <nav
           aria-label="Navigation principale"
-          className="mx-6 mt-5 grid h-24 grid-cols-3 items-center rounded-xl bg-primary px-6 font-canela-black text-secondary"
+          className="grid grid-cols-3 mx-6 px-6 mt-5 h-24 items-center rounded-xl bg-primary font-canela-black text-secondary"
         >
           {/* Left: Title */}
           <div className="flex items-center">
             <Link href="/" className="ml-2">
-              <TextRipple className="text-2xl whitespace-nowrap text-white">JEB Incubator.</TextRipple>
+              <TextRipple className="text-2xl text-white whitespace-nowrap">JEB Incubator.</TextRipple>
             </Link>
           </div>
           {/* Center: Links */}
-          <div className="items-left flex justify-center gap-8">
+          <div className="flex justify-center items-left gap-8">
             <Link
               href="/project-catalog"
               className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
@@ -99,15 +105,22 @@ export default function Navbar() {
               <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
             </Link>
             <Link
-              href="#"
+              href="/event-calendar"
               className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
             >
               See Events
               <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
             </Link>
+            <Link
+              href="/news"
+              className="group font-sf-pro text-lg font-medium text-secondary transition-all duration-100 hover:text-zinc-300"
+            >
+              See News
+              <span className="block h-0.5 max-w-0 bg-zinc-300 transition-all duration-100 group-hover:max-w-full"></span>
+            </Link>
           </div>
           {/* Right: Login/Dashboard */}
-          <div className="flex items-center justify-end">
+          <div className="flex justify-end items-center">
             {!loading &&
               (isAuthenticated ? (
                 <Link
