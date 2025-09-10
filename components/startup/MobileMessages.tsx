@@ -144,14 +144,14 @@ export function MobileMessagesStartup() {
   }, [userSearch]);
 
   if (loading) {
-    return <div className="flex items-center justify-center h-96">Loading...</div>;
+    return <div className="flex h-96 items-center justify-center">Loading...</div>;
   }
 
   return (
     <>
       {!selectedContact ? (
-        <div className="flex flex-col w-full px-4 my-10 mx-auto" >
-          <div className="flex items-center justify-between px-4 mb-4">
+        <div className="mx-auto my-10 flex w-full flex-col px-4" >
+          <div className="mb-4 flex items-center justify-between px-4">
             <h2 className="text-2xl font-bold">Messages</h2>
             <Dialog open={showAddContact} onOpenChange={setShowAddContact}>
               <DialogTrigger asChild>
@@ -174,7 +174,7 @@ export function MobileMessagesStartup() {
                     <div>Searching...</div>
                   ) : (
                     searchResults.map((result) => (
-                      <div key={result.id} className="flex items-center justify-between p-2 border-b">
+                      <div key={result.id} className="flex items-center justify-between border-b p-2">
                         <div className="flex items-center gap-3">
                           <Avatar>
                             <AvatarImage src={result.image || undefined} alt={result.name} />
@@ -217,7 +217,7 @@ export function MobileMessagesStartup() {
                       <p className="text-sm text-muted-foreground">{contact.email}</p>
                     </div>
                     <div className="ml-auto text-sm text-muted-foreground">
-                      <Send className="inline-block mr-1" size={16} />
+                      <Send className="mr-1 inline-block" size={16} />
                     </div>
                   </CardContent>
                 </Card>
@@ -226,15 +226,15 @@ export function MobileMessagesStartup() {
           )}
         </div>
       ) : (
-        <div className="flex flex-col w-full px-4 my-10 mx-auto" >
-          <div className="flex items-center mb-4">
+        <div className="mx-auto my-10 flex w-full flex-col px-4" >
+          <div className="mb-4 flex items-center">
             <Button variant="ghost" size="icon" onClick={() => setSelectedContact(null)}>
               <X />
             </Button>
             <h2 className="ml-4 text-2xl font-bold">{selectedContact.name}</h2>
           </div>
-          <div className="flex flex-col flex-1 h-70 border rounded-lg overflow-hidden">
-            <div className="flex-1 p-4 overflow-y-auto">
+          <div className="flex h-70 flex-1 flex-col overflow-hidden rounded-lg border">
+            <div className="flex-1 overflow-y-auto p-4">
               <div className="space-y-4">
                 {(
                   messages.map((message) => {
@@ -244,22 +244,22 @@ export function MobileMessagesStartup() {
                         key={message.id}
                         className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}
                       >
-                        <div className={`flex items-end gap-2 max-w-xs lg:max-w-md ${isOwn ? 'flex-row-reverse' : 'flex-row'
+                        <div className={`flex max-w-xs items-end gap-2 lg:max-w-md ${isOwn ? 'flex-row-reverse' : 'flex-row'
                           }`}>
                           {!isOwn && (
-                            <Avatar className="h-6 w-6">
+                            <Avatar className="size-6">
                               {selectedContact.image && <AvatarImage src={selectedContact.image} alt={selectedContact.name} />}
                               <AvatarFallback className="bg-muted text-xs">
                                 {getUserInitials(selectedContact.name)}
                               </AvatarFallback>
                             </Avatar>
                           )}
-                          <div className={`px-4 py-2 rounded-2xl ${isOwn
-                            ? 'bg-primary text-primary-foreground rounded-br-md'
-                            : 'bg-muted rounded-bl-md'
+                          <div className={`rounded-2xl px-4 py-2 ${isOwn
+                            ? 'rounded-br-md bg-primary text-primary-foreground'
+                            : 'rounded-bl-md bg-muted'
                             }`}>
                             <p className="text-sm">{message.content}</p>
-                            <p className="text-xs opacity-70 mt-1">
+                            <p className="mt-1 text-xs opacity-70">
                               {formatMessageTime(message.created_at)}
                             </p>
                           </div>
@@ -270,7 +270,7 @@ export function MobileMessagesStartup() {
                 )}
               </div>
             </div>
-            <div className="p-4 border-t flex items-center gap-2">
+            <div className="flex items-center gap-2 border-t p-4">
               <Input
                 placeholder="Enter your message..."
                 value={messageText}
