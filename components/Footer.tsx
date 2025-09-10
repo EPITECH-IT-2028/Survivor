@@ -48,7 +48,7 @@ const Footer = () => {
             <h3 className="mb-4 text-lg font-semibold">Follow Us</h3>
             <div className="flex space-x-4">
               <Link
-                href="https://twitter.com"
+                href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter"
@@ -57,7 +57,7 @@ const Footer = () => {
                 <FaTwitter size={24} />
               </Link>
               <Link
-                href="https://facebook.com"
+                href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -66,7 +66,7 @@ const Footer = () => {
                 <FaFacebook size={24} />
               </Link>
               <Link
-                href="https://instagram.com"
+                href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -75,7 +75,7 @@ const Footer = () => {
                 <FaInstagram size={24} />
               </Link>
               <Link
-                href="https://linkedin.com"
+                href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
