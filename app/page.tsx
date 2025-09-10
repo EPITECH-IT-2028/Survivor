@@ -61,36 +61,99 @@ function StartupFlipCard(props: StartupFlipCardProps) {
 }
 
 export default function Home() {
-  const [startups, setStartups] = useState<
-    { title: string; link: string; thumbnail: string }[]
-  >([]);
-  useEffect(() => {
-    let mounted = true;
-
-    const fetchStartups = async () => {
-      try {
-        const startupData = await getStartups();
-        const parsedStartups = startupData.map((startup) => ({
-          title: startup.name,
-          link: "/project-catalog",
-          thumbnail:
-            "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
-        }));
-        if (mounted) {
-          setStartups(parsedStartups);
-        }
-      } catch (error) {
-        console.error("Failed to fetch startups:", error);
-        if (mounted) {
-          setStartups([]);
-        }
-      }
-    };
-    fetchStartups();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  const projectCatalog = "/project-catalog";
+  const startups = [
+    {
+      title: "EcoTech Solutions",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=600&fit=crop",
+    },
+    {
+      title: "HealthAI Platform",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=600&fit=crop",
+    },
+    {
+      title: "FinTech Revolution",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=600&fit=crop",
+    },
+    {
+      title: "EdTech Innovators",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=600&fit=crop",
+    },
+    {
+      title: "Smart Agriculture",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=600&h=600&fit=crop",
+    },
+    {
+      title: "Quantum Computing Co",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&h=600&fit=crop",
+    },
+    {
+      title: "Renewable Energy Systems",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&h=600&fit=crop",
+    },
+    {
+      title: "Space Technology",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=600&h=600&fit=crop",
+    },
+    {
+      title: "Blockchain Ventures",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600&h=600&fit=crop",
+    },
+    {
+      title: "VR Entertainment",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=600&h=600&fit=crop",
+    },
+    {
+      title: "IoT Solutions",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=600&fit=crop",
+    },
+    {
+      title: "Biotech Ventures",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=600&h=600&fit=crop",
+    },
+    {
+      title: "Cybersecurity Corp",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&h=600&fit=crop",
+    },
+    {
+      title: "Clean Water Tech",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=600&fit=crop",
+    },
+    {
+      title: "Mobile Health Apps",
+      link: projectCatalog,
+      thumbnail:
+        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=600&fit=crop",
+    },
+  ];
 
   const startupOneDesc =
     "An innovative platform revolutionizing the way we connect and collaborate.";
