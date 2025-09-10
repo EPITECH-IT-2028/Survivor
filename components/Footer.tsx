@@ -12,7 +12,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-24 md:grid-cols-4">
           <div className="col-span-1">
-            <h2 className="mb-4 font-canela-black text-2xl">Jeb Incubator.</h2>
+            <h2 className="mb-4 font-montserrat text-2xl">Jeb Incubator.</h2>
             <p className="text-gray-400">
               Connecting the next generation of innovators and investors.
             </p>

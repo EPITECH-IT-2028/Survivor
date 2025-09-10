@@ -32,10 +32,10 @@ export default function Navbar() {
       <div>
         <nav
           aria-label="Navigation principale"
-          className="relative mx-2 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary px-4 font-canela-black text-secondary"
+          className="relative mx-2 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary px-4 font-montserrat text-secondary"
         >
       <Link href="/" className="absolute left-6 cursor-pointer">
-        <TextRipple className="pt-2 text-2xl">JEB Incubator.</TextRipple>
+        <TextRipple className="text-2xl">JEB Incubator.</TextRipple>
       </Link>
           <div className="flex items-center justify-between">
             <Popover>
@@ -95,7 +95,7 @@ export default function Navbar() {
       <div>
         <nav
           aria-label="Navigation principale"
-          className="mx-6 mt-5 grid h-24 grid-cols-3 items-center rounded-xl bg-primary px-6 font-canela-black text-secondary"
+          className="mx-6 mt-5 grid h-24 grid-cols-3 items-center rounded-xl bg-primary px-6 font-montserrat text-secondary"
         >
           {/* Left: Title */}
           <div className="flex items-center">
