@@ -164,15 +164,15 @@ export default function Home() {
 
   return (
     <div>
-      <div className="relative left-1/2 z-10 mb-18 max-h-[40rem] w-dvw -translate-x-1/2 overflow-hidden md:max-h-[100rem] lg:max-h-[140rem]">
+      <div className="relative left-1/2 z-10 max-h-[40rem] w-dvw -translate-x-1/2 overflow-hidden md:mb-18 md:max-h-[100rem] lg:max-h-[140rem]">
         <div className="pointer-events-none absolute bottom-0 z-10 size-6 h-[10rem] w-full bg-gradient-to-t from-white to-transparent lg:bottom-28" />
         <HeroParallax products={startups} />
       </div>
-      <div className="rounded-lg bg-muted p-6 shadow-md">
-        <p className="mt-16 mb-24 flex justify-center font-canela-black text-6xl underline decoration-wavy decoration-3 underline-offset-[1rem]">
+      <div className="bg-muted px-6 py-12 shadow-md md:rounded-lg md:px-8 md:py-16">
+        <p className="mb-12 flex justify-center font-canela-black text-3xl underline decoration-wavy decoration-3 underline-offset-[1rem] md:mb-16 md:text-5xl lg:mb-24 lg:text-6xl">
           Featured Projects
         </p>
-        <div className="flex justify-around">
+        <div className="flex flex-col items-center justify-center space-y-12 md:flex-row md:items-baseline md:justify-around">
           <StartupFlipCard
             title="EcoLoop"
             description={startupOneDesc}
