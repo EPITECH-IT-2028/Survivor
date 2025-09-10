@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { List } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 
 export default function Navbar() {
   const { isAuthenticated, isAdmin, loading } = useAuth();
@@ -31,48 +32,49 @@ export default function Navbar() {
       <div>
         <nav
           aria-label="Navigation principale"
-          className="mx-2 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary px-4 font-canela-black text-secondary"
+          className="relative mx-2 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary px-4 font-canela-black text-secondary"
         >
-          <Link href="/" className="w-auto">
-            <TextRipple className="text-2xl whitespace-nowrap text-white">JEB Incubator.</TextRipple>
-          </Link>
+      <Link href="/" className="absolute left-6 cursor-pointer">
+        <TextRipple className="pt-2 text-2xl">JEB Incubator.</TextRipple>
+      </Link>
           <div className="flex items-center justify-between">
             <Popover>
               <PopoverTrigger asChild>
-                <List className="flex-1 text-white" onClick={() => setMenuOpen(!menuOpen)} />
+                <List className="absolute right-6 text-white" onClick={() => setMenuOpen(!menuOpen)} />
               </PopoverTrigger>
-              <PopoverContent className="rounded-lg bg-secondary p-4 shadow-lg">
-                <div className="flex flex-col gap-4">
-                  <Link
-                    href="/project-catalog"
-                    className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:text-zinc-300"
+              <PopoverContent className="w-40 rounded-lg p-4 shadow-lg" align="end">
+                <div className="flex flex-col items-center gap-4">
+        <Link
+          href="/project-catalog"
+          className=""
                   >
                     Discover Startups
                   </Link>
+                  <Separator className="w-full" />
                   <Link
                     href="/event-calendar"
-                    className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:bg-primary hover:text-red-300"
+                    className=""
                   >
                     See Events
                   </Link>
+                  <Separator className="w-full" />
                   <Link
                     href="/news"
-                    className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:text-zinc-300"
+                    className=""
                   >
                     See News
                   </Link>
+                  <Separator className="w-full" />
                   {!loading &&
                     (isAuthenticated ? (
                       <Link
                         href={isAdmin ? "/dashboard" : "/startup-area"}
-                        className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:text-zinc-300"
                       >
                         Dashboard
                       </Link>
                     ) : (
                       <Link
                         href="/login"
-                        className="font-sf-pro text-lg font-medium text-primary transition-all duration-100 hover:text-zinc-300"
                       >
                         Login
                       </Link>
@@ -92,7 +94,7 @@ export default function Navbar() {
           {/* Left: Title */}
           <div className="flex items-center">
             <Link href="/" className="ml-2">
-              <TextRipple className="text-2xl whitespace-nowrap text-white">JEB Incubator.</TextRipple>
+              <TextRipple className="text-4xl whitespace-nowrap text-white">JEB Incubator.</TextRipple>
             </Link>
           </div>
           {/* Center: Links */}
