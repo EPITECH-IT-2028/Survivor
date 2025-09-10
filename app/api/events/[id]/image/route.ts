@@ -33,7 +33,7 @@ export async function GET(
       return NextResponse.json({ error: 'No image found for this event' }, { status: 200 });
     }
 
-    let contentType = "image/jpeg";
+    const contentType = "image/jpeg";
     const buffer = Buffer.from(imageBuffer)
 
     return new NextResponse(buffer, {

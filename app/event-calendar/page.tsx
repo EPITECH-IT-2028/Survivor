@@ -25,8 +25,8 @@ export default function Event() {
     <div className="space-y-8 p-6">
       {workshops.length > 0 && (
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Workshops</h2>
-          <Carousel className="w-full max-w-7xl mx-auto">
+          <h2 className="mb-4 text-2xl font-bold text-gray-900">Workshops</h2>
+          <Carousel className="mx-auto w-full max-w-7xl">
             <CarouselContent className="-ml-1">
               {workshops.map((event) => (
                 <CarouselItem key={event.id} className="pl-1 md:basis-1/2 lg:basis-1/3">
@@ -42,8 +42,8 @@ export default function Event() {
 
       {conferences.length > 0 && (
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Conferences</h2>
-          <Carousel className="w-full max-w-7xl mx-auto">
+          <h2 className="mb-4 text-2xl font-bold text-gray-900">Conferences</h2>
+          <Carousel className="mx-auto w-full max-w-7xl">
             <CarouselContent className="-ml-1">
               {conferences.map((event) => (
                 <CarouselItem key={event.id} className="pl-1 md:basis-1/2 lg:basis-1/3">
@@ -59,8 +59,8 @@ export default function Event() {
 
       {pitchSessions.length > 0 && (
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Pitch Sessions</h2>
-          <Carousel className="w-full max-w-7xl mx-auto">
+          <h2 className="mb-4 text-2xl font-bold text-gray-900">Pitch Sessions</h2>
+          <Carousel className="mx-auto w-full max-w-7xl">
             <CarouselContent className="-ml-1">
               {pitchSessions.map((event) => (
                 <CarouselItem key={event.id} className="pl-1 md:basis-1/2 lg:basis-1/3">
