@@ -77,7 +77,7 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="absolute top-1/2 left-1/2 w-[350px] -translate-1/2">
+    <Card className="relative mx-auto my-36 w-[350px]">
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>Enter your credentials</CardDescription>
