@@ -10,11 +10,7 @@ export default function Opportunities() {
   useEffect(() => {
     const fetchStartups = async () => {
       const response = await getStartups();
-      for (let i = 0; i < response.length; i++) {
-        if (response[i].needs == "Funding") {
-          setStartups((prevStartups) => [...prevStartups, response[i]])
-        }
-      }
+      setStartups(response.filter((s) => s.needs === "Funding"));
     }
     fetchStartups();
   }, []);
