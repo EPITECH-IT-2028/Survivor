@@ -1,7 +1,11 @@
-'use server';
+"use server";
 
 import sql from "@/lib/db";
-import { deleteUserQuery, getUserByIdQuery, updateUserQuery } from "@/lib/queries/users/users";
+import {
+  deleteUserQuery,
+  getUserByIdQuery,
+  updateUserQuery,
+} from "@/lib/queries/users/users";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -11,10 +15,13 @@ export async function GET(
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   const { id } = await params;
@@ -23,13 +30,16 @@ export async function GET(
     const response = await getUserByIdQuery(db, id);
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch user' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: `Failed to fetch user ${error}` }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 }
 
@@ -40,10 +50,13 @@ export async function DELETE(
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   const { id } = await params;
@@ -53,13 +66,16 @@ export async function DELETE(
 
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to delete users' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: `Failed to delete user ${error}` }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 }
 
@@ -70,26 +86,57 @@ export async function PUT(
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   const { id } = await params;
 
   try {
-    const { name, role, email, founder_id, investor_id } = await request.json();
+    const { name, role, email, founder_id, investor_id, image } =
+      await request.json();
 
-    const response = updateUserQuery(db, id, name, role, email, founder_id, investor_id);
+    let processedImage = image;
+
+    if (image && typeof image === "string" && image.startsWith("data:image/")) {
+      try {
+        const base64Data = image.split(",")[1];
+        processedImage = Buffer.from(base64Data, "base64");
+      } catch (conversionError) {
+        console.error("Error converting base64 image:", conversionError);
+        return new Response(JSON.stringify({ error: "Invalid image format" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+    }
+
+    const response = await updateUserQuery(
+      db,
+      id,
+      name,
+      role,
+      email,
+      founder_id,
+      investor_id,
+      processedImage,
+    );
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: `Failed to update users ${error}` }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: `Failed to update users ${error}` }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 }

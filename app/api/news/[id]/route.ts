@@ -1,7 +1,11 @@
-'use server';
+"use server";
 
 import sql from "@/lib/db";
-import { deleteNewsByIdQuery, getNewsByIdQuery, updateNewsByIdQuery } from "@/lib/queries/news/news";
+import {
+  deleteNewsByIdQuery,
+  getNewsByIdQuery,
+  updateNewsByIdQuery,
+} from "@/lib/queries/news/news";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -11,10 +15,13 @@ export async function GET(
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   const { id } = await params;
@@ -23,12 +30,12 @@ export async function GET(
     const response = await getNewsByIdQuery(db, id);
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch news' }), {
+    return new Response(JSON.stringify({ error: "Failed to fetch news" }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   }
 }
@@ -40,10 +47,13 @@ export async function DELETE(
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   const { id } = await params;
@@ -53,12 +63,12 @@ export async function DELETE(
 
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to delete news' }), {
+    return new Response(JSON.stringify({ error: "Failed to delete news" }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   }
 }
@@ -70,37 +80,77 @@ export async function PUT(
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   const { id } = await params;
 
   try {
-    const { title, category, description, news_date, location, startup, startup_id } = await request.json();
-
+    const {
+      title,
+      category,
+      description,
+      news_date,
+      location,
+      startup,
+      startup_id,
+      image,
+    } = await request.json();
 
     if (!news_date) {
-      return new Response(JSON.stringify({ error: 'news_date is required' }), {
+      return new Response(JSON.stringify({ error: "news_date is required" }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
     }
 
+    let processedImage = image;
+
+    if (image && typeof image === "string" && image.startsWith("data:image/")) {
+      try {
+        const base64Data = image.split(",")[1];
+        processedImage = Buffer.from(base64Data, "base64");
+      } catch (conversionError) {
+        console.error("Error converting base64 image:", conversionError);
+        return new Response(JSON.stringify({ error: "Invalid image format" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+    }
+
     const formattedDate = new Date(news_date).toISOString();
-    
-    const response = await updateNewsByIdQuery(db, id, title, category, description, location, formattedDate, startup, startup_id);
+
+    const response = await updateNewsByIdQuery(
+      db,
+      id,
+      title,
+      category,
+      description,
+      location,
+      formattedDate,
+      startup,
+      startup_id,
+      processedImage,
+    );
 
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: `Failed to update news ${error}` }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: `Failed to update news ${error}` }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 }

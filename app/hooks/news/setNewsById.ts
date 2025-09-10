@@ -8,21 +8,26 @@ export interface NewsPayload {
   startup?: string;
   location?: string;
   startup_id?: number;
-  image?: string;
+  image?: string | null;
 }
 
-
-export async function setNewsById(newsId: number, newsData: TNews): Promise<TNews | null> {
+export async function setNewsById(
+  newsId: number,
+  newsData: TNews,
+): Promise<TNews | null> {
   try {
-    if (!newsData || 
+    console.log("newsData:", newsData);
+    if (
+      !newsData ||
       !newsData.title ||
-       !newsData.news_date || 
-       !newsData.startup_id || 
-       !newsData.description || 
-       !newsData.category || 
-       !newsData.startup || 
-       !newsData.location
-      )
+      !newsData.news_date ||
+      !newsData.startup_id ||
+      !newsData.description ||
+      !newsData.category ||
+      !newsData.startup ||
+      !newsData.location ||
+      !newsData.image
+    )
       throw new Error("newsData has at least one information null.");
 
     const payload: NewsPayload = {
@@ -33,6 +38,7 @@ export async function setNewsById(newsId: number, newsData: TNews): Promise<TNew
       startup: newsData.startup,
       startup_id: newsData.startup_id,
       title: newsData.title,
+      image: newsData.image || null,
     };
 
     const res = await fetch(`/api/news/${newsId}`, {
@@ -44,13 +50,15 @@ export async function setNewsById(newsId: number, newsData: TNews): Promise<TNew
     });
 
     if (!res.ok) {
-      throw new Error(`PUT /api/news/${newsId} -> ${res.status} ${res.statusText}`);
+      throw new Error(
+        `PUT /api/news/${newsId} -> ${res.status} ${res.statusText}`,
+      );
     }
 
     const data: TNews = await res.json();
     return data;
   } catch (error) {
-    console.error("Error updating news: ", error)
-    return null
+    console.error("Error updating news: ", error);
+    return null;
   }
 }

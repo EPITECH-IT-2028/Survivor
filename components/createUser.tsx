@@ -25,7 +25,7 @@ interface CreateUserProps {
   onDataChanged?: () => void;
 }
 
-export default function CreateUserOrStartup({
+export default function CreateUser({
   isOpen,
   onClose,
   onDataChanged
@@ -118,13 +118,13 @@ export default function CreateUserOrStartup({
   }, []);
 
   useEffect(() => {
-    if (startupId && userData.role !== "founder") {
-      setUserData({ ...userData, founder_id: null });
+    if (startupId && userData.role !== "founder" && userData.founder_id !== null) {
+      setUserData((prev) => ({ ...prev, founder_id: null }));
     }
     if (userData.investor_id && userData.role !== "investor") {
-      setUserData({ ...userData, investor_id: null });
+      setUserData((prev) => ({ ...prev, investor_id: null }));
     }
-  }, [userData.role]);
+  }, [userData.role, startupId]);
 
   if (!userData) {
     return (
@@ -157,8 +157,8 @@ export default function CreateUserOrStartup({
         <FiltersComboBoxResponsive
           filtersList={userRoleFilters}
           placeHolder={userRoleFilters[userRoleId[userData.role ?? "-"]]}
-          onSelection={(value: UserRole) => {
-            setUserData({ ...userData!, role: value });
+          onSelection={(value: string) => {
+            setUserData({ ...userData!, role: value as UserRole });
           }}
         />
         {userData.role === "founder" && (
@@ -166,9 +166,9 @@ export default function CreateUserOrStartup({
             {startupsList.length > 0 && (
               <FiltersComboBoxResponsive
                 filtersList={startupsList.filter(s => s.value !== 0)}
-                placeHolder={startupsList[0]}
-                onSelection={(value: number) => {
-                  setStartupId(value);
+                placeHolder={startupsList.find(s => s.value === startupId) || startupsList[0]}
+                onSelection={(value: string) => {
+                  setStartupId(Number(value));
                 }}
               />
             )}

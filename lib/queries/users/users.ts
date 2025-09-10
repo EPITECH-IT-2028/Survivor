@@ -38,13 +38,15 @@ export const updateUserQuery = async (db: postgres.Sql,
   email: string,
   founder_id: string | null,
   investor_id: string | null,
+  image?: string | null,
 ) => {
   return await db`UPDATE users SET 
       name = ${name},
       role = ${role},
       email = ${email},
       founder_id = ${founder_id},
-      investor_id = ${investor_id}
+      investor_id = ${investor_id},
+      image = ${image ?? null}
       WHERE id = ${id} RETURNING *`;
 }
 
@@ -66,4 +68,8 @@ export const searchUsersQuery = async (db: postgres.Sql, searchTerm: string, use
     ORDER BY name
     LIMIT 10
   `;
+}
+
+export const getUserImageByIdQuery = async (db: postgres.Sql, id: string) => {
+  return await db`SELECT id, legacy_id, image FROM users WHERE id = ${id}`;
 }
