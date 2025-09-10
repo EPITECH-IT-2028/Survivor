@@ -32,17 +32,17 @@ export default function Navbar() {
       <div>
         <nav
           aria-label="Navigation principale"
-          className="relative mx-2 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary px-4 font-montserrat text-secondary"
+          className="relative mx-2 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary px-4 text-secondary"
         >
       <Link href="/" className="absolute left-6 cursor-pointer">
-        <TextRipple className="text-2xl">JEB Incubator.</TextRipple>
+        <TextRipple className="font-montserrat text-2xl">JEB Incubator.</TextRipple>
       </Link>
           <div className="flex items-center justify-between">
             <Popover>
               <PopoverTrigger asChild>
                 <List className="absolute right-6 text-white" onClick={() => setMenuOpen(!menuOpen)} />
               </PopoverTrigger>
-              <PopoverContent className="w-40 rounded-lg p-4 shadow-lg" align="end">
+              <PopoverContent className="w-44 rounded-lg p-4 shadow-lg" align="end">
                 <div className="flex flex-col items-center gap-4">
         <Link
           href="/project-catalog"
@@ -95,12 +95,12 @@ export default function Navbar() {
       <div>
         <nav
           aria-label="Navigation principale"
-          className="mx-6 mt-5 grid h-24 grid-cols-3 items-center rounded-xl bg-primary px-6 font-montserrat text-secondary"
+          className="mx-6 mt-5 grid h-24 grid-cols-3 items-center rounded-xl bg-primary px-6 text-secondary"
         >
           {/* Left: Title */}
           <div className="flex items-center">
             <Link href="/" className="ml-2">
-              <TextRipple className="text-4xl whitespace-nowrap text-white">JEB Incubator.</TextRipple>
+              <TextRipple className="font-montserrat text-4xl whitespace-nowrap text-white">JEB Incubator.</TextRipple>
             </Link>
           </div>
           {/* Center: Links */}
