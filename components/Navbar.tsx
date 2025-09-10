@@ -154,8 +154,8 @@ export default function Navbar() {
                   href="/login"
                   className="group relative px-6 py-3"
                 >
-                  <span className="absolute inset-0 rounded-sm border transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:bg-secondary"></span>
-                  <span className="relative text-secondary group-hover:text-primary">
+                  <span className="absolute inset-0 rounded-sm bg-secondary transition-all duration-100 group-hover:scale-x-110 group-hover:scale-y-95 group-hover:border-2 group-hover:bg-primary"></span>
+                  <span className="relative font-bold text-primary group-hover:text-secondary">
                     Login
                   </span>
                 </Link>
