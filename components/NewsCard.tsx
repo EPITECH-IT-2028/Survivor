@@ -1,24 +1,28 @@
-import { TNews } from "@/app/types/news"
-import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card"
-import { DialogTitle, Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button"
+import { TNews } from "@/app/types/news";
+import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
+import {
+  DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import NewsImage from "./NewsImage";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export default function NewsCard({ news }: { news: TNews }) {
-
   const formatDate = (date: string | Date) => {
-    const dateObject = typeof date === 'string' ? new Date(date) : date;
-    return dateObject.toLocaleDateString('en-UK', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+    const dateObject = typeof date === "string" ? new Date(date) : date;
+    return dateObject.toLocaleDateString("en-UK", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   const [isOpen, setIsOpen] = useState(false);
 
