@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { getStartups } from "../hooks/startups/getStartups";
 import StartupModal from "@/components/StartupModal";
 import { FiltersComboBoxResponsive } from "@/components/filter";
+import { PulseLoader } from 'react-spinners';
 
 export default function Catalog() {
   const [sectorFilter, setSectorFilter] = useState("");
@@ -42,6 +43,14 @@ export default function Catalog() {
 
     setStartupDisp(filtered);
   }, [sectorFilter, maturityFilter, locationFilter, startupsInfo]);
+
+  if (!startupsInfo) {
+    return (
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <PulseLoader size={30} color="#F18585" />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-4 mt-12 flex justify-center lg:max-w-6xl">
