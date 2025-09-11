@@ -316,7 +316,7 @@ export default function Modal({
                             href={startup.website_url}
                             rel="noopener noreferrer"
                             target="_blank"
-                            className="text-sm text-blue-600 underline hover:text-blue-800"
+                            className="text-sm text-blue-400 underline hover:text-blue-800"
                             onClick={engagementRate}
                           >
                             Visit Website
