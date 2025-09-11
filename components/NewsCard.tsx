@@ -1,5 +1,5 @@
 import { TNews } from "@/app/types/news";
-import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DialogTitle,
   Dialog,
