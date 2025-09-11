@@ -114,7 +114,7 @@ export default function Navbar() {
               height={50}
               className="rounded-sm"
             />
-            <TextRipple className="font-montserrat text-4xl font-bold whitespace-nowrap text-white">
+            <TextRipple className="font-montserrat font-bold whitespace-nowrap text-white opacity-0 lg:text-4xl lg:opacity-100">
               JEB Incubator.
             </TextRipple>
           </Link>
