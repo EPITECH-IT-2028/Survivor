@@ -30,7 +30,10 @@ export default function NewsCard({ news }: { news: TNews }) {
 
   return (
     <>
-      <Card className='h-112 w-full transform cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl' onClick={onClick}>
+      <Card
+        className="h-112 w-full transform cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+        onClick={onClick}
+      >
         <CardHeader className="pb-2">
           <CardTitle className="line-clamp-2 text-lg font-bold text-gray-900">
             {news.title}
@@ -42,15 +45,19 @@ export default function NewsCard({ news }: { news: TNews }) {
           </div>
           <div className="space-y-2">
             <div className="flex items-center">
-              <span className="text-md w-16 font-medium text-gray-500">Date:</span>
+              <span className="text-md w-16 font-medium text-gray-500">
+                Date:
+              </span>
               <span className="text-lg text-gray-700">
-                {news.news_date ? formatDate(news.news_date) : 'N/A'}
+                {news.news_date ? formatDate(news.news_date) : "N/A"}
               </span>
             </div>
             <div className="flex items-center">
-              <span className="text-md w-16 font-medium text-gray-500">Location:</span>
+              <span className="text-md w-16 font-medium text-gray-500">
+                Location:
+              </span>
               <span className="truncate text-lg text-gray-700">
-                {news.location || 'N/A'}
+                {news.location || "N/A"}
               </span>
             </div>
           </div>
@@ -68,11 +75,13 @@ export default function NewsCard({ news }: { news: TNews }) {
                   <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
                       <span className="font-medium">Published:</span>
-                      <span>{news.news_date ? formatDate(news.news_date) : 'N/A'}</span>
+                      <span>
+                        {news.news_date ? formatDate(news.news_date) : "N/A"}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="font-medium">Category:</span>
-                      <span>{news.category || 'N/A'}</span>
+                      <span>{news.category || "N/A"}</span>
                     </div>
                   </div>
 
@@ -85,9 +94,7 @@ export default function NewsCard({ news }: { news: TNews }) {
                   </div>
                 </div>
                 <div className="flex justify-end border-t pt-4">
-                  <Button onClick={() => setIsOpen(false)}>
-                    Close
-                  </Button>
+                  <Button onClick={() => setIsOpen(false)}>Close</Button>
                 </div>
               </div>
             )}
@@ -95,6 +102,5 @@ export default function NewsCard({ news }: { news: TNews }) {
         </Dialog>
       </Card>
     </>
-
-  )
+  );
 }
