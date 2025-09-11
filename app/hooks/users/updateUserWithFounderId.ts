@@ -17,7 +17,7 @@ export async function updateUserWithFounderId(userId: number, userData: TUser, f
       email: userData.email,
       role: userData.role,
       founder_id: founder_id,
-      investor_id: userData.investor_id
+      investor_id: userData.investor_id || undefined,
     };
     const res = await fetch(`/api/users/${userId}`, {
       method: "PUT",
