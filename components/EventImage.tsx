@@ -28,7 +28,7 @@ export default function EventImage({ id }: { id: number }) {
       alt={`No provided image`}
       width={0}
       height={0}
-      className="size-auto rounded-xl shadow-md"
+      className="aspect-video size-auto rounded-xl object-cover shadow-md"
     />
   );
 }
