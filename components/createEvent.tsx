@@ -36,6 +36,7 @@ export default function CreateEvent({
     event_type: "-",
     target_audience: "-",
     id: 0,
+    image: null
   });
 
   if (!eventData) {
