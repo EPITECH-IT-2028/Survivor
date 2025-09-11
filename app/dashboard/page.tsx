@@ -50,6 +50,7 @@ export default function Dashboard() {
   const [pageStartup, setPageStartup] = useState<number>(0);
   const [pageUser, setPageUser] = useState<number>(0);
   const [pageEvent, setPageEvent] = useState<number>(0);
+  const [pageNews, setPageNews] = useState<number>(0);
   const [metrics, setMetrics] = useState<{ total_project_views: number; total_engagement_rate: number }>({
     total_project_views: 0,
     total_engagement_rate: 0
