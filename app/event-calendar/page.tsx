@@ -45,12 +45,12 @@ export default function Event() {
       {workshops.length > 0 && (
         <div>
           <h2 className="mb-4 text-2xl font-bold text-gray-900">Workshops</h2>
-          <Carousel className="mx-auto w-full max-w-7xl">
-            <CarouselContent className="-ml-1">
+          <Carousel className="mx-auto w-full">
+            <CarouselContent>
               {workshops.map((event) => (
                 <CarouselItem
                   key={event.id}
-                  className="pl-1 md:basis-1/2 lg:basis-1/3"
+                  className="md:basis-1/2 lg:basis-1/3"
                 >
                   <EventCard event={event} />
                 </CarouselItem>
