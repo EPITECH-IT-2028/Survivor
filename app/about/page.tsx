@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Mail } from "lucide-react";
 
 const teamMembers = {
   managers: [
@@ -36,8 +37,9 @@ const TeamMember = ({
         className={`absolute inset-0 rounded-sm ${background} pointer-events-none transition-all duration-100 group-hover:scale-x-105 group-hover:scale-y-95`}
       />
       <p
-        className={`z-20 font-medium ${isHovered ? "font-bold text-blue-400 underline select-text" : ""}`}
+        className={`z-20 font-medium ${isHovered ? "font-bold text-blue-400 underline underline-offset-4 select-text" : ""}`}
       >
+        {isHovered && <Mail className="mr-1 inline" size={12} />}
         {isHovered ? email : name}
       </p>
     </div>
