@@ -33,7 +33,7 @@ export const deleteNewsByIdQuery = async (db: postgres.Sql, id: string) => {
 
 export const updateNewsByIdQuery = async (
   db: postgres.Sql,
-  id: number,
+  id: string,
   title: string,
   category: string,
   description: string,

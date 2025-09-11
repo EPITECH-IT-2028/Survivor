@@ -21,78 +21,78 @@ export default function NewsCard({ news }: { news: TNews }) {
   }
 
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const onClick = () => {
-      setIsOpen(!isOpen);
-    };
+    setIsOpen(!isOpen);
+  };
 
   return (
     <>
-    <Card className='h-112 w-full transform cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl' onClick={onClick}>
-      <CardHeader className="pb-2">
-        <CardTitle className="line-clamp-2 text-lg font-bold text-gray-900">
-          {news.title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex justify-center">
-          <NewsImage id={news.id} />
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center">
-            <span className="text-md w-16 font-medium text-gray-500">Date:</span>
-            <span className="text-lg text-gray-700">
-            {news.news_date ? formatDate(news.news_date) : 'N/A'}
-            </span>
+      <Card className='h-112 w-full transform cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl' onClick={onClick}>
+        <CardHeader className="pb-2">
+          <CardTitle className="line-clamp-2 text-lg font-bold text-gray-900">
+            {news.title}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="flex justify-center">
+            <NewsImage id={news.id} />
           </div>
-          <div className="flex items-center">
-            <span className="text-md w-16 font-medium text-gray-500">Location:</span>
-            <span className="truncate text-lg text-gray-700">
-              {news.location || 'N/A'}
-            </span>
-          </div>
-        </div>
-      </CardContent>
-      <Dialog open={isOpen}>
-        <DialogContent className="max-h-[80vh] w-full overflow-y-auto">
-          {news && (
-            <div className="space-y-6">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold text-gray-900">
-                  {news.title}
-                </DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div className="flex flex-wrap gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Published:</span>
-                    <span>{news.created_at ? formatDate(news.created_at) : 'N/A'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Category:</span>
-                    <span>{news.category || 'N/A'}</span>
-                  </div>
-                </div>
-
-                <div className="prose max-w-none">
-                  <div className="leading-relaxed whitespace-pre-wrap text-gray-700">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {news.description}
-                    </ReactMarkdown>
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-end border-t pt-4">
-                <Button onClick={() => setIsOpen(false)}>
-                  Close
-                </Button>
-              </div>
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <span className="text-md w-16 font-medium text-gray-500">Date:</span>
+              <span className="text-lg text-gray-700">
+                {news.news_date ? formatDate(news.news_date) : 'N/A'}
+              </span>
             </div>
-          )}
-        </DialogContent>
-      </Dialog>
-    </Card>
-  </>
-  
+            <div className="flex items-center">
+              <span className="text-md w-16 font-medium text-gray-500">Location:</span>
+              <span className="truncate text-lg text-gray-700">
+                {news.location || 'N/A'}
+              </span>
+            </div>
+          </div>
+        </CardContent>
+        <Dialog open={isOpen}>
+          <DialogContent className="max-h-[80vh] w-full overflow-y-auto">
+            {news && (
+              <div className="space-y-6">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold text-gray-900">
+                    {news.title}
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">Published:</span>
+                      <span>{news.news_date ? formatDate(news.news_date) : 'N/A'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">Category:</span>
+                      <span>{news.category || 'N/A'}</span>
+                    </div>
+                  </div>
+
+                  <div className="prose max-w-none">
+                    <div className="leading-relaxed whitespace-pre-wrap text-gray-700">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {news.description}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-end border-t pt-4">
+                  <Button onClick={() => setIsOpen(false)}>
+                    Close
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+      </Card>
+    </>
+
   )
 }

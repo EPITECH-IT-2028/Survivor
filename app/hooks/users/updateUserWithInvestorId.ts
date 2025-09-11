@@ -16,7 +16,7 @@ export async function updateUserWithInvestorId(userId: number, userData: TUser, 
       name: userData.name,
       email: userData.email,
       role: userData.role,
-      founder_id: userData.founder_id,
+      founder_id: userData.founder_id || undefined,
       investor_id: investor_id
     };
     const res = await fetch(`/api/users/${userId}`, {

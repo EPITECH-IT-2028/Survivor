@@ -122,8 +122,8 @@ export default function CreateStartup({
         <FiltersComboBoxResponsive
           filtersList={sectorFilters.filter((s) => s.value !== "-")}
           placeHolder={sectorFilters[0]}
-          onSelection={(value: Sector) => {
-            setStartupData({ ...startupData!, sector: value });
+          onSelection={(value: string) => {
+            setStartupData({ ...startupData!, sector: value as Sector });
           }}
         />
         <FiltersComboBoxResponsive
