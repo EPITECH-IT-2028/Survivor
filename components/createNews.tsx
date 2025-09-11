@@ -24,7 +24,7 @@ interface CreateNewsProps {
   onDataChanged?: () => void;
 }
 
-export default function CreateEvent({
+export default function CreateNews({
   isOpen,
   onClose,
   onDataChanged,
