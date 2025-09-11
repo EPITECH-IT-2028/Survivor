@@ -169,7 +169,7 @@ export default function Home() {
         <HeroParallax products={startups} />
       </div>
       <div className="bg-muted px-6 py-12 shadow-md md:rounded-lg md:px-8 md:py-16">
-        <p className="mb-12 flex justify-center font-canela-black text-3xl underline decoration-wavy decoration-3 underline-offset-[1rem] md:mb-16 md:text-5xl lg:mb-24 lg:text-6xl">
+        <p className="mb-12 flex justify-center font-montserrat text-3xl font-bold underline decoration-wavy decoration-3 underline-offset-[1rem] md:mb-16 md:text-5xl lg:mb-24 lg:text-6xl">
           Featured Projects
         </p>
         <div className="flex flex-col items-center justify-center space-y-12 md:flex-row md:items-baseline md:justify-around">

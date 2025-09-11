@@ -5,6 +5,7 @@ import { TEvent } from "@/app/types/event"
 import { getEvents } from "@/app/hooks/events/getEvents"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import EventCard from "@/components/EventCard"
+import { PulseLoader } from "react-spinners"
 
 export default function Event() {
   const [eventInfo, setEventInfo] = useState<TEvent[]>([])
@@ -23,6 +24,12 @@ export default function Event() {
 
   return (
     <div className="space-y-8 p-6">
+      {eventInfo.length === 0 && (
+        <div className="flex flex-col justify-center items-center min-h-screen">
+          <PulseLoader size={30} color="#F18585" />
+        </div>
+      )}
+
       {workshops.length > 0 && (
         <div>
           <h2 className="mb-4 text-2xl font-bold text-gray-900">Workshops</h2>

@@ -8,12 +8,12 @@ import { Input } from "@/components/ui/input";
 
 const Footer = () => {
   return (
-    <footer className="relative bottom-0 mt-20 w-full bg-gray-900 py-12 text-white">
+    <footer className="mt-20 w-full bg-primary/30 py-12 text-foreground">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-24 md:grid-cols-4">
           <div className="col-span-1">
-            <h2 className="mb-4 font-canela-black text-2xl">Jeb Incubator.</h2>
-            <p className="text-gray-400">
+            <h2 className="mb-4 font-montserrat text-2xl">JEB Incubator.</h2>
+            <p className="text-foreground/60">
               Connecting the next generation of innovators and investors.
             </p>
           </div>
@@ -48,7 +48,7 @@ const Footer = () => {
             <h3 className="mb-4 text-lg font-semibold">Follow Us</h3>
             <div className="flex space-x-4">
               <Link
-                href="https://twitter.com"
+                href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Twitter"
@@ -57,7 +57,7 @@ const Footer = () => {
                 <FaTwitter size={24} />
               </Link>
               <Link
-                href="https://facebook.com"
+                href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -66,7 +66,7 @@ const Footer = () => {
                 <FaFacebook size={24} />
               </Link>
               <Link
-                href="https://instagram.com"
+                href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -75,7 +75,7 @@ const Footer = () => {
                 <FaInstagram size={24} />
               </Link>
               <Link
-                href="https://linkedin.com"
+                href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
@@ -104,7 +104,7 @@ const Footer = () => {
                 />
                 <Button
                   type="submit"
-                  className="rounded-r-md bg-blue-600 px-4 py-2 hover:bg-blue-700"
+                  className="rounded-r-md bg-primary px-4 py-2 hover:bg-primary/80"
                 >
                   Subscribe
                 </Button>

@@ -18,7 +18,7 @@ export const sidebarItems = [
   },
   {
     title: "Opportunities",
-    url: "#",
+    url: "/startup-area/opportunities",
     icon: Search,
   },
 ]

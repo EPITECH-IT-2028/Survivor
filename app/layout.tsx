@@ -1,34 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Instrument_Serif } from "next/font/google";
+import { Open_Sans, Montserrat } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
-import Footer from "@/components/Footer";
 import "./globals.css";
 import ConditionalNavbar from "@/components/conditionalNavbar";
 import ConditionalContainer from "@/components/conditionalContainer";
+import ConditionalFooter from "@/components/conditionalFooter";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
-});
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
   title: "JEB Incubator",
   description: "A place to nourish your ideas and develop your projects.",
 };
-
 
 export default function RootLayout({
   children,
@@ -38,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sf-pro ${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
+        className={`${openSans.variable} ${montserrat.variable} antialiased`}
       >
         <AuthProvider>
           <ConditionalNavbar />
@@ -47,7 +41,7 @@ export default function RootLayout({
           </ConditionalContainer>
           <Toaster position="bottom-right" richColors />
         </AuthProvider>
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   );

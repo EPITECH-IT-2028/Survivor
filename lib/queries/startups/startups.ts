@@ -19,6 +19,14 @@ export const updateStartupEngagementQuery = async (
   return await db`UPDATE startups SET engagement_rate = ${engagement_rate} WHERE id = ${startup_id} RETURNING *`;
 };
 
+export const getStartupViewsQuery = async (db: postgres.Sql, startup_id: string) => {
+  return await db`SELECT project_view FROM startups WHERE id = ${startup_id}`;
+}
+
+export const updateStartupViewsQuery = async (db: postgres.Sql, startup_id: string, project_view: number) => {
+  return await db`UPDATE startups SET project_view = ${project_view} WHERE id = ${startup_id} RETURNING *`;
+}
+
 export const insertStartupQuery = async (
   db: postgres.Sql,
   name: string,

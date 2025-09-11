@@ -17,6 +17,8 @@ import Link from "next/link";
 import { getStartupEngagement } from "@/app/hooks/startups/getStartupEngagement";
 import { setStartupEngagement } from "@/app/hooks/startups/setStartupEngagement";
 import { X, ChevronRight } from "lucide-react";
+import { getStartupView } from "@/app/hooks/startups/getStartupView";
+import { setStartupView } from "@/app/hooks/startups/setStartupView";
 
 async function generateStartupPDF(startup: TStartups): Promise<void> {
   const pdfDoc = await PDFDocument.create();
@@ -154,17 +156,29 @@ export default function Modal({
 
   const onClick = () => {
     setIsOpen(!isOpen);
+    getStartupView(startup.id)
+      .then((rate) => {
+        if (rate === null) {
+          return;
+        }
+        setStartupView(startup.id, rate + 1);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch engagement rate:", err);
+      });
+  };
+
+  const engagementRate = () => {
     getStartupEngagement(startup.id)
       .then((rate) => {
         if (rate === null) {
           return;
         }
         setStartupEngagement(startup.id, rate + 1);
-      })
-      .catch((err) => {
+      }).catch((err) => {
         console.error("Failed to fetch engagement rate:", err);
       });
-  };
+  }
 
   return (
     <>
@@ -303,6 +317,7 @@ export default function Modal({
                             rel="noopener noreferrer"
                             target="_blank"
                             className="text-sm text-blue-600 underline hover:text-blue-800"
+                            onClick={engagementRate}
                           >
                             Visit Website
                           </Link>
