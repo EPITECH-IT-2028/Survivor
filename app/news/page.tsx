@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect} from "react"
 import { TNews } from "../types/news"
@@ -33,4 +33,5 @@ export default function News() {
         </div>
       </div>
     </div>
-  )}
+  );
+}
