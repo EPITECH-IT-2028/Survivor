@@ -38,8 +38,18 @@ export default function Navbar() {
         aria-label="Navigation principale"
         className="relative mx-2 mt-5 flex h-24 items-center justify-between rounded-xl bg-primary px-4 text-secondary"
       >
-        <Link href="/" className="absolute left-6 cursor-pointer">
-          <TextRipple className="font-montserrat text-2xl">
+        <Link
+          href="/"
+          className="absolute left-6 flex cursor-pointer items-center gap-4"
+        >
+          <Image
+            src="/icon.png"
+            alt="JEB Incubator Logo"
+            width={50}
+            height={50}
+            className="rounded-sm"
+          />
+          <TextRipple className="font-montserrat text-xl font-bold whitespace-nowrap text-white">
             JEB Incubator.
           </TextRipple>
         </Link>
