@@ -67,7 +67,7 @@ export default function NewsCard({ news }: { news: TNews }) {
                     <div className="flex items-center gap-2">
                       <span className="font-medium">Published:</span>
                       <span>
-                        {news.created_at ? formatDate(news.created_at) : "N/A"}
+                        {news.news_date ? formatDate(news.news_date) : "N/A"}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
