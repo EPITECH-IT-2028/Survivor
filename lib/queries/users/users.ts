@@ -11,7 +11,7 @@ export const getUserByIdQuery = async (db: postgres.Sql, id: string) => {
 };
 
 export const getUserByEmailQuery = async (db: postgres.Sql, email: string) => {
-  return await db`SELECT id, name, email, role, founder_id, investor_id, image FROM users WHERE email = ${email}`;
+  return await db`SELECT id, name, email, role, founder_id, investor_id, image, password FROM users WHERE email = ${email}`;
 };
 
 export const insertUserQuery = async (
