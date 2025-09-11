@@ -32,13 +32,13 @@ export default function About() {
         Managers
       </h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {["Elena Hanka", "Bylel Jourdin", "Javier Barrera"].map((name) => (
-          <div key={name} className="rounded-lg bg-blue-50 p-4 text-center">
-            <p className="font-medium text-gray-900">{name}</p>
+        {["Elena Enka", "Bylel Jourdin", "Javier Barrera"].map((name) => (
+          <div key={name} className="rounded-lg bg-primary/20 p-4 text-center">
+            <p className="font-medium">{name}</p>
           </div>
         ))}
       </div>
-      <h2 className="mt-20 mb-4 border-b-2 border-green-100 pb-2 text-2xl font-semibold text-green-600">
+      <h2 className="mt-20 mb-4 border-b-2 border-accent-foreground pb-2 text-2xl font-semibold text-accent-foreground">
         Developers
       </h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -48,28 +48,35 @@ export default function About() {
           "Etienne Labarbe",
           "Arthur Guerinault",
         ].map((name) => (
-          <div key={name} className="rounded-lg bg-green-50 p-4 text-center">
-            <p className="font-medium text-gray-900">{name}</p>
+          <div
+            key={name}
+            className="rounded-lg bg-accent-foreground/20 p-4 text-center"
+          >
+            <p className="font-medium">{name}</p>
           </div>
         ))}
       </div>
       <h1 className="mt-24 mb-12 text-start text-5xl font-bold">Contact Us</h1>
-      <div className="flex flex-col gap-4 md:flex-row md:gap-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {[
           "elena.enka@jeb-incubator.com",
           "bylel.jourdin@jeb-incubator.com",
           "javier.barrera@jeb-incubator.com",
-        ].map((email) => (
+        ].map((email, idx, arr) => (
+            // checkpoint
           <div
             key={email}
-            className="flex items-center justify-center rounded-lg bg-gray-50 p-4"
+            className="group relative cursor-pointer px-8 py-4"
           >
             <Link
               href={`mailto:${email}`}
-              className="flex items-center gap-2 font-medium text-blue-600 transition-colors duration-200 hover:text-blue-800"
+              className={"gap-2 text-sm font-medium text-foreground transition-colors duration-100 hover:text-primary" + (idx === arr.length - 1 ? "col-span-2" : "")}
             >
-              <Mail />
-              {email}
+              <span className="absolute inset-0 rounded-lg bg-accent/40 transition-all duration-100 group-hover:scale-x-105 group-hover:bg-accent/75 hover:scale-y-95"></span>
+              <span className="relative z-10 flex items-center gap-2">
+                <Mail />
+                {email}
+              </span>
             </Link>
           </div>
         ))}
