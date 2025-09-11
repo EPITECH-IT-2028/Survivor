@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Open_Sans, Montserrat } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
-import Footer from "@/components/Footer";
 import "./globals.css";
 import ConditionalNavbar from "@/components/conditionalNavbar";
 import ConditionalContainer from "@/components/conditionalContainer";
@@ -10,6 +9,12 @@ import ConditionalFooter from "@/components/conditionalFooter";
 
 const openSans = Open_Sans({
   variable: "--font-open-sans",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
   weight: ["400", "700"],
 });
@@ -27,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${openSans.variable} antialiased`}
+        className={`${openSans.variable} ${montserrat.variable} antialiased`}
       >
         <AuthProvider>
           <ConditionalNavbar />
