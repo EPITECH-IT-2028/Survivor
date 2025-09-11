@@ -17,11 +17,11 @@ export default function Opportunities() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Opportunities</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <h1 className="mb-4 text-2xl font-bold">Opportunities</h1>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {startups.map((startup) => (
           <Card key={startup.id} className="p-4 shadow-md">
-            <h2 className="text-xl font-semibold mb-2">{startup.name}</h2>
+            <h2 className="mb-2 text-xl font-semibold">{startup.name}</h2>
             <p className="mb-1"><strong>Sector:</strong> {startup.sector || 'N/A'}</p>
             <p className="mb-1"><strong>Maturity:</strong> {startup.maturity || 'N/A'}</p>
             <p className="mb-1"><strong>Project Status:</strong> {startup.project_status || 'N/A'}</p>
@@ -33,7 +33,7 @@ export default function Opportunities() {
             </p>
             <p className="mb-1"><strong>Phone:</strong>{startup.phone || 'N/A'}</p>
             {startup.website_url && (
-              <Link href={startup.website_url} target="_blank" className="text-primary hover:underline mt-2">
+              <Link href={startup.website_url} target="_blank" className="mt-2 text-primary hover:underline">
                 Visit Website
               </Link>
             )}

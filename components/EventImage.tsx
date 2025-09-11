@@ -10,7 +10,7 @@ export default function EventImage({ id }: { id: number }) {
       const buffer = await getEventImage(id);
       if (!buffer) return;
 
-      const blob = new Blob([buffer], { type: 'image/jpeg' });
+      const blob = new Blob([buffer], { type: "image/jpeg" });
       const url = URL.createObjectURL(blob);
       setImgSrc(url);
 
@@ -22,5 +22,13 @@ export default function EventImage({ id }: { id: number }) {
 
   if (!imgSrc) return <p>No provided image</p>;
 
-  return <Image src={imgSrc} alt={`No provided image`} width={0} height={0} className="size-auto rounded-xl shadow-md" />;
+  return (
+    <Image
+      src={imgSrc}
+      alt={`No provided image`}
+      width={0}
+      height={0}
+      className="aspect-video size-auto rounded-md object-cover shadow-md"
+    />
+  );
 }

@@ -11,6 +11,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
 export const metadata: Metadata = {
   title: "404 - Page Not Found",
   description: "The page you are looking for does not exist.",
@@ -19,12 +25,12 @@ export const metadata: Metadata = {
 export default function GlobalNotFound() {
   return (
     <html lang="en">
-      <body className={`font-open-sans ${geistMono.variable} antialiased`}>
+      <body className={`font-open-sans ${openSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
           <Navbar />
-          <div className="flex min-h-screen flex-col items-center justify-center">
-            <div className="flex flex-col items-center gap-8 text-center">
-              <h1 className="text-3xl font-bold">404 Page Not Found</h1>
+          <div className="absolute inset-1/2 w-full -translate-1/2">
+            <div className="flex flex-col items-center justify-center space-y-6">
+              <h1 className="font-montserrat text-3xl font-bold">404 Page Not Found</h1>
               <p className="text-md">
                 The page you try to access is not available, please go back to
                 home
