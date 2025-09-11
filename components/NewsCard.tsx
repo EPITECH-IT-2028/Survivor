@@ -19,8 +19,6 @@ export default function NewsCard({ news }: { news: TNews }) {
       year: "numeric",
       month: "long",
       day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     });
   };
 
@@ -32,33 +30,24 @@ export default function NewsCard({ news }: { news: TNews }) {
 
   return (
     <>
-      <Card
-        className="h-112 w-full transform cursor-pointer rounded-xl border border-gray-200 bg-white p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
-        onClick={onClick}
-      >
-        <CardHeader className="pb-2">
-          <CardTitle className="line-clamp-2 text-lg font-bold text-gray-900">
-            {news.title}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex justify-center">
+      <Card onClick={onClick} className="cursor-pointer">
+        <CardContent className="flex h-full flex-col">
+          <div className="mx-auto flex justify-start">
             <NewsImage id={news.id} />
           </div>
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <span className="text-md w-16 font-medium text-gray-500">
-                Date:
-              </span>
-              <span className="text-lg text-gray-700">
+          <p className="mx-auto mt-4 line-clamp-2 flex-grow text-lg font-bold text-gray-900">
+            {news.title}
+          </p>
+          <div className="mx-auto mt-auto grid grid-cols-2 space-x-4 pt-4">
+            <div className="flex items-center space-x-2 text-xs">
+              <span className="text-muted-foreground">Date:</span>
+              <span className="truncate text-gray-700">
                 {news.news_date ? formatDate(news.news_date) : "N/A"}
               </span>
             </div>
-            <div className="flex items-center">
-              <span className="text-md w-16 font-medium text-gray-500">
-                Location:
-              </span>
-              <span className="truncate text-lg text-gray-700">
+            <div className="flex items-center space-x-2 text-xs">
+              <span className="text-muted-foreground">Location:</span>
+              <span className="truncate text-gray-700">
                 {news.location || "N/A"}
               </span>
             </div>
