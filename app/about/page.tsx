@@ -1,5 +1,48 @@
-import { Mail } from "lucide-react";
-import Link from "next/link";
+"use client";
+import { useState } from "react";
+
+const teamMembers = {
+  managers: [
+    { name: "Elena Enka", email: "elena.enka@jeb-incubator.com" },
+    { name: "Bylel Jourdin", email: "bylel.jourdin@jeb-incubator.com" },
+    { name: "Javier Barrera", email: "javier.barrera@jeb-incubator.com" },
+  ],
+  developers: [
+    { name: "Nolann Dubos", email: "nolann.dubos@epitech.eu" },
+    { name: "Quentin Lapierre", email: "quentin.lapierre@epitech.eu" },
+    { name: "Etienne Labarbe", email: "etienne.labarbe@epitech.eu" },
+    { name: "Arthur Guerinault", email: "arthur.guerinault@epitech.eu" },
+  ],
+};
+
+const TeamMember = ({
+  name,
+  email,
+  background,
+}: {
+  name: string;
+  email: string;
+  background: string;
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="group relative cursor-pointer p-4 text-center"
+    >
+      <span
+        className={`absolute inset-0 rounded-sm ${background} pointer-events-none transition-all duration-100 group-hover:scale-x-105 group-hover:scale-y-95`}
+      />
+      <p
+        className={`z-20 font-medium ${isHovered ? "font-bold text-blue-400 underline select-text" : ""}`}
+      >
+        {isHovered ? email : name}
+      </p>
+    </div>
+  );
+};
 
 export default function About() {
   return (
@@ -32,53 +75,24 @@ export default function About() {
         Managers
       </h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {["Elena Enka", "Bylel Jourdin", "Javier Barrera"].map((name) => (
-          <div key={name} className="rounded-lg bg-primary/20 p-4 text-center">
-            <p className="font-medium">{name}</p>
-          </div>
+        {teamMembers.managers.map((member) => (
+          <TeamMember
+            key={member.name}
+            {...member}
+            background="bg-primary/20"
+          />
         ))}
       </div>
       <h2 className="mt-20 mb-4 border-b-2 border-accent-foreground pb-2 text-2xl font-semibold text-accent-foreground">
         Developers
       </h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {[
-          "Nolann Dubos",
-          "Quentin Lapierre",
-          "Etienne Labarbe",
-          "Arthur Guerinault",
-        ].map((name) => (
-          <div
-            key={name}
-            className="rounded-lg bg-accent-foreground/20 p-4 text-center"
-          >
-            <p className="font-medium">{name}</p>
-          </div>
-        ))}
-      </div>
-      <h1 className="mt-24 mb-12 text-start text-5xl font-bold">Contact Us</h1>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {[
-          "elena.enka@jeb-incubator.com",
-          "bylel.jourdin@jeb-incubator.com",
-          "javier.barrera@jeb-incubator.com",
-        ].map((email, idx, arr) => (
-            // checkpoint
-          <div
-            key={email}
-            className="group relative cursor-pointer px-8 py-4"
-          >
-            <Link
-              href={`mailto:${email}`}
-              className={"gap-2 text-sm font-medium text-foreground transition-colors duration-100 hover:text-primary" + (idx === arr.length - 1 ? "col-span-2" : "")}
-            >
-              <span className="absolute inset-0 rounded-lg bg-accent/40 transition-all duration-100 group-hover:scale-x-105 group-hover:bg-accent/75 hover:scale-y-95"></span>
-              <span className="relative z-10 flex items-center gap-2">
-                <Mail />
-                {email}
-              </span>
-            </Link>
-          </div>
+        {teamMembers.developers.map((member) => (
+          <TeamMember
+            key={member.name}
+            {...member}
+            background="bg-accent-foreground/20"
+          />
         ))}
       </div>
     </div>
