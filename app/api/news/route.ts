@@ -1,4 +1,4 @@
-'use server';
+"use server";
 import sql from "@/lib/db";
 import { getNewsQuery, insertNewsQuery } from "@/lib/queries/news/news";
 
@@ -6,58 +6,100 @@ export async function GET() {
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   try {
     const response = await getNewsQuery(db);
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch news' }), {
+    return new Response(JSON.stringify({ error: "Failed to fetch news" }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   }
 }
-
 
 export async function POST(request: Request) {
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   try {
-    const { title, location, category, startup_id, description, news_date, startup } = await request.json();
+    const {
+      title,
+      location,
+      category,
+      startup_id,
+      description,
+      news_date,
+      startup,
+      image,
+    } = await request.json();
 
     if (!news_date) {
-      return new Response(JSON.stringify({ error: 'news_date is required' }), {
+      return new Response(JSON.stringify({ error: "news_date is required" }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
+    }
+
+    let processedImage = image;
+
+    if (image && typeof image === "string" && image.startsWith("data:image/")) {
+      try {
+        const base64Data = image.split(",")[1];
+        processedImage = Buffer.from(base64Data, "base64");
+      } catch (conversionError) {
+        console.error("Error converting base64 image:", conversionError);
+        return new Response(JSON.stringify({ error: "Invalid image format" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
     }
 
     const formattedDate = new Date(news_date).toISOString();
 
-    const response = await insertNewsQuery(db, title, location, category, startup_id, description, formattedDate, startup);
+    const response = await insertNewsQuery(
+      db,
+      title,
+      location,
+      category,
+      startup_id,
+      description,
+      formattedDate,
+      startup,
+      processedImage,
+    );
     return new Response(JSON.stringify(response), {
       status: 201,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: `Failed to create news ${error}` }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: `Failed to create news ${error}` }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 }

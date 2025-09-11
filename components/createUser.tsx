@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   TUser,
   UserRole,
@@ -18,6 +18,9 @@ import { TInvestor } from "@/app/types/investor";
 import { addInvestor } from "@/app/hooks/investors/addInvestor";
 import { addFounderStartup } from "@/app/hooks/founder-startup/addFounderStartup";
 import { PulseLoader } from "react-spinners";
+import UserImage from "./UserImage";
+import { Label } from "./ui/label";
+import Image from "next/image";
 
 interface CreateUserProps {
   isOpen: boolean;
@@ -28,7 +31,7 @@ interface CreateUserProps {
 export default function CreateUser({
   isOpen,
   onClose,
-  onDataChanged
+  onDataChanged,
 }: CreateUserProps) {
   const [userData, setUserData] = useState<TUser>({
     id: 0,
@@ -55,12 +58,24 @@ export default function CreateUser({
     created_at: "",
   });
 
-  const [startupId, setStartupId] = useState<number | undefined>(undefined)
+  const [startupId, setStartupId] = useState<number | undefined>(undefined);
+  const [preview, setPreview] = useState<string | null>(null);
 
-  const [startupsList, setStartupsList] = useState<{ value: number; label: string }[]>([{ value: 0, label: "-" }]);
+  const [startupsList, setStartupsList] = useState<
+    { value: string; label: string }[]
+  >([{ value: "0", label: "-" }]);
+
+  const handleRoleSelection = useCallback((value: string) => {
+    setUserData((prev) => ({ ...prev, role: value as UserRole }));
+  }, []);
+
+  const handleStartupSelection = useCallback((value: string) => {
+    setStartupId(Number(value));
+  }, []);
 
   const handleSubmitUser = async () => {
-    if (userData.name === "" ||
+    if (
+      userData.name === "" ||
       userData.role === "-" ||
       userData.email === ""
     ) {
@@ -70,7 +85,7 @@ export default function CreateUser({
       const newUser: TUser | null = await addUser(userData);
       if (newUser && newUser.id) {
         const founder = await addFounder({
-          name: newUser.name ?? ""
+          name: newUser.name ?? "",
         });
         await updateUserWithFounderId(newUser.id, newUser, founder?.id ?? 0);
         if (founder && founder.id && startupId)
@@ -106,25 +121,51 @@ export default function CreateUser({
       if (onDataChanged) onDataChanged();
       onClose();
     }
-  }
+  };
 
   useEffect(() => {
     const fetchStartups = async () => {
       const startups = await getStartups();
-      setStartupsList([{ value: 0, label: "-" }]);
-      setStartupsList((prev) => [...prev, ...startups.map(s => ({ value: s.id, label: s.name }))]);
-    }
+      setStartupsList([{ value: "0", label: "-" }]);
+      setStartupsList((prev) => [
+        ...prev,
+        ...startups.map((s) => ({ value: s.id.toString(), label: s.name })),
+      ]);
+    };
     fetchStartups();
   }, []);
 
   useEffect(() => {
-    if (startupId && userData.role !== "founder" && userData.founder_id !== null) {
-      setUserData((prev) => ({ ...prev, founder_id: null }));
+    if (
+      startupId &&
+      userData.role !== "founder" &&
+      userData.founder_id !== null
+    ) {
+      setUserData((prev) => {
+        if (prev.founder_id === null) return prev;
+        return { ...prev, founder_id: null };
+      });
     }
     if (userData.investor_id && userData.role !== "investor") {
-      setUserData((prev) => ({ ...prev, investor_id: null }));
+      setUserData((prev) => {
+        if (prev.investor_id === null) return prev;
+        return { ...prev, investor_id: null };
+      });
     }
-  }, [userData.role, startupId]);
+  }, [userData.role, startupId, userData.founder_id, userData.investor_id]);
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+        setUserData({ ...userData!, image: reader.result as string });
+      };
+      console.log("Image file selected:", file);
+      reader.readAsDataURL(file);
+    }
+  };
 
   if (!userData) {
     return (
@@ -157,19 +198,18 @@ export default function CreateUser({
         <FiltersComboBoxResponsive
           filtersList={userRoleFilters}
           placeHolder={userRoleFilters[userRoleId[userData.role ?? "-"]]}
-          onSelection={(value: string) => {
-            setUserData({ ...userData!, role: value as UserRole });
-          }}
+          onSelection={handleRoleSelection}
         />
         {userData.role === "founder" && (
           <>
             {startupsList.length > 0 && (
               <FiltersComboBoxResponsive
-                filtersList={startupsList.filter(s => s.value !== 0)}
-                placeHolder={startupsList.find(s => s.value === startupId) || startupsList[0]}
-                onSelection={(value: string) => {
-                  setStartupId(Number(value));
-                }}
+                filtersList={startupsList.filter((s) => s.value !== "0")}
+                placeHolder={
+                  startupsList.find((s) => s.value === startupId?.toString()) ||
+                  startupsList[0]
+                }
+                onSelection={handleStartupSelection}
               />
             )}
           </>
@@ -179,45 +219,119 @@ export default function CreateUser({
             <Input
               placeholder={"Name of the investor"}
               value={investorData!.name ?? "-"}
-              onChange={(e) => { setInvestorData({ ...investorData!, name: e.target.value }) }}
+              onChange={(e) => {
+                setInvestorData({ ...investorData!, name: e.target.value });
+              }}
             />
             <Input
               placeholder="Email of the investor"
               value={investorData!.email ?? "-"}
-              onChange={(e) => { setInvestorData({ ...investorData!, email: e.target.value }) }}
+              onChange={(e) => {
+                setInvestorData({ ...investorData!, email: e.target.value });
+              }}
             />
             <Input
               placeholder="SARL, SAS, etc."
               value={investorData!.legal_status ?? "-"}
-              onChange={(e) => { setInvestorData({ ...investorData!, legal_status: e.target.value }) }}
+              onChange={(e) => {
+                setInvestorData({
+                  ...investorData!,
+                  legal_status: e.target.value,
+                });
+              }}
             />
             <Input
-              placeholder="1 Bite Avenue, New York"
+              placeholder="Address"
               value={investorData!.address ?? "-"}
-              onChange={(e) => { setInvestorData({ ...investorData!, address: e.target.value }) }}
+              onChange={(e) => {
+                setInvestorData({ ...investorData!, address: e.target.value });
+              }}
             />
             <Input
               placeholder="+1 234 567 890"
               value={investorData!.phone ?? "-"}
-              onChange={(e) => { setInvestorData({ ...investorData!, phone: e.target.value }) }}
+              onChange={(e) => {
+                setInvestorData({ ...investorData!, phone: e.target.value });
+              }}
             />
             <Input
               placeholder="Description of the investor"
               value={investorData!.description ?? "-"}
-              onChange={(e) => { setInvestorData({ ...investorData!, description: e.target.value }) }}
+              onChange={(e) => {
+                setInvestorData({
+                  ...investorData!,
+                  description: e.target.value,
+                });
+              }}
             />
             <Input
               placeholder="Venture Capital, Angel Investor, etc."
               value={investorData!.investor_type ?? "-"}
-              onChange={(e) => { setInvestorData({ ...investorData!, investor_type: e.target.value }) }}
+              onChange={(e) => {
+                setInvestorData({
+                  ...investorData!,
+                  investor_type: e.target.value,
+                });
+              }}
             />
             <Input
               placeholder="Technology, Healthcare, etc."
               value={investorData!.investment_focus ?? "-"}
-              onChange={(e) => { setInvestorData({ ...investorData!, investment_focus: e.target.value }) }}
+              onChange={(e) => {
+                setInvestorData({
+                  ...investorData!,
+                  investment_focus: e.target.value,
+                });
+              }}
             />
           </>
         )}
+        <div className="border-2 border-dashed rounded-2xl p-6 text-center items-center cursor-pointer">
+          <Input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            id="fileInput"
+            onChange={handleFile}
+          />
+          <Label htmlFor="fileInput">
+            {preview ? (
+              <div className="flex flex-col items-center">
+                <Image
+                  src={preview}
+                  alt="Preview"
+                  width={200}
+                  height={200}
+                  className="mx-auto rounded-lg"
+                />
+                <Button
+                  className="mt-2 bg-red-400 hover:bg-red-500 cursor-pointer"
+                  onClick={() => {
+                    setPreview(null);
+                    setUserData({ ...userData!, image: null });
+                  }}
+                >
+                  Remove Image
+                </Button>
+              </div>
+            ) : preview === null && userData.image ? (
+              <div className="flex flex-col items-center">
+                <UserImage id={userData.id} />
+                <Button
+                  className="cursor-pointer mt-2 bg-red-400 hover:bg-red-500"
+                  onClick={() => {
+                    setPreview(null);
+                    setUserData({ ...userData!, image: null });
+                  }}
+                >
+                  Remove Image
+                </Button>
+              </div>
+            ) : (
+              <h1 className="text-gray-500">Click or drop an image here</h1>
+            )}
+          </Label>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Button
             className="bg-green-400 hover:bg-green-500 cursor-pointer"
@@ -236,4 +350,3 @@ export default function CreateUser({
     </Dialog>
   );
 }
-

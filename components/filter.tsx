@@ -61,13 +61,10 @@ export function FiltersComboBoxResponsive({
 
   const handleFilterChange = (newValue: Filters | null) => {
     setSelectedFilters(newValue);
-  };
-
-  useEffect(() => {
-    if (selectedFilters) {
-      onSelection(selectedFilters.value);
+    if (newValue) {
+      onSelection(newValue.value);
     }
-  }, [selectedFilters, onSelection]);
+  };
 
   if (!isMounted) {
     return (
