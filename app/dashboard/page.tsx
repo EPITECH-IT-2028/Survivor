@@ -51,9 +51,12 @@ export default function Dashboard() {
   const [pageUser, setPageUser] = useState<number>(0);
   const [pageEvent, setPageEvent] = useState<number>(0);
   const [pageNews, setPageNews] = useState<number>(0);
-  const [metrics, setMetrics] = useState<{ total_project_views: number; total_engagement_rate: number }>({
+  const [metrics, setMetrics] = useState<{
+    total_project_views: number;
+    total_engagement_rate: number;
+  }>({
     total_project_views: 0,
-    total_engagement_rate: 0
+    total_engagement_rate: 0,
   });
 
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function Dashboard() {
     const fetchMetrics = async () => {
       const metricsData = await getMetrics();
       setMetrics(metricsData[0]);
-    }
+    };
     const fetchNews = async () => {
       const news = await getNews();
       setNewsData(news);
@@ -142,7 +145,7 @@ export default function Dashboard() {
 
   if (!usersData || !startupsData || !eventsData || !newsData) {
     return (
-      <div className="flex flex-col justify-center items-center min-h-screen">
+      <div className="flex min-h-screen flex-col items-center justify-center">
         <PulseLoader size={30} color="#F18585" />
       </div>
     );
@@ -220,7 +223,9 @@ export default function Dashboard() {
               Project views
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-3xl font-bold">{metrics.total_project_views}</CardContent>
+          <CardContent className="text-3xl font-bold">
+            {metrics.total_project_views}
+          </CardContent>
         </Card>
         <Card className="m-8 size-auto">
           <CardHeader>
@@ -228,7 +233,9 @@ export default function Dashboard() {
               Engagement rate
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-3xl font-bold">{metrics.total_engagement_rate}</CardContent>
+          <CardContent className="text-3xl font-bold">
+            {metrics.total_engagement_rate}
+          </CardContent>
         </Card>
       </div>
       <div className="space-y-8 p-4">
@@ -237,7 +244,7 @@ export default function Dashboard() {
             <div className="flex justify-between">
               <CardTitle className="text-xl font-semibold">Startups</CardTitle>
               <Plus
-                className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1"
+                className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100"
                 onClick={() => handleCreateStartupButton()}
               />
             </div>
@@ -301,7 +308,7 @@ export default function Dashboard() {
             <div className="flex justify-between">
               <CardTitle className="text-xl font-semibold">Users</CardTitle>
               <Plus
-                className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1"
+                className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100"
                 onClick={() => handleCreateUserButton()}
               />
             </div>
@@ -421,7 +428,7 @@ export default function Dashboard() {
             <div className="flex justify-between">
               <CardTitle className="text-xl font-semibold">News</CardTitle>
               <Plus
-                className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1"
+                className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100"
                 onClick={() => handleNewsCreateButton()}
               />
             </div>
@@ -473,7 +480,7 @@ export default function Dashboard() {
           <div className="flex px-4">
             <ChevronLeft
               onClick={() => setPageNews(pageNews - 1 > 0 ? pageNews - 1 : 0)}
-              className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1"
+              className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100"
             />
             <ChevronRight
               onClick={() =>
@@ -483,7 +490,7 @@ export default function Dashboard() {
                     : pageNews + 1,
                 )
               }
-              className="justify-end cursor-pointer hover:bg-gray-100 rounded-full p-1"
+              className="cursor-pointer justify-end rounded-full p-1 hover:bg-gray-100"
             />
           </div>
         </Card>
