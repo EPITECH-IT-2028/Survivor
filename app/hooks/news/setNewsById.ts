@@ -16,7 +16,6 @@ export async function setNewsById(
   newsData: TNews,
 ): Promise<TNews | null> {
   try {
-    console.log("newsData:", newsData);
     if (
       !newsData ||
       !newsData.title ||

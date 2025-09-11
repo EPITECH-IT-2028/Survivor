@@ -60,7 +60,6 @@ export default function UpdateUser({
         setPreview(reader.result as string);
         setUserData({ ...userData!, image: reader.result as string });
       };
-      console.log("Image file selected:", file);
       reader.readAsDataURL(file);
     }
   };
@@ -80,7 +79,7 @@ export default function UpdateUser({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Update User</DialogTitle>
         </DialogHeader>

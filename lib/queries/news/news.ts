@@ -1,11 +1,11 @@
 import postgres from "postgres";
 
 export const getNewsQuery = async (db: postgres.Sql) => {
-  return await db`SELECT id, location, title, category, startup_id, news_date, description FROM news ORDER BY news_date DESC`;
+  return await db`SELECT id, location, title, category, startup_id, news_date, description, image FROM news ORDER BY news_date DESC`;
 };
 
 export const getNewsByIdQuery = async (db: postgres.Sql, id: string) => {
-  return await db`SELECT id, location, title, category, startup_id, news_date, description FROM news WHERE id = ${id}`;
+  return await db`SELECT id, location, title, category, startup_id, news_date, description, image FROM news WHERE id = ${id}`;
 };
 
 export const getNewsImageByIdQuery = async (db: postgres.Sql, id: string) => {

@@ -1,4 +1,11 @@
-import { sectorFilters, TStartups, Sector, projectStatusFilters, needsFilters, maturityFilters } from "@/app/types/startup";
+import {
+  sectorFilters,
+  TStartups,
+  Sector,
+  projectStatusFilters,
+  needsFilters,
+  maturityFilters,
+} from "@/app/types/startup";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
@@ -16,7 +23,7 @@ interface CreateStartupProps {
 export default function CreateStartup({
   isOpen,
   onClose,
-  onDataChanged
+  onDataChanged,
 }: CreateStartupProps) {
   const [startupData, setStartupData] = useState<TStartups>({
     id: 0,
@@ -36,7 +43,8 @@ export default function CreateStartup({
   });
 
   const handleSubmitStartup = async () => {
-    if (startupData.name === "" ||
+    if (
+      startupData.name === "" ||
       startupData.legal_status === "" ||
       startupData.address === "" ||
       startupData.email === "" ||
@@ -52,7 +60,7 @@ export default function CreateStartup({
     await addStartup(startupData);
     if (onDataChanged) onDataChanged();
     onClose();
-  }
+  };
 
   if (!startupData) {
     return (
@@ -64,7 +72,7 @@ export default function CreateStartup({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create Startup</DialogTitle>
         </DialogHeader>
@@ -109,28 +117,28 @@ export default function CreateStartup({
         />
 
         <FiltersComboBoxResponsive
-          filtersList={sectorFilters.filter(s => s.value !== '-')}
+          filtersList={sectorFilters.filter((s) => s.value !== "-")}
           placeHolder={sectorFilters[0]}
           onSelection={(value: Sector) => {
             setStartupData({ ...startupData!, sector: value });
           }}
         />
         <FiltersComboBoxResponsive
-          filtersList={projectStatusFilters.filter(p => p.value !== '-')}
+          filtersList={projectStatusFilters.filter((p) => p.value !== "-")}
           placeHolder={projectStatusFilters[0]}
           onSelection={(value: string) => {
             setStartupData({ ...startupData!, project_status: value });
           }}
         />
         <FiltersComboBoxResponsive
-          filtersList={needsFilters.filter(n => n.value !== '-')}
+          filtersList={needsFilters.filter((n) => n.value !== "-")}
           placeHolder={needsFilters[0]}
           onSelection={(value: string) => {
             setStartupData({ ...startupData!, needs: value });
           }}
         />
         <FiltersComboBoxResponsive
-          filtersList={maturityFilters.filter(m => m.value !== '-')}
+          filtersList={maturityFilters.filter((m) => m.value !== "-")}
           placeHolder={maturityFilters[0]}
           onSelection={(value: string) => {
             setStartupData({ ...startupData!, maturity: value });
@@ -181,4 +189,3 @@ export default function CreateStartup({
     </Dialog>
   );
 }
-

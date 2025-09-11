@@ -94,119 +94,117 @@ export default function UpdateEvent({
         if (!open) onClose();
       }}
     >
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogTitle>Update Event</DialogTitle>
-        <DialogContent>
+        <Input
+          value={eventData!.name}
+          onChange={(e) => {
+            setEventData({ ...eventData!, name: e.target.value });
+          }}
+        />
+        <FiltersComboBoxResponsive
+          filtersList={eventTypeFilters.filter((f) => f.value !== "-")}
+          placeHolder={
+            eventTypeFilters[eventTypeId[eventData.event_type ?? "-"]] || {
+              label: "Select event type",
+            }
+          }
+          onSelection={(value: string) => {
+            setEventData({ ...eventData!, event_type: value as EventType });
+          }}
+        />
+        <Input
+          value={eventData!.location ?? ""}
+          onChange={(e) => {
+            setEventData({ ...eventData!, location: e.target.value });
+          }}
+        />
+        <DatePicker
+          date={eventData?.dates}
+          onSelectAction={(value: Date) =>
+            setEventData({ ...eventData, dates: value })
+          }
+        />
+        <FiltersComboBoxResponsive
+          filtersList={targetAudienceFilters.filter((f) => f.value !== "-")}
+          placeHolder={
+            targetAudienceFilters[
+              targetAudienceId[eventData.target_audience ?? "-"]
+            ] || { label: "Select audience" }
+          }
+          onSelection={(value: string) => {
+            setEventData({
+              ...eventData!,
+              target_audience: value as TargetAudience,
+            });
+          }}
+        />
+        <div className="cursor-pointer border-2 border-dashed rounded-2xl p-6 text-center items-center">
           <Input
-            value={eventData!.name}
-            onChange={(e) => {
-              setEventData({ ...eventData!, name: e.target.value });
-            }}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            id="fileInput"
+            onChange={handleFile}
           />
-          <FiltersComboBoxResponsive
-            filtersList={eventTypeFilters.filter((f) => f.value !== "-")}
-            placeHolder={
-              eventTypeFilters[eventTypeId[eventData.event_type ?? "-"]] || {
-                label: "Select event type",
-              }
-            }
-            onSelection={(value: string) => {
-              setEventData({ ...eventData!, event_type: value as EventType });
-            }}
-          />
-          <Input
-            value={eventData!.location ?? ""}
-            onChange={(e) => {
-              setEventData({ ...eventData!, location: e.target.value });
-            }}
-          />
-          <DatePicker
-            date={eventData?.dates}
-            onSelectAction={(value: Date) =>
-              setEventData({ ...eventData, dates: value })
-            }
-          />
-          <FiltersComboBoxResponsive
-            filtersList={targetAudienceFilters.filter((f) => f.value !== "-")}
-            placeHolder={
-              targetAudienceFilters[
-                targetAudienceId[eventData.target_audience ?? "-"]
-              ] || { label: "Select audience" }
-            }
-            onSelection={(value: string) => {
-              setEventData({
-                ...eventData!,
-                target_audience: value as TargetAudience,
-              });
-            }}
-          />
-          <div className="cursor-pointer border-2 border-dashed rounded-2xl p-6 text-center items-center">
-            <Input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              id="fileInput"
-              onChange={handleFile}
-            />
-            <Label htmlFor="fileInput">
-              {preview ? (
-                <div className="flex flex-col items-center">
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    width={200}
-                    height={200}
-                    className="mx-auto rounded-lg"
-                  />
-                  <Button
-                    className="cursor-pointer bg-red-400 hover:bg-red-500"
-                    onClick={() => {
-                      setPreview(null);
-                      setEventData({ ...eventData!, image: null });
-                    }}
-                  >
-                    Remove Image
-                  </Button>
-                </div>
-              ) : preview === null && eventData.image ? (
-                <div className="flex flex-col items-center">
-                  <EventImage id={eventData.id} />
-                  <Button
-                    className="cursor-pointer bg-red-400 hover:bg-red-500"
-                    onClick={() => {
-                      setPreview(null);
-                      setEventData({ ...eventData!, image: null });
-                    }}
-                  >
-                    Remove Image
-                  </Button>
-                </div>
-              ) : (
-                <h1 className="text-gray-500">Click or drop an image here</h1>
-              )}
-            </Label>
-          </div>
+          <Label htmlFor="fileInput">
+            {preview ? (
+              <div className="flex flex-col items-center">
+                <Image
+                  src={preview}
+                  alt="Preview"
+                  width={200}
+                  height={200}
+                  className="mx-auto rounded-lg"
+                />
+                <Button
+                  className="cursor-pointer bg-red-400 hover:bg-red-500"
+                  onClick={() => {
+                    setPreview(null);
+                    setEventData({ ...eventData!, image: null });
+                  }}
+                >
+                  Remove Image
+                </Button>
+              </div>
+            ) : preview === null && eventData.image ? (
+              <div className="flex flex-col items-center">
+                <EventImage id={eventData.id} />
+                <Button
+                  className="cursor-pointer bg-red-400 hover:bg-red-500"
+                  onClick={() => {
+                    setPreview(null);
+                    setEventData({ ...eventData!, image: null });
+                  }}
+                >
+                  Remove Image
+                </Button>
+              </div>
+            ) : (
+              <h1 className="text-gray-500">Click or drop an image here</h1>
+            )}
+          </Label>
+        </div>
+        <Button
+          className="cursor-pointer bg-red-400 hover:bg-red-500"
+          onClick={handleDeleteEvent}
+        >
+          Delete event
+        </Button>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Button
-            className="cursor-pointer bg-red-400 hover:bg-red-500"
-            onClick={handleDeleteEvent}
+            className="cursor-pointer bg-green-400 hover:bg-green-500"
+            onClick={handleUpdateEvent}
           >
-            Delete event
+            Apply
           </Button>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Button
-              className="cursor-pointer bg-green-400 hover:bg-green-500"
-              onClick={handleUpdateEvent}
-            >
-              Apply
-            </Button>
-            <Button
-              className="cursor-pointer bg-blue-400 hover:bg-blue-500"
-              onClick={onClose}
-            >
-              Cancel
-            </Button>
-          </div>
-        </DialogContent>
+          <Button
+            className="cursor-pointer bg-blue-400 hover:bg-blue-500"
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

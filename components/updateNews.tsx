@@ -18,6 +18,7 @@ import { PulseLoader } from "react-spinners";
 import Image from "next/image";
 import NewsImage from "./NewsImage";
 import { Label } from "./ui/label";
+import { getNewsImage } from "@/app/hooks/news/getNewsImage";
 
 interface UpdateNewsProps {
   data: TNews;
@@ -40,7 +41,7 @@ export default function UpdateNews({
 
   useEffect(() => {
     setNewsData(data);
-  }, [data]);
+  }, [data, newsData]);
 
   useEffect(() => {
     const fetchStartups = async () => {
@@ -106,7 +107,7 @@ export default function UpdateNews({
         if (!open) onClose();
       }}
     >
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Update News</DialogTitle>
         </DialogHeader>

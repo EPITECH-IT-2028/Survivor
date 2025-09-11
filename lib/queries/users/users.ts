@@ -1,17 +1,17 @@
 import postgres from "postgres";
 
 export const getUsersQuery = async (db: postgres.Sql) => {
-  return await db`SELECT id, name, email, role, founder_id, investor_id FROM users ORDER BY id ASC`;
+  return await db`SELECT id, name, email, role, founder_id, investor_id, image FROM users ORDER BY id ASC`;
 };
 
 export const getUserByIdQuery = async (db: postgres.Sql, id: string) => {
   const response =
-    await db`SELECT id, name, email, role, founder_id, investor_id FROM users WHERE id = ${id}`;
+    await db`SELECT id, name, email, role, founder_id, investor_id, image FROM users WHERE id = ${id}`;
   return response[0];
 };
 
 export const getUserByEmailQuery = async (db: postgres.Sql, email: string) => {
-  return await db`SELECT id, name, email, role, founder_id, investor_id FROM users WHERE email = ${email}`;
+  return await db`SELECT id, name, email, role, founder_id, investor_id, image FROM users WHERE email = ${email}`;
 };
 
 export const insertUserQuery = async (

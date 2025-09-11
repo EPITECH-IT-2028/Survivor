@@ -99,7 +99,7 @@ export default function CreateEvent({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create News</DialogTitle>
         </DialogHeader>

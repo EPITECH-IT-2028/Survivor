@@ -162,7 +162,6 @@ export default function CreateUser({
         setPreview(reader.result as string);
         setUserData({ ...userData!, image: reader.result as string });
       };
-      console.log("Image file selected:", file);
       reader.readAsDataURL(file);
     }
   };
@@ -177,7 +176,7 @@ export default function CreateUser({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create User</DialogTitle>
         </DialogHeader>

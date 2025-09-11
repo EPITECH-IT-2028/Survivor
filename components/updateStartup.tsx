@@ -65,7 +65,7 @@ export default function UpdateStartup({
         if (!open) onClose();
       }}
     >
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Update Startup</DialogTitle>
         </DialogHeader>

@@ -36,7 +36,7 @@ export default function CreateEvent({
     event_type: "-",
     target_audience: "-",
     id: 0,
-    image: null
+    image: null,
   });
 
   if (!eventData) {
@@ -70,7 +70,7 @@ export default function CreateEvent({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogTitle>Create Event</DialogTitle>
         <Input
           value={eventData!.name}

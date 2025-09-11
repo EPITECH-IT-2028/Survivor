@@ -1,5 +1,4 @@
-
-import { TStartups } from '@/app/types/startup';
+import { TStartups } from "@/app/types/startup";
 
 interface StartupPayload {
   name: string;
@@ -19,7 +18,9 @@ interface StartupPayload {
   legacy_id: number | null;
 }
 
-export async function addStartup(startupData: TStartups): Promise<TStartups | null> {
+export async function addStartup(
+  startupData: TStartups,
+): Promise<TStartups | null> {
   try {
     const payload: StartupPayload = {
       name: startupData.name,
@@ -39,7 +40,6 @@ export async function addStartup(startupData: TStartups): Promise<TStartups | nu
       legacy_id: null,
     };
 
-    console.log("Adding startup with payload: ", payload);
     const res = await fetch("/api/startups", {
       method: "POST",
       headers: {
@@ -54,7 +54,7 @@ export async function addStartup(startupData: TStartups): Promise<TStartups | nu
     const created: TStartups = Array.isArray(data) ? data[0] : data;
     return created;
   } catch (error) {
-    console.error("Error adding startup: ", error)
-    return null
+    console.error("Error adding startup: ", error);
+    return null;
   }
 }
