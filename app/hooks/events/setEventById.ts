@@ -7,12 +7,21 @@ export interface EventPayload {
   description: string | null;
   event_type: string | null;
   target_audience: string | null;
+  image: string | null;
 }
 
-
-export async function setEventById(eventId: number, eventData: TEvent): Promise<TEvent | null> {
+export async function setEventById(
+  eventId: number,
+  eventData: TEvent,
+): Promise<TEvent | null> {
   try {
-    if (!eventData || !eventData.name || !eventData.dates || !eventData.location || !eventData.target_audience)
+    if (
+      !eventData ||
+      !eventData.name ||
+      !eventData.dates ||
+      !eventData.location ||
+      !eventData.target_audience
+    )
       throw new Error("eventData has at least one information null.");
     const payload: EventPayload = {
       name: eventData.name,
@@ -20,7 +29,8 @@ export async function setEventById(eventId: number, eventData: TEvent): Promise<
       event_type: eventData.event_type,
       dates: eventData.dates,
       location: eventData.location,
-      target_audience: eventData.target_audience
+      target_audience: eventData.target_audience,
+      image: eventData.image || null,
     };
     const res = await fetch(`/api/events/${eventId}`, {
       method: "PUT",
@@ -30,12 +40,14 @@ export async function setEventById(eventId: number, eventData: TEvent): Promise<
       body: JSON.stringify(payload),
     });
     if (!res.ok) {
-      throw new Error(`PUT /api/events/${eventId} -> ${res.status} ${res.statusText}`);
+      throw new Error(
+        `PUT /api/events/${eventId} -> ${res.status} ${res.statusText}`,
+      );
     }
     const data: TEvent = await res.json();
     return data;
   } catch (error) {
-    console.error("Error updating event: ", error)
-    return null
+    console.error("Error updating event: ", error);
+    return null;
   }
 }

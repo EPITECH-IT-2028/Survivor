@@ -1,7 +1,11 @@
-'use server';
+"use server";
 
 import sql from "@/lib/db";
-import { deleteEventQuery, getEventByIdQuery, updateEventQuery } from "@/lib/queries/events/events";
+import {
+  deleteEventQuery,
+  getEventByIdQuery,
+  updateEventQuery,
+} from "@/lib/queries/events/events";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -11,10 +15,13 @@ export async function GET(
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   const { id } = await params;
@@ -23,13 +30,16 @@ export async function GET(
     const response = await getEventByIdQuery(db, id);
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch events' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: `Failed to fetch events ${error}` }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 }
 
@@ -40,10 +50,13 @@ export async function DELETE(
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   const { id } = await params;
@@ -53,12 +66,12 @@ export async function DELETE(
 
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to delete event' }), {
+    return new Response(JSON.stringify({ error: "Failed to delete event" }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   }
 }
@@ -70,27 +83,66 @@ export async function PUT(
   const db = sql;
 
   if (db === null) {
-    return new Response(JSON.stringify({ error: 'Database connection failed' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: "Database connection failed" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 
   const { id } = await params;
 
   try {
-    const { name, dates, location, description, event_type, target_audience } = await request.json();
+    const {
+      name,
+      dates,
+      location,
+      description,
+      event_type,
+      target_audience,
+      image,
+    } = await request.json();
 
-    const response = await updateEventQuery(db, id, name, dates, location, description, event_type, target_audience);
+    let processedImage = image;
+
+    if (image && typeof image === "string" && image.startsWith("data:image/")) {
+      try {
+        const base64Data = image.split(",")[1];
+        processedImage = Buffer.from(base64Data, "base64");
+      } catch (conversionError) {
+        console.error("Error converting base64 image:", conversionError);
+        return new Response(JSON.stringify({ error: "Invalid image format" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+    }
+
+    const response = await updateEventQuery(
+      db,
+      id,
+      name,
+      dates,
+      location,
+      description,
+      event_type,
+      target_audience,
+      processedImage,
+    );
 
     return new Response(JSON.stringify(response), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: `Failed to update event ${error}` }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: `Failed to update event ${error}` }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   }
 }

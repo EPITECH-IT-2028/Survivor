@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Card } from "./card";
 import { Calendar } from "./calendar";
 
-export function DatePickerEvent({
+export function DatePicker({
   date,
   onSelectAction
 }: {
@@ -20,12 +20,11 @@ export function DatePickerEvent({
     }
   };
 
-  console.log(selectedDate);
   return (
     <Card className="w-fit h-full">
       <Calendar
-        captionLayout="dropdown"
-        defaultMonth={selectedDate ?? undefined}
+        mode="single"
+        selected={selectedDate}
         onDayClick={handleDateChange}
       />
     </Card>

@@ -1,56 +1,59 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { FiltersComboBoxResponsive } from "./filter";
 import { Button } from "./ui/button";
-import { setEventById } from "@/app/hooks/events/setEventById";
-import { deleteEventById } from "@/app/hooks/events/deleteEventById";
+import { setNewsById } from "@/app/hooks/news/setNewsById";
+import { deleteNewsById } from "@/app/hooks/news/deleteNewsById";
 import {
-  targetAudienceId,
-  targetAudienceFilters,
-  TEvent,
-  TargetAudience,
-  eventTypeFilters,
-  EventType,
-  eventTypeId,
-} from "@/app/types/event";
+  categoryFilter,
+  categoryId,
+  CategoryNews,
+  TNews,
+} from "@/app/types/news";
 import { DatePicker } from "./ui/datePicker";
+import { getStartups } from "@/app/hooks/startups/getStartups";
 import { PulseLoader } from "react-spinners";
-import EventImage from "./EventImage";
 import Image from "next/image";
+import NewsImage from "./NewsImage";
 import { Label } from "./ui/label";
+import { getNewsImage } from "@/app/hooks/news/getNewsImage";
 
-interface UpdateEventProps {
-  data: TEvent;
+interface UpdateNewsProps {
+  data: TNews;
   isOpen: boolean;
   onClose: () => void;
   onDataChanged?: () => void;
 }
 
-export default function UpdateEvent({
+export default function UpdateNews({
   data,
   isOpen,
   onClose,
   onDataChanged,
-}: UpdateEventProps) {
-  const [eventData, setEventData] = useState<TEvent | null>(null);
+}: UpdateNewsProps) {
+  const [newsData, setNewsData] = useState<TNews | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [startupsList, setStartupsList] = useState<
+    { value: string; label: string }[]
+  >([{ value: "0", label: "-" }]);
 
   useEffect(() => {
-    setEventData(data);
-  }, [data]);
+    setNewsData(data);
+  }, [data, newsData]);
 
-  const handleUpdateEvent = async () => {
-    if (!eventData) return;
-    try {
-      await setEventById(eventData.id, eventData);
-      onDataChanged?.();
-      onClose();
-    } catch (e) {
-      console.error("Failed to update event", e);
-    }
-  };
+  useEffect(() => {
+    const fetchStartups = async () => {
+      const startups = await getStartups();
+      setStartupsList([{ value: "0", label: "-" }]);
+      setStartupsList((prev) => [
+        ...prev,
+        ...startups.map((s) => ({ value: s.id.toString(), label: s.name })),
+      ]);
+    };
+    fetchStartups();
+  }, []);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,34 +61,44 @@ export default function UpdateEvent({
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
-        setEventData({ ...eventData!, image: reader.result as string });
+        setNewsData({ ...newsData!, image: reader.result as string });
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleDeleteEvent = async () => {
-    if (eventData === null || eventData.id == null) {
+  const handleUpdateNews = async () => {
+    if (!newsData) return;
+    try {
+      await setNewsById(newsData.id, newsData);
+      onDataChanged?.();
+      onClose();
+    } catch (e) {
+      console.error("Failed to update news", e);
+    }
+  };
+
+  const handleDeleteNews = async () => {
+    if (newsData === null || newsData.id == null) {
       return;
     }
     try {
-      await deleteEventById(eventData.id);
+      await deleteNewsById(newsData.id);
       if (onDataChanged) {
         onDataChanged();
       }
       onClose();
     } catch (e) {
-      console.error("Failed to delete event", e);
+      console.error("Failed to delete news", e);
     }
   };
 
-  if (!eventData) {
+  if (!startupsList || !newsData)
     return (
       <div className="flex flex-col justify-center items-center min-h-screen">
         <PulseLoader size={30} color="#F18585" />
       </div>
     );
-  }
 
   return (
     <Dialog
@@ -95,49 +108,61 @@ export default function UpdateEvent({
       }}
     >
       <DialogContent className="max-h-screen overflow-y-auto">
-        <DialogTitle>Update Event</DialogTitle>
+        <DialogHeader>
+          <DialogTitle>Update News</DialogTitle>
+        </DialogHeader>
         <Input
-          value={eventData!.name}
+          value={newsData!.title}
           onChange={(e) => {
-            setEventData({ ...eventData!, name: e.target.value });
+            setNewsData({ ...newsData!, title: e.target.value });
           }}
         />
         <FiltersComboBoxResponsive
-          filtersList={eventTypeFilters.filter((f) => f.value !== "-")}
+          filtersList={categoryFilter.filter((c) => c.value !== "-")}
           placeHolder={
-            eventTypeFilters[eventTypeId[eventData.event_type ?? "-"]] || {
-              label: "Select event type",
+            categoryFilter[categoryId[newsData.category ?? "-"]] || {
+              label: "Select category",
             }
           }
           onSelection={(value: string) => {
-            setEventData({ ...eventData!, event_type: value as EventType });
+            setNewsData({ ...newsData!, category: value as CategoryNews });
+          }}
+        />
+        {startupsList?.length > 0 && (
+          <FiltersComboBoxResponsive
+            filtersList={startupsList.filter((s) => s.value !== "0")}
+            placeHolder={
+              startupsList.find(
+                (s) => s.value === newsData.startup_id.toString(),
+              ) || startupsList[0]
+            }
+            onSelection={(value: string) => {
+              setNewsData({
+                ...newsData!,
+                startup_id: parseInt(value),
+                startup:
+                  startupsList.find((s) => s.value === value)?.label || "",
+              });
+            }}
+          />
+        )}
+        <Input
+          value={newsData!.description}
+          onChange={(e) => {
+            setNewsData({ ...newsData!, description: e.target.value });
           }}
         />
         <Input
-          value={eventData!.location ?? ""}
+          value={newsData!.location}
           onChange={(e) => {
-            setEventData({ ...eventData!, location: e.target.value });
+            setNewsData({ ...newsData!, location: e.target.value });
           }}
         />
         <DatePicker
-          date={eventData?.dates}
+          date={newsData?.news_date}
           onSelectAction={(value: Date) =>
-            setEventData({ ...eventData, dates: value })
+            setNewsData({ ...newsData, news_date: value })
           }
-        />
-        <FiltersComboBoxResponsive
-          filtersList={targetAudienceFilters.filter((f) => f.value !== "-")}
-          placeHolder={
-            targetAudienceFilters[
-              targetAudienceId[eventData.target_audience ?? "-"]
-            ] || { label: "Select audience" }
-          }
-          onSelection={(value: string) => {
-            setEventData({
-              ...eventData!,
-              target_audience: value as TargetAudience,
-            });
-          }}
         />
         <div className="cursor-pointer border-2 border-dashed rounded-2xl p-6 text-center items-center">
           <Input
@@ -161,20 +186,20 @@ export default function UpdateEvent({
                   className="cursor-pointer bg-red-400 hover:bg-red-500"
                   onClick={() => {
                     setPreview(null);
-                    setEventData({ ...eventData!, image: null });
+                    setNewsData({ ...newsData!, image: null });
                   }}
                 >
                   Remove Image
                 </Button>
               </div>
-            ) : preview === null && eventData.image ? (
+            ) : preview === null && newsData.image ? (
               <div className="flex flex-col items-center">
-                <EventImage id={eventData.id} />
+                <NewsImage id={newsData.id} />
                 <Button
                   className="cursor-pointer bg-red-400 hover:bg-red-500"
                   onClick={() => {
                     setPreview(null);
-                    setEventData({ ...eventData!, image: null });
+                    setNewsData({ ...newsData!, image: null });
                   }}
                 >
                   Remove Image
@@ -187,14 +212,14 @@ export default function UpdateEvent({
         </div>
         <Button
           className="cursor-pointer bg-red-400 hover:bg-red-500"
-          onClick={handleDeleteEvent}
+          onClick={handleDeleteNews}
         >
-          Delete event
+          Delete news
         </Button>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Button
             className="cursor-pointer bg-green-400 hover:bg-green-500"
-            onClick={handleUpdateEvent}
+            onClick={handleUpdateNews}
           >
             Apply
           </Button>

@@ -1,5 +1,4 @@
-
-import { TStartups } from '@/app/types/startup';
+import { TStartups } from "@/app/types/startup";
 
 interface StartupPayload {
   name: string;
@@ -14,27 +13,31 @@ interface StartupPayload {
   needs: string | null;
   description: string | null;
   maturity: string | null;
-  founder: number | null;
-  news: number | null;
+  engagement_rate: number;
+  project_view: number;
+  legacy_id: number | null;
 }
 
-export async function addStartup(startupData: TStartups): Promise<TStartups | null> {
+export async function addStartup(
+  startupData: TStartups,
+): Promise<TStartups | null> {
   try {
     const payload: StartupPayload = {
       name: startupData.name,
+      description: startupData.description,
       legal_status: startupData.legal_status,
       address: startupData.address,
       email: startupData.email,
       phone: startupData.phone,
-      sector: startupData.sector,
       website_url: startupData.website_url,
       social_media_url: startupData.social_media_url,
       project_status: startupData.project_status,
       needs: startupData.needs,
-      description: startupData.description,
       maturity: startupData.maturity,
-      founder: startupData.founder,
-      news: startupData.news
+      sector: startupData.sector,
+      engagement_rate: 0,
+      project_view: 0,
+      legacy_id: null,
     };
 
     const res = await fetch("/api/startups", {
@@ -51,7 +54,7 @@ export async function addStartup(startupData: TStartups): Promise<TStartups | nu
     const created: TStartups = Array.isArray(data) ? data[0] : data;
     return created;
   } catch (error) {
-    console.error("Error adding startup: ", error)
-    return null
+    console.error("Error adding startup: ", error);
+    return null;
   }
 }

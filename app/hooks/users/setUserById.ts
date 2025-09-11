@@ -4,8 +4,9 @@ interface UserPayload {
   name: string;
   email: string | null;
   role: UserRole | null;
-  founder_id?: number;
-  investor_id?: number;
+  founder_id: number | null;
+  investor_id: number | null;
+  image?: string | null;
 }
 
 export async function setUserById(userId: number, userData: TUser): Promise<TUser | null> {
@@ -17,7 +18,8 @@ export async function setUserById(userId: number, userData: TUser): Promise<TUse
       email: userData.email,
       role: userData.role,
       founder_id: userData.founder_id,
-      investor_id: userData.investor_id
+      investor_id: userData.investor_id,
+      image: userData.image ?? null,
     };
     const res = await fetch(`/api/users/${userId}`, {
       method: "PUT",

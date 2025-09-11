@@ -15,14 +15,15 @@ export const userRoleFilters = [
 ];
 
 export interface TUser {
-  email?: string;
-  founder_id?: number;
   readonly id: number;
-  investor_id?: number;
-  legacy_id?: number;
+  email: string | null;
+  founder_id: number | null;
   name: string;
-  role: UserRole;
-  password?: string;
+  role: UserRole | null;
+  investor_id: number | null;
+  password: string | null;
+  image: string | null;
+  legacy_id: number | null;
 }
 
 export interface TUserMessage {

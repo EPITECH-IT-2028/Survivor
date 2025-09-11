@@ -9,13 +9,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTitle,
-  DrawerTrigger,
-  DrawerDescription,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import {
   Popover,
   PopoverContent,
@@ -67,13 +61,10 @@ export function FiltersComboBoxResponsive({
 
   const handleFilterChange = (newValue: Filters | null) => {
     setSelectedFilters(newValue);
-  };
-
-  useEffect(() => {
-    if (selectedFilters) {
-      onSelection(selectedFilters.value);
+    if (newValue) {
+      onSelection(newValue.value);
     }
-  }, [selectedFilters, onSelection]);
+  };
 
   if (!isMounted) {
     return (
@@ -117,30 +108,28 @@ export function FiltersComboBoxResponsive({
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-[150px] justify-start"
-          disabled={disabled}
-        >
-          {selectedFilters ? <>{selectedFilters.label}</> : <>Select filters</>}
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerTitle className="sr-only">Filters</DrawerTitle>
-        <DrawerDescription className="sr-only">
-          Select a filter to apply.
-        </DrawerDescription>
-        <div className="mt-4 border-t">
-          <FiltersList
-            setOpen={setOpen}
-            setSelectedFilters={handleFilterChange}
-            filtersList={filtersList}
-          />
-        </div>
-      </DrawerContent>
-    </Drawer>
+    <div className={className}>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          <Button variant="outline" className={`w-[150px] justify-start ${className}`}>
+            {selectedFilters ? <>{selectedFilters.label}</> : <>Select filters</>}
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerTitle className="mb-4 text-lg font-medium">
+            {placeHolder.label}
+          </DrawerTitle>
+          <div className="mt-4 border-t">
+            <FiltersList
+              setOpen={setOpen}
+              setSelectedFilters={handleFilterChange}
+              filtersList={filtersList}
+              className={className}
+            />
+          </div>
+        </DrawerContent>
+      </Drawer>
+    </div>
   );
 }
 
