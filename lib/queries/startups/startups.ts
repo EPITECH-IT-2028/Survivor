@@ -1,7 +1,7 @@
 import postgres from "postgres";
 
 export const getStartupsQuery = async (db: postgres.Sql) => {
-  return await db`SELECT id, name, description, legal_status, address, email, phone, website_url, social_media_url, project_status, needs, maturity, sector, engagement_rate, project_view FROM startups ORDER BY id ASC`;
+  return await db`SELECT id, name, description, legal_status, address, email, phone, website_url, social_media_url, project_status, needs, maturity, sector, engagement_rate, project_view, legacy_id, created_at FROM startups ORDER BY id ASC`;
 };
 
 export const getStartupEngagementsQuery = async (
@@ -60,13 +60,16 @@ export const updateStartupByIdQuery = async (
   address: string,
   email: string,
   phone: string,
-  created_at: string,
   website_url: string,
+  created_at: string,
   social_media_url: string,
   project_status: string,
   needs: string,
   maturity: string,
   sector: string,
+  engagement_rate: number,
+  project_view: number,
+  legacy_id: number | null,
 ) => {
   return await db`UPDATE startups SET
   name = ${name},
@@ -75,14 +78,18 @@ export const updateStartupByIdQuery = async (
   address = ${address},
   email = ${email},
   phone = ${phone},
-  created_at = ${created_at},
   website_url = ${website_url},
+  created_at = ${created_at},
   social_media_url = ${social_media_url},
   project_status = ${project_status},
   needs = ${needs},
   maturity = ${maturity},
-  sector = ${sector}
-      WHERE id = ${id} RETURNING * `;
+  sector = ${sector},
+  engagement_rate = ${engagement_rate},
+  project_view = ${project_view},
+  legacy_id = ${legacy_id}
+  WHERE id = ${id}
+  RETURNING *`;
 };
 
 export const getStartupsByFounderIdQuery = async (

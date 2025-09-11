@@ -40,6 +40,9 @@ export default function CreateStartup({
     needs: "",
     description: "",
     maturity: "",
+    engagement_rate: 0,
+    project_view: 0,
+    legacy_id: null,
   });
 
   const handleSubmitStartup = async () => {
