@@ -4,15 +4,15 @@ import { Mail } from "lucide-react";
 
 const teamMembers = {
   managers: [
-    { name: "Elena Enka", email: "elena.enka@jeb-incubator.com" },
-    { name: "Bylel Jourdin", email: "bylel.jourdin@jeb-incubator.com" },
-    { name: "Javier Barrera", email: "javier.barrera@jeb-incubator.com" },
+    { name: "Elena ENKA", email: "elena.enka@jeb-incubator.com" },
+    { name: "Bylel JOURDIN", email: "bylel.jourdin@jeb-incubator.com" },
+    { name: "Javier BARRERA", email: "javier.barrera@jeb-incubator.com" },
   ],
   developers: [
-    { name: "Nolann Dubos", email: "nolann.dubos@epitech.eu" },
-    { name: "Quentin Lapierre", email: "quentin.lapierre@epitech.eu" },
-    { name: "Etienne Labarbe", email: "etienne.labarbe@epitech.eu" },
-    { name: "Arthur Guerinault", email: "arthur.guerinault@epitech.eu" },
+    { name: "Nolann DUBOS", email: "nolann.dubos@epitech.eu" },
+    { name: "Quentin LAPIERRE", email: "quentin.lapierre@epitech.eu" },
+    { name: "Etienne LABARBE", email: "etienne.labarbe@epitech.eu" },
+    { name: "Arthur GUERINAULT", email: "arthur.guerinault@epitech.eu" },
   ],
 };
 
